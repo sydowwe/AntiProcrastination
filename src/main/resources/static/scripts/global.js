@@ -464,10 +464,14 @@ export function createNewActivity(modal){
         alert("Created new activity");
     });
 }
-function addNewActivityToHistory(activityId, length){
+export function addNewActivityToHistory(activityId, lengthInMilliSeconds){
+    const startInMillis = Date.now() - lengthInMilliSeconds;
+    const start = new Date(startInMillis);
+
     let recordJsonObject = {
-        "activityId": activityId,
-        "length": length
+        "activityId": parseInt(activityId),
+        "length": lengthInMilliSeconds,
+        "timeOfStart": start.toISOString().replace("T", " ").replace("Z", "")
     }
     $.ajax({
         type: "POST",
@@ -476,10 +480,12 @@ function addNewActivityToHistory(activityId, length){
         data: JSON.stringify(recordJsonObject),
         dataType: 'json'
     }).done(data => {
-        alert("Created new activity");
+        alert("Added record of activity to history");
     });
 }
 
-function isStringEmptyOrNull(string){
-    return string && string.length > 0;
-}
+$().ready(function (){
+    $('#timerType').on('input',function(){
+        window.location.href=`${this.value}`;
+    });
+});

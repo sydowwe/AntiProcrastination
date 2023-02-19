@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.TimeZone;
 
 @Service
 @Transactional
@@ -28,18 +29,16 @@ public class HistoryService implements IHistoryService{
     @Override
     public History addActivityToHistory(HistoryRequest historyRequest) {
         Activity activity = activityService.getActivityById(historyRequest.getActivityId());
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
         Time length = new Time(historyRequest.getLength());
-        Timestamp now = new Timestamp(System.currentTimeMillis());
-        Timestamp timeOfStart = new Timestamp(now.getTime() - length.getTime());
 
-
+        Timestamp timeOfStart = Timestamp.valueOf(historyRequest.getTimeOfStart());
         History history = new History(
                 activity.getName(),
                 activity,
                 timeOfStart,
                 length
         );
-
         return historyRepository.save(history);
     }
 

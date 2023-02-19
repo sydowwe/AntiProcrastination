@@ -95,8 +95,5 @@ $().ready(()=>{
   addEventListener('stopwatchStopped', e => {
     saveModalObj.setBodyText = `Hodiny: ${e.detail.hoursPassed} minúty: ${e.detail.minutesPassed} seconds: ${e.detail.secondsPassed}`;
     saveModal.show();
-  });  
-  $('#timerType').on('input',function(){           
-    window.location.href=`${this.value}`;
-  });  
+  });
 })

@@ -1,5 +1,5 @@
 /* jshint esversion: 6 */
-import { ReallyCloseModal, SaveModalTemplate, YesNoModalTemplate, _MyModalTemplate, ActivitySelectionForm} from "./global.js";
+import { ReallyCloseModal, SaveModalTemplate, YesNoModalTemplate, _MyModalTemplate, ActivitySelectionForm,addNewActivityToHistory} from "./global.js";
 
 class Timer {
   #timeRemaining = 0;
@@ -56,8 +56,8 @@ class Timer {
     $("#startBtn").prop('disabled', false);
   } 
   stop(){
-    const timerStoppedEvent = new CustomEvent('timerStopped', {detail: { length: this.#initialTime - this.#timeRemaining }});
-    dispatchEvent(timerStoppedEvent);
+    const timerEndedEvent = new CustomEvent('timerEnded', {detail: { length: this.#initialTime - this.#timeRemaining }});
+    dispatchEvent(timerEndedEvent);
     this.#timerEnded();    
   }
   setTime(seconds,minutes,hours){
@@ -124,25 +124,13 @@ $().ready(()=>{
     $('#minutesDisplay').text(e.detail.minutes);
     $('#hoursDisplay').text(e.detail.hours);
   });
-  addEventListener('timerStopped', e => {
-    saveModalObj.setBodyText = `Dĺžka: ${e.detail.length}`;
-    saveModal.show();
-    saveModalObj.setSuccessBtnClickFunction = () => {
-      saveModal.hide();
-      console.log(e.detail.length);
-    }
-  });
   addEventListener('timerEnded', e => {
     saveModalObj.setBodyText = `Dĺžka: ${e.detail.length}`;
     saveModal.show();
     saveModalObj.setSuccessBtnClickFunction = () => {
       saveModal.hide();
+      addNewActivityToHistory($(activitySelectionForm.getTemplate).find('#activitySelect').val(),e.detail.length * 1000);
     }
-  });
-  $('#timerType').on('input',function(){
-    console.log(window.location.href);
-    /*window.location.href=`${this.value}`;*/
-
   });
 })
 

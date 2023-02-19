@@ -88,12 +88,10 @@ public class NewRecordController {
     }
     @PostMapping("/create-new-activity")
     public ResponseEntity<?> createNewActivity(@RequestBody ActivityRequest activityRequest){
-        var test = activityService.createActivity(activityRequest);
         return ResponseEntity.ok().build();
     }
     @PostMapping("/add-new-activity-to-history")
-    public ResponseEntity<?> createNewActivity(@RequestBody HistoryRequest historyRequest){
-        historyService.addActivityToHistory(historyRequest);
+    public ResponseEntity<?> addNewActivityToHistory(@RequestBody HistoryRequest historyRequest){
         return ResponseEntity.ok().build();
     }
 
