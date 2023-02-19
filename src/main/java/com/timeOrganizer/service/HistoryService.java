@@ -9,9 +9,9 @@ import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.sql.Time;
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -28,18 +28,18 @@ public class HistoryService implements IHistoryService{
     @Override
     public History addActivityToHistory(HistoryRequest historyRequest) {
         Activity activity = activityService.getActivityById(historyRequest.getActivityId());
-        Time length = new Time(historyRequest.getLength());
-        Timestamp now = new Timestamp(System.currentTimeMillis());
-        Timestamp timeOfStart = new Timestamp(now.getTime() - length.getTime());
-
-
+        LocalDate date = LocalDate.parse(historyRequest.getDate());
+        var timeOfStartObj = historyRequest.getTimeOfStart();
+        LocalTime timeOfStart = (LocalTime.of(timeOfStartObj.getHour(),timeOfStartObj.getMinute(),timeOfStartObj.getSecond()));
+        var lengthObj = historyRequest.getLength();
+        LocalTime length = LocalTime.of(lengthObj.getHour(), lengthObj.getMinute(),lengthObj.getSecond());
         History history = new History(
                 activity.getName(),
                 activity,
+                date,
                 timeOfStart,
                 length
         );
-
         return historyRepository.save(history);
     }
 
@@ -58,10 +58,12 @@ public class HistoryService implements IHistoryService{
             history.setActivityName(activity.getName());
         }
         if (historyRequest.getTimeOfStart() != null) {
-            history.setTimeOfStart(Timestamp.valueOf(historyRequest.getTimeOfStart()));
+            var timeOfStart = historyRequest.getTimeOfStart();
+            history.setTimeOfStart(LocalTime.of(timeOfStart.getHour(),timeOfStart.getMinute(),timeOfStart.getSecond()));
         }
         if (historyRequest.getLength() != null) {
-            history.setLength(new Time(historyRequest.getLength()));
+            var length = historyRequest.getLength();
+            history.setLength(LocalTime.of(length.getHour(), length.getMinute(),length.getSecond()));
         }
         return historyRepository.save(history);
     }

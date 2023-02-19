@@ -1,13 +1,12 @@
 package com.timeOrganizer.model.dto.request;
 
+import com.timeOrganizer.helper.MyIntTime;
 import lombok.Getter;
-
-import java.sql.Time;
-import java.sql.Timestamp;
 
 @Getter
 public class HistoryRequest {
     private Long activityId;
-    private Long length;
-    private String timeOfStart;
+    private String date;
+    private MyIntTime timeOfStart;
+    private MyIntTime length;
 }

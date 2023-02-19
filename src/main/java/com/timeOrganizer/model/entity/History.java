@@ -5,9 +5,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.sql.Time;
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -23,13 +23,16 @@ public class History {
     @ManyToOne
     @JoinColumn(name = "activity_id")
     private Activity activity;
+    @Column(name = "date")
+    private LocalDate date;
     @Column(name = "time_of_start")
-    private Timestamp timeOfStart;
+    private LocalTime timeOfStart;
     @Column(name = "length")
-    private Time length;
-    public History(String activityName, Activity activity, Timestamp timeOfStart, Time length) {
+    private LocalTime length;
+    public History(String activityName, Activity activity, LocalDate date, LocalTime timeOfStart, LocalTime length) {
         this.activityName = activityName;
         this.activity = activity;
+        this.date = date;
         this.timeOfStart = timeOfStart;
         this.length = length;
     }

@@ -13,4 +13,8 @@ public class HomeController {
     public String getTodoList(){
         return "views/todoList";
     }
+    @GetMapping("/viewHistory")
+    public String getViewHistory(){
+        return "views/viewHistory";
+    }
 }
