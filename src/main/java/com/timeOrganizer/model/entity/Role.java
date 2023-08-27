@@ -9,11 +9,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "roles", schema = "dbo")
+@Table(name = "role", schema = "dbo")
 public class Role extends AbstractEntity{
     @OneToMany(mappedBy = "role")
     private List<Activity> activities;
-    public Role(final String name) {
-        super(name);
+    public Role(final String name,final String text) {
+        super(name,text);
     }
 }

@@ -31,8 +31,8 @@ public class CategoryService implements ICategoryService{
                 .orElseThrow(() -> new CategoryNotFoundException(id));
     }
     @Override
-    public Category createCategory(String name) {
-        return categoryRepository.save(new Category(name));
+    public Category createCategory(String name, String text) {
+        return categoryRepository.save(new Category(name,text));
     }
     @Override
     public void deleteCategory(@NotNull Long id) {
@@ -41,7 +41,7 @@ public class CategoryService implements ICategoryService{
     @Override
     public Category updateCategory(Long id,String newName) {
         Category category = this.getCategoryById(id);
-        category.setName(newName);
+        category.setText(newName);
         return categoryRepository.save(category);
     }
     @Override

@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "activity", schema = "dbo")
-public class Activity extends AbstractEntity{
+public class Activity extends AbstractEntity {
     @Column(name = "is_on_to_do_list")
     private Boolean isOnToDoList;
 
@@ -26,8 +26,8 @@ public class Activity extends AbstractEntity{
     @JoinColumn(name = "category_id")
     private Category category;
 
-    public Activity(String name, Boolean isOnToDoList, Boolean isNecessary, Role role, Category category) {
-        super(name);
+    public Activity(String name, String text, Boolean isOnToDoList, Boolean isNecessary, Role role, Category category) {
+        super(name, text);
         this.isOnToDoList = isOnToDoList;
         this.isNecessary = isNecessary;
         this.role = role;

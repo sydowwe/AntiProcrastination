@@ -8,8 +8,8 @@ import java.util.List;
 public interface IRoleService {
     Role getRoleById(Long id);
     List<Role> getAllRoles();
-    Role createRole(String name);
-    public void deleteRole(Long id);
+    Role createRole(String name, String text);
+    void deleteRole(Long id);
     Role updateRole(Long id,String newName);
     List<Activity> getActivitiesByRole(Long id);
 }

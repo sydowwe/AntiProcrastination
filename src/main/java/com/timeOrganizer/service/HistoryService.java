@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -29,15 +28,12 @@ public class HistoryService implements IHistoryService{
     public History addActivityToHistory(HistoryRequest historyRequest) {
         Activity activity = activityService.getActivityById(historyRequest.getActivityId());
         LocalDate date = LocalDate.parse(historyRequest.getDate());
-        var timeOfStartObj = historyRequest.getTimeOfStart();
-        LocalTime timeOfStart = (LocalTime.of(timeOfStartObj.getHour(),timeOfStartObj.getMinute(),timeOfStartObj.getSecond()));
         var lengthObj = historyRequest.getLength();
         LocalTime length = LocalTime.of(lengthObj.getHour(), lengthObj.getMinute(),lengthObj.getSecond());
         History history = new History(
-                activity.getName(),
+                activity.getText(),
                 activity,
-                date,
-                timeOfStart,
+                historyRequest.getStart(),
                 length
         );
         return historyRepository.save(history);
@@ -55,11 +51,10 @@ public class HistoryService implements IHistoryService{
         if (historyRequest.getActivityId() != null && activityService.isActivityPresent(historyRequest.getActivityId())) {
             Activity activity = activityService.getActivityById(historyRequest.getActivityId());
             history.setActivity(activity);
-            history.setActivityName(activity.getName());
+            history.setActivityName(activity.getText());
         }
-        if (historyRequest.getTimeOfStart() != null) {
-            var timeOfStart = historyRequest.getTimeOfStart();
-            history.setTimeOfStart(LocalTime.of(timeOfStart.getHour(),timeOfStart.getMinute(),timeOfStart.getSecond()));
+        if (historyRequest.getStart() != null) {
+            history.setStart(historyRequest.getStart());
         }
         if (historyRequest.getLength() != null) {
             var length = historyRequest.getLength();

@@ -34,30 +34,23 @@ public class ActivityService implements IActivityService{
     }
     @Override
     public Activity createActivity(@NotNull ActivityRequest activityRequest) {
-        String activityName = activityRequest.getName();
-        Boolean isOnToDoList = activityRequest.getIsOnToDoList();
-        Boolean isNecessary = activityRequest.getIsNecessary();
-
         Role role;
         if (activityRequest.getRoleId() != 0) {
             role = roleService.getRoleById(activityRequest.getRoleId());
         } else if (!Objects.equals(activityRequest.getNewRoleName(), "")) {
-            role = roleService.createRole(activityRequest.getNewRoleName());
+            role = roleService.createRole(activityRequest.getNewRoleName(),activityRequest.getNewRoleText());
         } else {
             throw new IllegalArgumentException("Role ID or new role name must be provided");
         }
-
         Category category;
         if (activityRequest.getCategoryId() != 0) {
            category = categoryService.getCategoryById(activityRequest.getCategoryId());
         } else if (!Objects.equals(activityRequest.getNewCategoryName(), "")) {
-            category = categoryService.createCategory(activityRequest.getNewCategoryName());
+            category = categoryService.createCategory(activityRequest.getNewCategoryName(),activityRequest.getNewCategoryText());
         } else {
             throw new IllegalArgumentException("Category ID or new category name must be provided");
         }
-
-        Activity activity = new Activity(activityName,isOnToDoList,isNecessary,role,category);
-
+        Activity activity = new Activity(activityRequest.getName(),activityRequest.getText(),activityRequest.getIsOnToDoList(),activityRequest.getIsNecessary(),role,category);
         return activityRepository.save(activity);
     }
     @Override
@@ -67,7 +60,7 @@ public class ActivityService implements IActivityService{
     @Override
     public Activity updateActivityById(Long id,@NotNull ActivityRequest activityRequest) {
         Activity activity = this.getActivityById(id);
-        activity.setName(activityRequest.getName());
+        activity.setText(activityRequest.getName());
         return activityRepository.save(activity);
     }
     @Override

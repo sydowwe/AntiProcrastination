@@ -17,7 +17,10 @@ public abstract class AbstractEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    public AbstractEntity(String name) {
+    private String text;
+
+    public AbstractEntity(String name, String text) {
         this.name = name;
+        this.text = text;
     }
 }

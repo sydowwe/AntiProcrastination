@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -23,17 +22,14 @@ public class History {
     @ManyToOne
     @JoinColumn(name = "activity_id")
     private Activity activity;
-    @Column(name = "date")
-    private LocalDate date;
-    @Column(name = "time_of_start")
-    private LocalTime timeOfStart;
+    @Column(name = "start")
+    private LocalDateTime start;
     @Column(name = "length")
     private LocalTime length;
-    public History(String activityName, Activity activity, LocalDate date, LocalTime timeOfStart, LocalTime length) {
+    public History(String activityName, Activity activity, LocalDateTime start, LocalTime length) {
         this.activityName = activityName;
         this.activity = activity;
-        this.date = date;
-        this.timeOfStart = timeOfStart;
+        this.start = start;
         this.length = length;
     }
 }

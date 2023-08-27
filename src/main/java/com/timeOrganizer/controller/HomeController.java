@@ -9,12 +9,4 @@ public class HomeController {
     public String index(){
         return "index";
     }
-    @GetMapping("/todoList")
-    public String getTodoList(){
-        return "views/todoList";
-    }
-    @GetMapping("/viewHistory")
-    public String getViewHistory(){
-        return "views/viewHistory";
-    }
 }

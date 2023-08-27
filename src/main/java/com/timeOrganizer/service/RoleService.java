@@ -31,8 +31,8 @@ public class RoleService implements IRoleService{
                 .orElseThrow(() -> new RoleNotFoundException(id));
     }
     @Override
-    public Role createRole(String name) {
-        return roleRepository.save(new Role(name));
+    public Role createRole(String name,String text) {
+        return roleRepository.save(new Role(name,text));
     }
     @Override
     public void deleteRole(@NotNull Long id) {
@@ -41,7 +41,7 @@ public class RoleService implements IRoleService{
     @Override
     public Role updateRole(Long id,String newName) {
         Role role = this.getRoleById(id);
-        role.setName(newName);
+        role.setText(newName);
         return roleRepository.save(role);
     }
     @Override

@@ -8,11 +8,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "categories", schema = "dbo")
+@Table(name = "category", schema = "dbo")
 public class Category extends AbstractEntity{
     @OneToMany(mappedBy = "category")
     private List<Activity> activities;
-    public Category(final String name) {
-        super(name);
+    public Category(final String name,final String text) {
+        super(name,text);
     }
 }
