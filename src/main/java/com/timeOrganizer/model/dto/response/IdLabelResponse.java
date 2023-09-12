@@ -6,11 +6,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class IdNameResponse {
+public class IdLabelResponse {
     private Long id;
-    private String name;
-    public IdNameResponse(AbstractEntity entity) {
+    private String label;
+    public IdLabelResponse(AbstractEntity entity) {
         this.id = entity.getId();
-        this.name = entity.getName();
+        this.label = entity.getName();
     }
 }

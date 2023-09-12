@@ -1,6 +1,7 @@
 package com.timeOrganizer.service;
 
 import com.timeOrganizer.exception.HistoryNotFoundException;
+import com.timeOrganizer.helper.MyIntTime;
 import com.timeOrganizer.model.dto.request.HistoryRequest;
 import com.timeOrganizer.model.entity.Activity;
 import com.timeOrganizer.model.entity.History;
@@ -9,15 +10,16 @@ import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.time.LocalDate;
+
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
 @Transactional
 public class HistoryService implements IHistoryService{
-    private final ActivityService activityService;
     private final IHistoryRepository historyRepository;
+    private final ActivityService activityService;
 
     @Autowired
     public HistoryService(IHistoryRepository historyRepository, ActivityService activityService) {
@@ -27,13 +29,12 @@ public class HistoryService implements IHistoryService{
     @Override
     public History addActivityToHistory(HistoryRequest historyRequest) {
         Activity activity = activityService.getActivityById(historyRequest.getActivityId());
-        LocalDate date = LocalDate.parse(historyRequest.getDate());
         var lengthObj = historyRequest.getLength();
-        LocalTime length = LocalTime.of(lengthObj.getHour(), lengthObj.getMinute(),lengthObj.getSecond());
+        LocalTime length = LocalTime.of(lengthObj.getHours(), lengthObj.getMinutes(),lengthObj.getSeconds());
+        ZonedDateTime start = ZonedDateTime.parse(historyRequest.getStartTimestamp());
         History history = new History(
-                activity.getText(),
                 activity,
-                historyRequest.getStart(),
+                start,
                 length
         );
         return historyRepository.save(history);
@@ -51,15 +52,13 @@ public class HistoryService implements IHistoryService{
         if (historyRequest.getActivityId() != null && activityService.isActivityPresent(historyRequest.getActivityId())) {
             Activity activity = activityService.getActivityById(historyRequest.getActivityId());
             history.setActivity(activity);
-            history.setActivityName(activity.getText());
         }
-        if (historyRequest.getStart() != null) {
-            history.setStart(historyRequest.getStart());
+        if (historyRequest.getStartTimestamp() != null) {
+            history.setStart(ZonedDateTime.parse(historyRequest.getStartTimestamp()));
         }
-        if (historyRequest.getLength() != null) {
-            var length = historyRequest.getLength();
-            history.setLength(LocalTime.of(length.getHour(), length.getMinute(),length.getSecond()));
-        }
+        MyIntTime length = historyRequest.getLength();
+        history.setLength(LocalTime.of(length.getHours(), length.getMinutes(),length.getSeconds()));
+
         return historyRepository.save(history);
     }
 
@@ -70,7 +69,12 @@ public class HistoryService implements IHistoryService{
     }
 
     @Override
-    public List<History> getAllActivities() {
+    public List<History> getAllRecords() {
         return historyRepository.findAll();
+    }
+    @Override
+
+    public List<History> getLastXHoursRecords(ZonedDateTime startFrom,long hoursBack) {
+        return historyRepository.getHistoriesByStartBetween(startFrom.minusHours(hoursBack),startFrom);
     }
 }

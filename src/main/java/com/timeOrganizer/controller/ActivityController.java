@@ -2,8 +2,8 @@ package com.timeOrganizer.controller;
 
 import com.timeOrganizer.model.entity.Activity;
 
-import com.timeOrganizer.model.dto.request.ActivityRequest;
-import com.timeOrganizer.model.dto.response.IdNameResponse;
+import com.timeOrganizer.model.dto.request.NewActivityRequest;
+import com.timeOrganizer.model.dto.response.IdLabelResponse;
 import com.timeOrganizer.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ public class ActivityController extends MyController{
         this.activityService = activityService;
     }
     @PostMapping("/get-all")
-    public ResponseEntity<List<IdNameResponse>> getAllActivities(){
+    public ResponseEntity<List<IdLabelResponse>> getAllActivities(){
         return new ResponseEntity<>(mapToIdNameResponse(activityService.getAllActivities()), HttpStatus.OK);
     }
     @PostMapping("/get-by-activity")
@@ -37,14 +37,14 @@ public class ActivityController extends MyController{
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<IdNameResponse> get(@PathVariable("id") Long id){
-        return new ResponseEntity<>(new IdNameResponse(activityService.getActivityById(id)), HttpStatus.OK);
+    public ResponseEntity<IdLabelResponse> get(@PathVariable("id") Long id){
+        return new ResponseEntity<>(new IdLabelResponse(activityService.getActivityById(id)), HttpStatus.OK);
     }
     @PostMapping("/create")
-    public ResponseEntity<?> createNewActivity(@RequestBody ActivityRequest activityRequest){
+    public ResponseEntity<?> createNewActivity(@RequestBody NewActivityRequest formData){
         URI uri;
         try {
-            Activity newActivity = activityService.createActivity(activityRequest);
+            Activity newActivity = activityService.createActivity(formData);
             uri = new URI("/activity/" + newActivity.getId());
         }
         catch (Exception e) {

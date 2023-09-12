@@ -1,59 +1,87 @@
 package com.timeOrganizer.service;
 
 import com.timeOrganizer.exception.RoleNotFoundException;
-import com.timeOrganizer.model.entity.Activity;
+import com.timeOrganizer.model.dto.request.NameTextColorIconRequest;
 import com.timeOrganizer.model.entity.Role;
-import com.timeOrganizer.repository.IActivityRepository;
 import com.timeOrganizer.repository.IRoleRepository;
 import jakarta.transaction.Transactional;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
-public class RoleService implements IRoleService{
-
+public class RoleService implements IRoleService {
     private final IRoleRepository roleRepository;
-    private final IActivityRepository activityRepository;
 
     @Autowired
-    public RoleService(IRoleRepository roleRepository, IActivityRepository activityRepository) {
+    public RoleService(IRoleRepository roleRepository) {
         this.roleRepository = roleRepository;
-        this.activityRepository = activityRepository;
     }
     @Override
-    public Role getRoleById(@NotNull Long id) {
-        return roleRepository.findById(id)
-                .orElseThrow(() -> new RoleNotFoundException(id));
+    public Role getRoleById(Long id) throws IllegalArgumentException,RoleNotFoundException {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        return roleRepository.findById(id).orElseThrow(()-> new RoleNotFoundException(id));
     }
+
     @Override
-    public Role createRole(String name,String text) {
-        return roleRepository.save(new Role(name,text));
-    }
-    @Override
-    public void deleteRole(@NotNull Long id) {
-        roleRepository.deleteById(id);
-    }
-    @Override
-    public Role updateRole(Long id,String newName) {
-        Role role = this.getRoleById(id);
-        role.setText(newName);
+    public Role createRole(NameTextColorIconRequest roleRequest) {
+        if (roleRequest == null) {
+            throw new IllegalArgumentException("Role request cannot be null");
+        }
+        Role role = new Role(roleRequest.getName(), roleRequest.getText(), roleRequest.getColor(), roleRequest.getIcon());
         return roleRepository.save(role);
     }
+
+    @Override
+    public void deleteRole(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+
+        // Check if the role exists before deleting
+        if (!roleRepository.existsById(id)) {
+            throw new RoleNotFoundException(id);
+        }
+
+        roleRepository.deleteById(id);
+    }
+
+    @Override
+    public Role updateRole(Long id, NameTextColorIconRequest roleRequest) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        Role role = this.getRoleById(id);
+        if (roleRequest == null) {
+            throw new IllegalArgumentException("New roleRequest cannot be null");
+        }
+        if (roleRequest.getName() != null && !roleRequest.getName().isEmpty()) {
+            role.setName(roleRequest.getName());
+        }
+
+        if (roleRequest.getText() != null && !roleRequest.getText().isEmpty()) {
+            role.setText(roleRequest.getText());
+        }
+
+        if (roleRequest.getColor() != null && !roleRequest.getColor().isEmpty()) {
+            role.setColor(roleRequest.getColor());
+        }
+
+        if (roleRequest.getIcon() != null && !roleRequest.getIcon().isEmpty()) {
+            role.setIcon(roleRequest.getIcon());
+        }
+        return roleRepository.save(role);
+    }
+
     @Override
     public List<Role> getAllRoles() {
         return roleRepository.findAll();
     }
-    @Override
-    public List<Activity> getActivitiesByRole(Long id) {
-        Optional<Role> role = roleRepository.findById(id);
-        if (role.isEmpty()) {
-            throw new RoleNotFoundException(id);
-        }
-        return activityRepository.findByRole(role.get());
-    }
+
+
+
 }

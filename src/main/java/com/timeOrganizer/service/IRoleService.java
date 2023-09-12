@@ -1,6 +1,6 @@
 package com.timeOrganizer.service;
 
-import com.timeOrganizer.model.entity.Activity;
+import com.timeOrganizer.model.dto.request.NameTextColorIconRequest;
 import com.timeOrganizer.model.entity.Role;
 
 import java.util.List;
@@ -8,8 +8,7 @@ import java.util.List;
 public interface IRoleService {
     Role getRoleById(Long id);
     List<Role> getAllRoles();
-    Role createRole(String name, String text);
+    Role createRole(NameTextColorIconRequest newRoleRequest);
     void deleteRole(Long id);
-    Role updateRole(Long id,String newName);
-    List<Activity> getActivitiesByRole(Long id);
+    Role updateRole(Long id, NameTextColorIconRequest roleRequest);
 }
