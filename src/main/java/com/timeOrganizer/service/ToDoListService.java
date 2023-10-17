@@ -5,10 +5,10 @@ import com.timeOrganizer.model.dto.request.ToDoListRequest;
 import com.timeOrganizer.model.entity.ToDoList;
 import com.timeOrganizer.model.entity.Urgency;
 import com.timeOrganizer.repository.IToDoListRepository;
-import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

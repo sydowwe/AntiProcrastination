@@ -8,8 +8,10 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Data
+@Builder
 @Entity
 @Table(name = "task_urgency", schema = "test")
 public class Urgency {

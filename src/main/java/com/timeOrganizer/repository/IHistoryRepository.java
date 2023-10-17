@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface IHistoryRepository extends JpaRepository<History,Long> {
-    List<History> getHistoriesByStartBetween(ZonedDateTime start, ZonedDateTime end);
+    List<History> getHistoriesByStartBetweenOrderByStart(ZonedDateTime start, ZonedDateTime end);
 }

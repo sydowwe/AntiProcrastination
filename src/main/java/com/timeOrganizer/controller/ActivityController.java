@@ -1,5 +1,7 @@
 package com.timeOrganizer.controller;
 
+import com.timeOrganizer.model.dto.mappers.ActivityMapper;
+import com.timeOrganizer.model.dto.response.ActivityResponse;
 import com.timeOrganizer.model.entity.Activity;
 
 import com.timeOrganizer.model.dto.request.NewActivityRequest;
@@ -14,27 +16,36 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/activity")
 public class ActivityController extends MyController{
     private final ActivityService activityService;
+    private final ActivityMapper activityMapper;
     @Autowired
     public ActivityController(ActivityService activityService) {
         this.activityService = activityService;
+        this.activityMapper = new ActivityMapper();
     }
     @PostMapping("/get-all")
     public ResponseEntity<List<IdLabelResponse>> getAllActivities(){
         return new ResponseEntity<>(mapToIdNameResponse(activityService.getAllActivities()), HttpStatus.OK);
     }
     @PostMapping("/get-by-activity")
-    public ResponseEntity<Map<String,Long>> getActivityById(@RequestBody Long id) {
+    public ResponseEntity<ActivityResponse> getActivityById(@RequestBody Long id) {
         Activity activity = activityService.getActivityById(id);
-        Map<String, Long> responseData = new HashMap<>();
-        responseData.put("activityId", activity.getId());
-        responseData.put("roleId", activity.getRole().getId());
-        responseData.put("categoryId", activity.getCategory().getId());
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
+        return new ResponseEntity<>(activityMapper.convertToFullResponse(activity), HttpStatus.OK);
+    }
+    @PostMapping("/get-by-role/{roleId}")
+    public ResponseEntity<List<IdLabelResponse>> getActivitiesByRoleId(@PathVariable Long roleId) {
+        List<Activity> activities = activityService.getActivitiesByRoleId(roleId);
+        return new ResponseEntity<>(activities.stream().map(IdLabelResponse::new).toList(), HttpStatus.OK);
+    }
+    @PostMapping("/get-by-category/{categoryId}")
+    public ResponseEntity<List<IdLabelResponse>> getActivitiesByCategoryId(@PathVariable Long categoryId) {
+        List<Activity> activities = activityService.getActivitiesByCategoryId(categoryId);
+        return new ResponseEntity<>(activities.stream().map(IdLabelResponse::new).toList(), HttpStatus.OK);
     }
     @GetMapping("/{id}")
     public ResponseEntity<IdLabelResponse> get(@PathVariable("id") Long id){

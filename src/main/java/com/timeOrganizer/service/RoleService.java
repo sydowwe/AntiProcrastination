@@ -4,9 +4,9 @@ import com.timeOrganizer.exception.RoleNotFoundException;
 import com.timeOrganizer.model.dto.request.NameTextColorIconRequest;
 import com.timeOrganizer.model.entity.Role;
 import com.timeOrganizer.repository.IRoleRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

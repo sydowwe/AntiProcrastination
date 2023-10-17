@@ -6,10 +6,10 @@ import com.timeOrganizer.model.dto.request.HistoryRequest;
 import com.timeOrganizer.model.entity.Activity;
 import com.timeOrganizer.model.entity.History;
 import com.timeOrganizer.repository.IHistoryRepository;
-import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
@@ -75,6 +75,7 @@ public class HistoryService implements IHistoryService{
     @Override
 
     public List<History> getLastXHoursRecords(ZonedDateTime startFrom,long hoursBack) {
-        return historyRepository.getHistoriesByStartBetween(startFrom.minusHours(hoursBack),startFrom);
+
+        return historyRepository.getHistoriesByStartBetweenOrderByStart(startFrom.minusHours(hoursBack),startFrom.plusHours(24));
     }
 }

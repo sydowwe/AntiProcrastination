@@ -8,10 +8,10 @@ import com.timeOrganizer.model.entity.Activity;
 import com.timeOrganizer.model.entity.Category;
 import com.timeOrganizer.model.entity.Role;
 import com.timeOrganizer.repository.IActivityRepository;
-import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

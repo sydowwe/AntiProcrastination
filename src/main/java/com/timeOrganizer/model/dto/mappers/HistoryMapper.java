@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class HistoryMapper {
     public HistoryResponse convertToFullResponse(History history){
         HistoryResponse historyResponse = new HistoryResponse();
+        historyResponse.setId(history.getId());
         historyResponse.setActivity(new ActivityMapper().convertToFullResponse(history.getActivity()));
         historyResponse.setStartTimestamp(history.getStart().toLocalDateTime().toString());
         historyResponse.setLength(history.getLengthInSeconds());

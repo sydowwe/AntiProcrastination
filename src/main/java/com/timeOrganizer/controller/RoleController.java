@@ -8,16 +8,11 @@ import com.timeOrganizer.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/role")
@@ -34,12 +29,9 @@ public class RoleController extends MyController{
     public ResponseEntity<List<IdLabelResponse>> getAllRoles(){
         return new ResponseEntity<>(mapToIdNameResponse(roleService.getAllRoles()), HttpStatus.OK);
     }
-    @PostMapping("/get-by-category")
-    public ResponseEntity<Map<String, List<IdLabelResponse>>> getByCategory(@RequestBody Long id) {
-        Map<String, List<IdLabelResponse>> responseData = new HashMap<>();
-        responseData.put("activities", mapToIdNameResponse(activityService.getActivitiesByCategoryId(id)));
-        responseData.put("roles", mapToIdNameResponse(getRolesByCategory(id)));
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
+    @PostMapping("/get-by-category/{categoryId}")
+    public ResponseEntity<List<IdLabelResponse>> getByCategory(@PathVariable Long categoryId) {
+        return new ResponseEntity<>(mapToIdNameResponse(getRolesByCategory(categoryId)), HttpStatus.OK);
     }
     @PostMapping("/create")
     public ResponseEntity<?> createNewRole(@RequestBody NameTextColorIconRequest newRole){

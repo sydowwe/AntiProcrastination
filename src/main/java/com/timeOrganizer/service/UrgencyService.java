@@ -3,9 +3,9 @@ package com.timeOrganizer.service;
 import com.timeOrganizer.exception.TaskUrgencyNotFoundException;
 import com.timeOrganizer.model.entity.Urgency;
 import com.timeOrganizer.repository.IUrgencyRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

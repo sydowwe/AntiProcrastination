@@ -5,10 +5,10 @@ import com.timeOrganizer.model.dto.request.NameTextColorIconRequest;
 import com.timeOrganizer.model.entity.Category;
 import com.timeOrganizer.repository.IActivityRepository;
 import com.timeOrganizer.repository.ICategoryRepository;
-import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

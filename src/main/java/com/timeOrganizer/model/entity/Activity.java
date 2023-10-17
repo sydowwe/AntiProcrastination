@@ -1,18 +1,17 @@
 package com.timeOrganizer.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "activity", schema = "test")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@Data
+@Builder
 public class Activity extends AbstractEntity {
     private boolean isOnToDoList;
     private boolean isUnavoidable;

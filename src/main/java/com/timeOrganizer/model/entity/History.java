@@ -1,17 +1,15 @@
 package com.timeOrganizer.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 
-@Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Data
+@Builder
 @Entity
 @Table(name = "history", schema = "test")
 public class History {
