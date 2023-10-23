@@ -1,66 +1,62 @@
 package com.timeOrganizer.service;
 
+import com.timeOrganizer.exception.UserNotFoundException;
 import com.timeOrganizer.model.dto.request.LoginRequest;
 import com.timeOrganizer.model.dto.request.RegistrationRequest;
-import com.timeOrganizer.model.dto.response.RegistrationResponse;
+import com.timeOrganizer.model.dto.response.AuthenticationResponse;
 import com.timeOrganizer.model.entity.User;
 import com.timeOrganizer.repository.IUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import com.timeOrganizer.security.UserRole;
+import com.timeOrganizer.security.config.JwtService;
+import jakarta.persistence.PersistenceException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class UserService {
+    private final IUserRepository userRepository;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private IUserRepository userRepository;
-
-    /*@Autowired
-    private PasswordEncoder passwordEncoder;*/
-
-    public ResponseEntity<String> registerUser(RegistrationRequest registration) {
-        // Validate registrationDTO and check if the username or email already exists
-        // Generate secret key for Google Authenticator
-
+    public AuthenticationResponse registerUser(RegistrationRequest registration) throws PersistenceException {
         User newUser = User.builder()
                 .name(registration.getName())
                 .surname(registration.getSurname())
-                .username(registration.getUsername())
+//                .username(registration.getUsername())
                 .email(registration.getEmail())
-                /*.password(passwordEncoder.encode(registration.getPassword()))
-                .secretKey(generateGoogleAuthKey())*/
+                .password(new BCryptPasswordEncoder().encode(registration.getPassword()))
+                .role(UserRole.USER)
                 .build();
-
-
-        userRepository.save(newUser);
-
-        // Return a success response or JWT token
-        // You can use JWTUtil to generate JWT tokens
-        return ResponseEntity.ok("Registration successful");
-    }
-
-    public ResponseEntity<?> loginUser(LoginRequest loginRequest) {
-        // Validate loginDTO and authenticate the user
-        // You can use Spring Security for authentication
-
-        // If authentication is successful, generate a JWT token
-        String jwtToken = generateJwtToken(loginRequest.getUsernameOrEmail());
-
-        // Return the JWT token
-        return ResponseEntity.ok(new JwtResponse(jwtToken));
-    }
-
-    private String generateJwtToken(String username) {
-        // Use your preferred method or library to generate JWT tokens
-        // Example: JWTUtil.generateToken(username)
-        return "your_generated_jwt_token";
+        if (registration.isUse2FA()) {
+            newUser.setSecretKey2FA(generateGoogleAuthKey());
+        }
+        var jwtToken = jwtService.generateToken(newUser);
+        try {
+            userRepository.save(newUser);
+        }catch (Exception e){
+            throw new PersistenceException(e);
+        }
+        return AuthenticationResponse.builder().token(jwtToken).email(newUser.getEmail()).build();
     }
 
     private String generateGoogleAuthKey() {
-        // Implement this method to generate a secret key for Google Authenticator
-        // Example: use a library like java.util.UUID.randomUUID().toString()
-        return "your_generated_secret_key";
+        return java.util.UUID.randomUUID().toString();
     }
+
+    public AuthenticationResponse loginUser(LoginRequest loginRequest) throws UserNotFoundException, AuthenticationException {
+        User user = this.findByEmail(loginRequest.getEmail());
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        String jwtToken = jwtService.generateToken(user);
+        return AuthenticationResponse.builder().token(jwtToken).build();
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
+    }
+
 }

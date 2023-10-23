@@ -6,8 +6,8 @@ import com.timeOrganizer.model.dto.request.HistoryRequest;
 import com.timeOrganizer.model.entity.Activity;
 import com.timeOrganizer.model.entity.History;
 import com.timeOrganizer.repository.IHistoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,15 +17,11 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class HistoryService implements IHistoryService{
     private final IHistoryRepository historyRepository;
     private final ActivityService activityService;
 
-    @Autowired
-    public HistoryService(IHistoryRepository historyRepository, ActivityService activityService) {
-        this.historyRepository = historyRepository;
-        this.activityService = activityService;
-    }
     @Override
     public History addActivityToHistory(HistoryRequest historyRequest) {
         Activity activity = activityService.getActivityById(historyRequest.getActivityId());

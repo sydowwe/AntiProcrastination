@@ -1,13 +1,13 @@
 package com.timeOrganizer.model.dto.request;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class RegistrationRequest {
     private String name;
     private String surname;
-    private String username;
+//    private String username;
     private String email;
     private String password;
-    private boolean isGoogleAuth;
+    private boolean use2FA;
 }

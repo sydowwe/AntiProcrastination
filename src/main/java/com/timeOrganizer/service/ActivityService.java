@@ -8,8 +8,8 @@ import com.timeOrganizer.model.entity.Activity;
 import com.timeOrganizer.model.entity.Category;
 import com.timeOrganizer.model.entity.Role;
 import com.timeOrganizer.repository.IActivityRepository;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,17 +17,11 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ActivityService implements IActivityService {
     private final RoleService roleService;
     private final CategoryService categoryService;
     private final IActivityRepository activityRepository;
-
-    @Autowired
-    public ActivityService(RoleService roleService, CategoryService categoryService, IActivityRepository activityRepository) {
-        this.roleService = roleService;
-        this.categoryService = categoryService;
-        this.activityRepository = activityRepository;
-    }
 
     @Override
     public Activity getActivityById(Long id) {

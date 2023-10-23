@@ -1,9 +1,8 @@
 package com.timeOrganizer.model.dto.request;
-
 import lombok.Getter;
 
 @Getter
-public class LoginRequest {
+public class TwoFactorAuthRequest {
     private String email;
-    private String password;
+    private int code;
 }

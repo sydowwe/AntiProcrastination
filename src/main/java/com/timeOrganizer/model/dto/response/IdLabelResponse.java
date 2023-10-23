@@ -1,11 +1,9 @@
 package com.timeOrganizer.model.dto.response;
 
 import com.timeOrganizer.model.entity.AbstractEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class IdLabelResponse {
     private Long id;
     private String label;

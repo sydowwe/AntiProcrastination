@@ -5,8 +5,8 @@ import com.timeOrganizer.model.dto.request.ToDoListRequest;
 import com.timeOrganizer.model.entity.ToDoList;
 import com.timeOrganizer.model.entity.Urgency;
 import com.timeOrganizer.repository.IToDoListRepository;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,15 +14,10 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ToDoListService implements IToDoListService {
     private final IToDoListRepository toDoListRepository;
     private final UrgencyService urgencyService;
-
-    @Autowired
-    public ToDoListService(IToDoListRepository toDoListRepository, UrgencyService urgencyService) {
-        this.toDoListRepository = toDoListRepository;
-        this.urgencyService = urgencyService;
-    }
 
     @Override
     public ToDoList addToDoListItem(ToDoListRequest toDoListRequest) {
@@ -53,11 +48,6 @@ public class ToDoListService implements IToDoListService {
         return toDoListRepository.findAll();
     }
 
-   /* @Override
-    public List<Activity> getActivitiesByToDoListUrgency(Long urgencyId) {
-        List<ToDoList> toDoListItems = toDoListRepository.findByUrgency(urgencyId);
-        var test = toDoListItems.stream().map(item -> item.getActivity().getId()).toList();
-        return activityRepository.findAllById(test);
-    }*/
+
 
 }
