@@ -7,14 +7,11 @@ import com.timeOrganizer.model.dto.response.ErrorResponse;
 import com.timeOrganizer.service.UserService;
 import io.jsonwebtoken.security.InvalidKeyException;
 import jakarta.persistence.PersistenceException;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/user")
 @RestController
@@ -38,12 +35,26 @@ public class UserController extends MyController {
         return ResponseEntity.ok(response);
     }
     @PostMapping("/auth/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest request){
-        return ResponseEntity.ok(userService.loginUser(request));
+    public ResponseEntity<?> login(@RequestBody LoginRequest request){
+        AuthenticationResponse response;
+        try {
+            response = userService.loginUser(request);
+        }
+        catch (AuthenticationException authenticationException){
+            return new ResponseEntity<>(new ErrorResponse("Wrong credentials",authenticationException.getMessage()),HttpStatus.FORBIDDEN);
+        }catch (Exception exception){
+            return new ResponseEntity<>(new ErrorResponse("User exists",exception.getMessage()),HttpStatus.LOCKED);
+        }
+        return ResponseEntity.ok(response);
     }
-    @PostMapping("/logout")
-    public String logout(HttpServletRequest request){
-
-        return "redirect:/login";
+    @PostMapping("/auth/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String token){
+        userService.logout(token);
+        return ResponseEntity.ok("Logout successful");
+    }
+    @PostMapping("/auth/forgotten-password")
+    public ResponseEntity<String> forgottenPassword(String email){
+        //TODO
+        return ResponseEntity.ok("Logout successful");
     }
 }

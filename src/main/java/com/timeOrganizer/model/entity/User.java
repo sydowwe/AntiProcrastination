@@ -23,8 +23,8 @@ public class User implements UserDetails {
     private Long id;
     private String name;
     private String surname;
-//    private String username;
-    @Column(unique = true,nullable = false)
+    //    private String username;
+    @Column(unique = true, nullable = false)
     private String email;
     @Column(nullable = false)
     private String password;
@@ -62,7 +62,8 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-    public boolean has2FA(){
-        return !this.secretKey2FA.isBlank();
+
+    public boolean has2FA() {
+        return this.secretKey2FA != null && !this.secretKey2FA.isBlank();
     }
 }
