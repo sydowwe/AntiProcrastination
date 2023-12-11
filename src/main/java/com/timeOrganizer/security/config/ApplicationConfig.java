@@ -1,6 +1,8 @@
 package com.timeOrganizer.security.config;
 
 import com.timeOrganizer.repository.IUserRepository;
+import com.warrenstrange.googleauth.GoogleAuthenticator;
+import com.warrenstrange.googleauth.GoogleAuthenticatorConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +21,7 @@ public class ApplicationConfig {
     private final IUserRepository userRepository;
     @Bean
     UserDetailsService userDetailsService(){
-        return username -> userRepository.findByEmail(username).orElseThrow(()->new UsernameNotFoundException("pomoooc"));
+        return username -> userRepository.findByEmail(username).orElseThrow(()->new UsernameNotFoundException(username));
     }
     @Bean
     public AuthenticationProvider authenticationProvider(){
@@ -35,5 +37,13 @@ public class ApplicationConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{
         return configuration.getAuthenticationManager();
+    }
+    @Bean
+    public GoogleAuthenticator googleAuthenticator(){
+        GoogleAuthenticatorConfig config = new GoogleAuthenticatorConfig
+                .GoogleAuthenticatorConfigBuilder()
+                .setNumberOfScratchCodes(3)
+                .build();
+        return new GoogleAuthenticator(config);
     }
 }

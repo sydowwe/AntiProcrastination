@@ -19,7 +19,7 @@ public class UrgencyService implements IUrgencyService {
     public Urgency updateUrgencyItem(Long id, String color, String icon) {
         Urgency urgency = this.getUrgencyItemById(id);
         urgency.setColor(color);
-        urgency.setIcon(icon);
+//        urgency.setIcon(icon);
         return urgencyRepository.save(urgency);
     }
     @Override

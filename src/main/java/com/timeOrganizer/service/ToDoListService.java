@@ -7,8 +7,11 @@ import com.timeOrganizer.model.entity.Urgency;
 import com.timeOrganizer.repository.IToDoListRepository;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,18 +22,24 @@ public class ToDoListService implements IToDoListService {
     private final IToDoListRepository toDoListRepository;
     private final UrgencyService urgencyService;
 
+
+    @Override
+    public void deleteToDoListItem(@NotNull Long id) {
+        try {
+            toDoListRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ToDoListItem not found with id: " + id);
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error deleting ToDoListItem", ex);
+        }
+    }
     @Override
     public ToDoList addToDoListItem(ToDoListRequest toDoListRequest) {
         Urgency urgency = urgencyService.getUrgencyItemById(toDoListRequest.getUrgencyId());
         ToDoList toDoList = new ToDoList(toDoListRequest.getName(),toDoListRequest.getText(),toDoListRequest.isDone(),urgency);
-        return toDoListRepository.save(toDoList);
+        toDoList = this.toDoListRepository.save(toDoList);
+        return toDoList;
     }
-
-    @Override
-    public void deleteToDoListItem(@NotNull Long id) {
-        toDoListRepository.deleteById(id);
-    }
-
     @Override
     public ToDoList updateToDoListItem(Long id, @NotNull ToDoListRequest toDoListRequest) {
         ToDoList toDoList = this.getToDoListItemById(id);

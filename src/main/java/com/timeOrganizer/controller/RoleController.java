@@ -27,24 +27,26 @@ public class RoleController extends MyController{
     }
     @PostMapping("/get-all")
     public ResponseEntity<List<IdLabelResponse>> getAllRoles(){
-        return new ResponseEntity<>(mapToIdNameResponse(roleService.getAllRoles()), HttpStatus.OK);
+        return ResponseEntity.ok(mapToIdNameResponse(roleService.getAllRoles()));
     }
     @PostMapping("/get-by-category/{categoryId}")
     public ResponseEntity<List<IdLabelResponse>> getByCategory(@PathVariable Long categoryId) {
-        return new ResponseEntity<>(mapToIdNameResponse(getRolesByCategory(categoryId)), HttpStatus.OK);
+        return ResponseEntity.ok(mapToIdNameResponse(getRolesByCategory(categoryId)));
     }
     @PostMapping("/create")
     public ResponseEntity<?> createNewRole(@RequestBody NameTextColorIconRequest newRole){
+        Role role;
         URI uri;
         try {
-            Role role = roleService.createRole(newRole);
-            uri = new URI("/role/" + role.getId());
+            role = roleService.createRole(newRole);
+            uri = new URI("/category/" + role.getId());
+
         }
         catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error occurred while creating activity: " + e.getMessage());
         }
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(role);
     }
     public List<Role> getRolesByCategory(Long id){
         List<Role> roles = new ArrayList<>();

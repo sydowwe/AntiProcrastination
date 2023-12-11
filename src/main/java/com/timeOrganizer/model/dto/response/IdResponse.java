@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ErrorResponse implements IResponse{
-    private String title;
-    private String message;
+public class IdResponse implements IResponse{
+    private long id;
 }

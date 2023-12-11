@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 @SuppressWarnings("unused")
-public class LoginRequest {
+public class GoogleAuthRequest {
     private String email;
-    private String password;
+    private String code;
     private boolean stayLoggedIn;
 }

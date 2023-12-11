@@ -11,7 +11,7 @@ public class UrgencyMapper {
         response.setId(urgency.getId());
         response.setText(urgency.getText());
         response.setColor(urgency.getColor());
-        response.setIcon(urgency.getIcon());
+//        response.setIcon(urgency.getIcon());
         return response;
     }
 }

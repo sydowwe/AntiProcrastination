@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
-    private String token;
+public class LoginResponse {
     private String email;
-    private boolean use2FA;
+    private String token;
+    private boolean has2FA;
 }

@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+ec-private-key.pem
+ec-public-key.pem

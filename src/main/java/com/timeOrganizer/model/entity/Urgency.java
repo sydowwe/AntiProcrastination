@@ -20,8 +20,8 @@ public class Urgency {
     private String text;
     @Setter
     private String color;
-    @Setter
-    private String icon;
+/*    @Setter
+    private String icon;*/
     @OneToMany(mappedBy = "urgency")
     private List<ToDoList> toDoListItems;
 }

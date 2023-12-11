@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ErrorResponse implements IResponse{
-    private String title;
-    private String message;
+public class GoogleAuthResponse {
+    private boolean authorized;
+    private String token;
 }
