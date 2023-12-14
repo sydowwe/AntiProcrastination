@@ -14,7 +14,7 @@ import java.time.ZonedDateTime;
 @Table(name = "history", schema = "test")
 public class History {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "activityId")
