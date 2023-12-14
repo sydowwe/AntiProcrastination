@@ -1,6 +1,5 @@
 package com.timeOrganizer.model.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,6 +10,5 @@ public class ToDoListResponse implements IResponse{
     private String name;
     private String text;
     private UrgencyResponse urgency;
-    @JsonProperty("isDone")
     private boolean isDone;
 }

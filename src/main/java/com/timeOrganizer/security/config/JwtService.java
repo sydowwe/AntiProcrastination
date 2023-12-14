@@ -23,7 +23,7 @@ public class JwtService {
     private List<String> blacklist;
 
     @Value("${token.blacklistCleanupPeriodInSec}")
-    private int BLACKLIST_CLEANUP_PERIOD_IN_SEC = 300;
+    private int BLACKLIST_CLEANUP_PERIOD_IN_SEC;
 
     public JwtService(){
         this.blacklist = new ArrayList<>();
