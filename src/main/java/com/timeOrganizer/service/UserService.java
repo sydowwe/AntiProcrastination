@@ -56,7 +56,6 @@ public class UserService {
             GoogleAuthenticatorKey credentials = gAuth.createCredentials();
             newUser.setSecretKey2FA(credentials.getKey());
             newUser.setScratchCodes(credentials.getScratchCodes());
-            var test = credentials.getVerificationCode();
             try {
                 response = RegistrationResponse.builder()
                         .email(newUser.getEmail())
@@ -81,7 +80,7 @@ public class UserService {
 
     private byte[] generate2FaQrCode(String email, GoogleAuthenticatorKey key) throws WriterException, IOException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        String otpAuthURL = GoogleAuthenticatorQRGenerator.getOtpAuthTotpURL("my-demo", email, key);
+        String otpAuthURL = GoogleAuthenticatorQRGenerator.getOtpAuthTotpURL("TimeMaster", email, key);
 
         BitMatrix bitMatrix = qrCodeWriter.encode(otpAuthURL, BarcodeFormat.QR_CODE, 200, 200);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -89,6 +88,9 @@ public class UserService {
         return outputStream.toByteArray();
     }
 
+    public void checkTokenValidity(LoginRequest loginRequest) throws AuthenticationException {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+    }
     public LoginResponse loginUser(LoginRequest loginRequest) throws AuthenticationException {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         User user = findByEmail(loginRequest.getEmail());

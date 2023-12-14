@@ -52,6 +52,17 @@ public class UserController extends MyController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/auth/checkTokenValidity")
+    public ResponseEntity<?> checkTokenValidity(@RequestBody LoginRequest request){
+        try {
+            userService.checkTokenValidity(request);
+            return ResponseEntity.ok("valid");
+        }catch (AuthenticationException authenticationException){
+            return new ResponseEntity<>(new ErrorResponse("Wrong credentials", authenticationException.getMessage()), HttpStatus.FORBIDDEN);
+        }catch (Exception e){
+            return new ResponseEntity<>(new ErrorResponse("Error when checkin token", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @PostMapping("/auth/validate2FA")
     public ResponseEntity<GoogleAuthResponse> validate2FA(@RequestBody GoogleAuthRequest request) {
         return ResponseEntity.ok(userService.validate2FA(request));
