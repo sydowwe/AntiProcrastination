@@ -1,9 +1,10 @@
 package com.timeOrganizer.model.entity;
 
+import com.timeOrganizer.helper.MyIntTime;
+import com.timeOrganizer.helper.MyIntTimeDBConverter;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalTime;
 import java.time.ZonedDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,13 +21,16 @@ public class History {
     @JoinColumn(name = "activityId")
     private Activity activity;
     private ZonedDateTime start;
-    private LocalTime length;
-    public History(Activity activity, ZonedDateTime start, LocalTime length) {
+    @Convert(converter = MyIntTimeDBConverter.class)
+    private MyIntTime length;
+
+    public History(Activity activity, ZonedDateTime start, MyIntTime length) {
         this.activity = activity;
         this.start = start;
         this.length = length;
     }
-    public long getLengthInSeconds(){
-        return length.getHour()*3600+length.getMinute()*60+length.getSecond();
+
+    public int getLengthInSeconds() {
+        return length.getHours() * 3600 + length.getMinutes() * 60 + length.getSeconds();
     }
 }

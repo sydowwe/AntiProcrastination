@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 @SuppressWarnings("unused")
-public class DateAndHoursRequest {
-    private String date;
-    private long hours;
+public class ForgotPasswordRequest {
+    private String email;
+    private String code;
 }

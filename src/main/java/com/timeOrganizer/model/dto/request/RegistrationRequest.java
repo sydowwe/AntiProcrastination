@@ -3,6 +3,7 @@ package com.timeOrganizer.model.dto.request;
 import lombok.Getter;
 
 @Getter
+@SuppressWarnings("unused")
 public class RegistrationRequest {
     private String name;
     private String surname;

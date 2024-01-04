@@ -7,12 +7,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class ActivityMapper {
     public ActivityResponse convertToFullResponse(Activity activity) {
-        ActivityResponse response = new ActivityResponse();
-        response.setId(activity.getId());
-        response.setName(activity.getName());
-        response.setText(activity.getText());
-        response.setOnToDoList(activity.isOnToDoList());
-        response.setUnavoidable(activity.isUnavoidable());
+        ActivityResponse response = ActivityResponse.builder()
+                .id(activity.getId())
+                .name(activity.getName())
+                .text(activity.getText())
+                .isOnToDoList(activity.isOnToDoList())
+                .isUnavoidable(activity.isUnavoidable())
+                .build();
 
         if (activity.getRole() != null) {
             response.setRole(new RoleMapper().convertToFullResponse(activity.getRole()));

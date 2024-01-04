@@ -5,7 +5,7 @@ import com.timeOrganizer.model.dto.response.IdLabelResponse;
 import com.timeOrganizer.model.entity.Category;
 import com.timeOrganizer.service.ActivityService;
 import com.timeOrganizer.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,38 +15,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/api/category")
+@RequiredArgsConstructor
 public class CategoryController extends MyController{
     private final CategoryService categoryService;
     private final ActivityService activityService;
-
-    @Autowired
-    public CategoryController(CategoryService categoryService, ActivityService activityService) {
-        this.categoryService = categoryService;
-        this.activityService = activityService;
+    @PostMapping("/get-all-options")
+    public ResponseEntity<List<IdLabelResponse>> getAllOptions(){
+        return ResponseEntity.ok(mapToIdNameResponseList(categoryService.getAllCategories()));
     }
-    @PostMapping("/get-all")
-    public ResponseEntity<List<IdLabelResponse>> getAllCategories(){
-        return ResponseEntity.ok(mapToIdNameResponse(categoryService.getAllCategories()));
-    }
-    @PostMapping("/get-by-role/{roleId}")
+    @PostMapping("/get-options-by-role/{roleId}")
     public ResponseEntity<List<IdLabelResponse>> getByRole(@PathVariable Long roleId) {
-        return ResponseEntity.ok(mapToIdNameResponse(getCategoriesByRole(roleId)));
+        return ResponseEntity.ok(mapToIdNameResponseList(getCategoriesByRole(roleId)));
     }
 
     @PostMapping("/create")
     public ResponseEntity<?> createNewCategory(@RequestBody NameTextColorIconRequest newCategory){
-        Category category;
+        IdLabelResponse categoryOption;
         URI uri;
         try {
-            category = categoryService.createCategory(newCategory);
-            uri = new URI("/category/" + category.getId());
+            categoryOption = mapToIdNameResponse(categoryService.createCategory(newCategory));
+            uri = new URI("/category/" + categoryOption.getId());
         }
         catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error occurred while creating activity: " + e.getMessage());
         }
-        return ResponseEntity.created(uri).body(category);
+        return ResponseEntity.created(uri).body(categoryOption);
     }
 
 

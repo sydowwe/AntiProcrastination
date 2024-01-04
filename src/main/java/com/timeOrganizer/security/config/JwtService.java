@@ -3,11 +3,11 @@ package com.timeOrganizer.security.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Value;
-import java.security.Key;
+
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.*;
@@ -21,9 +21,9 @@ public class JwtService {
     private PrivateKey privateKey;
     private PublicKey publicKey;
     private List<String> blacklist;
-
+//TODO FIXNUT tu value aby fungovala z configu
     @Value("${token.blacklistCleanupPeriodInSec}")
-    private int BLACKLIST_CLEANUP_PERIOD_IN_SEC;
+    private int BLACKLIST_CLEANUP_PERIOD_IN_SEC = 300;
 
     public JwtService(){
         this.blacklist = new ArrayList<>();
@@ -38,45 +38,40 @@ public class JwtService {
         this.privateKey = ECDSAKeyGenerator.readPrivateKey();
         this.publicKey = ECDSAKeyGenerator.readPublicKey();
     }
-    public String extractUsername(String token) {
+    public String extractEmail(String token) {
         return extractClaims(token, Claims::getSubject);
     }
-
+    public long extractId(String token) throws NumberFormatException {
+        return Long.parseLong(extractClaims(token, Claims::getId));
+    }
     public <T> T extractClaims(String token, Function<Claims, T> claimsResolver) {
+        token = token.substring(7);
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
-
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(getVerificationKey()).build().parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(this.publicKey).build().parseClaimsJws(token).getBody();
     }
-
-    private Key getVerificationKey() {
-        return this.publicKey;
-    }
-    private Key getSigningKey() {
-        return this.privateKey;
-    }
-
-    public String generateToken(Map<String, Object> extraClaims, String email,int expirationInHours) {
+    public String generateToken(Map<String, Object> extraClaims, String email, long id, int expirationInHours) {
         return Jwts.builder()
                 .setClaims(extraClaims)
+                .setId(String.valueOf(id))
                 .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * expirationInHours))
-                .signWith(getSigningKey(), SignatureAlgorithm.ES384).compact();
+                .signWith(this.privateKey, SignatureAlgorithm.ES384).compact();
     }
 
-    public String generateToken(String email,int expirationInHours) {
-        return generateToken(new HashMap<>(), email, expirationInHours);
+    public String generateToken(String email, long id,int expirationInHours) {
+        return generateToken(new HashMap<>(), email, id, expirationInHours);
     }
 
     public void invalidateToken(String token) {
-        blacklist.add(token);
+        blacklist.add(token.substring(7));
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
+        final String username = extractEmail(token);
         return username.equals(userDetails.getUsername()) && isTokenNotExpired(token) && !blacklist.contains(token);
     }
 

@@ -6,5 +6,5 @@ public class HistoryResponse {
     private long id;
     private ActivityResponse activity;
     private String startTimestamp;
-    private long length;
+    private int length;
 }

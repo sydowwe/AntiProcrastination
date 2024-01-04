@@ -15,10 +15,11 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/to-do-list")
+@RequestMapping("/api/to-do-list")
 @RequiredArgsConstructor
 public class ToDoListController extends MyController {
     private final ToDoListService toDoListService;
+    private final ToDoListMapper toDoListMapper;
     @PostMapping("/get-all")
     public ResponseEntity<List<ToDoListResponse>> getAllToDoListItems() {
         List<ToDoListResponse> toDoListResponseList = toDoListService.getAllToDoListItems().stream().map(ToDoListMapper::convertToFullResponse).toList();

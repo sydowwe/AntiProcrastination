@@ -1,17 +1,18 @@
 package com.timeOrganizer.model.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
-@AllArgsConstructor
+@SuperBuilder
 @NoArgsConstructor
-public class LoginResponse {
-    private long id;
+@AllArgsConstructor
+public class UserResponse implements IResponse{
+    private Long id;
+    private String name;
+    private String surname;
     private String email;
-    private String token;
     private boolean has2FA;
 }

@@ -1,12 +1,12 @@
 package com.timeOrganizer.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+@RequestMapping("/api/home")
+@RequiredArgsConstructor
 public class HomeController {
-    @GetMapping("/")
-    public String index(){
-        return "index";
-    }
+
 }

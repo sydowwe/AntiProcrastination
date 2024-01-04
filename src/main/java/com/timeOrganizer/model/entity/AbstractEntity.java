@@ -20,4 +20,5 @@ public abstract class AbstractEntity {
         this.name = name;
         this.text = text;
     }
+
 }
