@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegistrationResponse {
+public class RegistrationResponse{
     private String email;
     private boolean has2FA;
     private byte[] qrCode;

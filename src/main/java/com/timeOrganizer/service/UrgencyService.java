@@ -1,9 +1,14 @@
 package com.timeOrganizer.service;
 
-import com.timeOrganizer.exception.TaskUrgencyNotFoundException;
+import com.timeOrganizer.model.dto.mappers.UrgencyMapper;
+import com.timeOrganizer.model.dto.request.UrgencyRequest;
+import com.timeOrganizer.model.dto.response.UrgencyResponse;
 import com.timeOrganizer.model.entity.Urgency;
+import com.timeOrganizer.model.entity.User;
 import com.timeOrganizer.repository.IUrgencyRepository;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.RollbackException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,24 +16,34 @@ import java.util.List;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
-public class UrgencyService implements IUrgencyService {
-    private final IUrgencyRepository urgencyRepository;
-
-    @Override
-    public Urgency updateUrgencyItem(Long id, String color, String icon) {
-        Urgency urgency = this.getUrgencyItemById(id);
-        urgency.setColor(color);
-//        urgency.setIcon(icon);
-        return urgencyRepository.save(urgency);
+public class UrgencyService extends MyService<Urgency,IUrgencyRepository, UrgencyResponse, UrgencyRequest,UrgencyMapper> implements IUrgencyService {
+    @Autowired
+    public UrgencyService(IUrgencyRepository repository, UrgencyMapper mapper) {
+        super(repository, mapper, null);
     }
     @Override
-    public Urgency getUrgencyItemById(Long id) {
-        return urgencyRepository.findById(id)
-                .orElseThrow(() -> new TaskUrgencyNotFoundException(id));
-    }
-    @Override
-    public List<Urgency> getAllUrgencyItems() {
-        return urgencyRepository.findAll();
+    public void createDefaultUrgencyItems(User user) throws EntityExistsException, RollbackException {
+        List<Urgency> defaultUrgencyItems = List.of(
+                Urgency.builder()
+                        .priority(1)
+                        .text("Today")
+                        .color("red")
+                        .user(user).build(),
+                Urgency.builder()
+                        .priority(2)
+                        .text("This week")
+                        .color("orange")
+                        .user(user).build(),
+                Urgency.builder()
+                        .priority(3)
+                        .text("This month")
+                        .color("yellow")
+                        .user(user).build(),
+                Urgency.builder()
+                        .priority(4)
+                        .text("This year")
+                        .color("green")
+                        .user(user).build());
+        this.repository.saveAll(defaultUrgencyItems);
     }
 }

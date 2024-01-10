@@ -1,4 +1,4 @@
-package com.timeOrganizer.service;
+package com.timeOrganizer.helper;
 
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;

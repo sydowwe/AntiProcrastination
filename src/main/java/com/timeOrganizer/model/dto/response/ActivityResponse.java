@@ -1,14 +1,13 @@
 package com.timeOrganizer.model.dto.response;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
-public class ActivityResponse {
-    private Long id;
-    private String name;
-    private String text;
+@SuperBuilder
+public class ActivityResponse extends NameTextResponse {
     private boolean isOnToDoList;
     private boolean isUnavoidable;
     private RoleResponse role;

@@ -7,29 +7,23 @@ import lombok.*;
 
 import java.time.ZonedDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Data
 @Builder
 @Entity
 @Table(name = "history", schema = "test")
-public class History {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class History extends AbstractEntity{
     @ManyToOne
-    @JoinColumn(name = "activityId")
+    @JoinColumn(name = "userId",nullable = false)
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "activityId",nullable = false)
     private Activity activity;
     private ZonedDateTime start;
     @Convert(converter = MyIntTimeDBConverter.class)
     private MyIntTime length;
-
-    public History(Activity activity, ZonedDateTime start, MyIntTime length) {
-        this.activity = activity;
-        this.start = start;
-        this.length = length;
-    }
-
     public int getLengthInSeconds() {
         return length.getHours() * 3600 + length.getMinutes() * 60 + length.getSeconds();
     }

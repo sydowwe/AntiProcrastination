@@ -1,12 +1,13 @@
 package com.timeOrganizer.model.dto.response;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class RoleResponse {
-    private Long id;
-    private String name;
-    private String text;
+@SuperBuilder
+public class RoleResponse extends NameTextResponse {
     private String color;
     private String icon;
 }

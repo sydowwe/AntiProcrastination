@@ -3,26 +3,23 @@ package com.timeOrganizer.model.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "role", schema = "test")
-public class Role extends AbstractEntity{
+public class Role extends NameTextEntity{
     @OneToMany(mappedBy = "role")
     private List<Activity> activities;
     private String color;
     private String icon;
-
-    public Role(String name, String text, String color, String icon) {
-        super(name, text);
-        this.color = color;
-        this.icon = icon;
-    }
 }

@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 @SuppressWarnings("unused")
-public class UserRequest {
+public class UserRequest implements IRequest{
     private String name;
     private String surname;
     private String email;

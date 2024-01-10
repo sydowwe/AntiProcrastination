@@ -4,24 +4,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "to_do_list", schema = "test")
-public class ToDoList extends AbstractEntity {
+public class ToDoList extends NameTextEntity {
     private boolean isDone;
     @ManyToOne
     @JoinColumn(name = "urgencyId")
     private Urgency urgency;
-
-    public ToDoList(String name, String text, boolean isDone, Urgency urgency) {
-        super(name, text);
-        this.isDone = isDone;
-        this.urgency = urgency;
-    }
 }

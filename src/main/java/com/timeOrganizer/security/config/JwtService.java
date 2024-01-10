@@ -1,5 +1,6 @@
 package com.timeOrganizer.security.config;
 
+import com.timeOrganizer.exception.IdInTokenFormatException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,7 +22,7 @@ public class JwtService {
     private PrivateKey privateKey;
     private PublicKey publicKey;
     private List<String> blacklist;
-//TODO FIXNUT tu value aby fungovala z configu
+//TODO FIX value to work from config
     @Value("${token.blacklistCleanupPeriodInSec}")
     private int BLACKLIST_CLEANUP_PERIOD_IN_SEC = 300;
 
@@ -41,8 +42,14 @@ public class JwtService {
     public String extractEmail(String token) {
         return extractClaims(token, Claims::getSubject);
     }
-    public long extractId(String token) throws NumberFormatException {
-        return Long.parseLong(extractClaims(token, Claims::getId));
+    public long extractId(String token) throws IdInTokenFormatException {
+        String id = extractClaims(token, Claims::getId);
+        try {
+            return Long.parseLong(id);
+        }catch (Exception e)
+        {
+            throw new IdInTokenFormatException(id);
+        }
     }
     public <T> T extractClaims(String token, Function<Claims, T> claimsResolver) {
         token = token.substring(7);

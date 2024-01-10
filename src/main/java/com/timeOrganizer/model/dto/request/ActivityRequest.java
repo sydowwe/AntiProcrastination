@@ -4,11 +4,11 @@ import lombok.Getter;
 
 @Getter
 @SuppressWarnings("unused")
-public class NewActivityRequest {
+public class ActivityRequest implements IRequest{
     private String activity;
     private String description;
     private Boolean isOnToDoList;
     private Boolean isObligatory;
-    private Long roleId;
-    private Long categoryId;
+    private long roleId;
+    private long categoryId;
 }

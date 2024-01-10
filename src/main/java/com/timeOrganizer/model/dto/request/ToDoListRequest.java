@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 @SuppressWarnings("unused")
-public class ToDoListRequest {
+public class ToDoListRequest implements IRequest {
     private String name;
     private String text;
     private long urgencyId;

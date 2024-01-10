@@ -1,15 +1,11 @@
 package com.timeOrganizer.service;
 
-import com.timeOrganizer.exception.ActivityNotFoundException;
-import com.timeOrganizer.exception.NoActivityFoundWithParameterException;
-import com.timeOrganizer.exception.RoleNotFoundException;
-import com.timeOrganizer.model.dto.request.NewActivityRequest;
+import com.timeOrganizer.model.dto.mappers.ActivityMapper;
+import com.timeOrganizer.model.dto.request.ActivityRequest;
+import com.timeOrganizer.model.dto.response.ActivityResponse;
 import com.timeOrganizer.model.entity.Activity;
-import com.timeOrganizer.model.entity.Category;
-import com.timeOrganizer.model.entity.Role;
 import com.timeOrganizer.repository.IActivityRepository;
-import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,83 +13,24 @@ import java.util.List;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
-public class ActivityService implements IActivityService {
+public class ActivityService extends MyService<Activity,IActivityRepository,ActivityResponse,ActivityRequest,ActivityMapper> implements IActivityService {
+
     private final RoleService roleService;
     private final CategoryService categoryService;
-    private final IActivityRepository activityRepository;
 
-    @Override
-    public Activity getActivityById(Long id) {
-        return activityRepository.findById(id)
-                .orElseThrow(() -> new ActivityNotFoundException(id));
+    @Autowired
+    public ActivityService(IActivityRepository repository, ActivityMapper mapper, UserService userService, RoleService roleService, CategoryService categoryService) {
+        super(repository, mapper, userService);
+        this.roleService = roleService;
+        this.categoryService = categoryService;
     }
 
     @Override
-    public Activity createActivity(@NotNull NewActivityRequest newActivityRequest) {
-        Role role;
-        if (newActivityRequest.getRoleId() != null) {
-            role = roleService.getRoleById(newActivityRequest.getRoleId());
-        } else {
-            throw new IllegalArgumentException("Role ID must be provided");
-        }
-        Category category;
-        if (newActivityRequest.getCategoryId() != null) {
-            category = categoryService.getCategoryById(newActivityRequest.getCategoryId());
-        } else {
-            throw new IllegalArgumentException("Category ID name must be provided");
-        }
-        Activity activity = new Activity(newActivityRequest.getActivity(), newActivityRequest.getDescription(), newActivityRequest.getIsOnToDoList(), newActivityRequest.getIsObligatory(), role, category);
-        return activityRepository.save(activity);
-    }
-
-    @Override
-    public void deleteActivityById(@NotNull Long id) {
-        activityRepository.deleteById(id);
-    }
-
-    @Override
-    public Activity updateActivityById(Long id, @NotNull NewActivityRequest newActivityRequest) {
-        Activity activity = this.getActivityById(id);
-        activity.setText(newActivityRequest.getActivity());
-        return activityRepository.save(activity);
-    }
-
-    @Override
-    public List<Activity> getAllActivities() {
-        return activityRepository.findAll();
-    }
-
-    @Override
-    public Boolean isActivityPresent(Long id) {
-        return activityRepository.findById(id).isPresent();
+    public List<ActivityResponse> getActivitiesByRoleId(long roleId, long userId) {
+        return this.mapper.convertToFullResponseList(this.repository.findByRoleIdAndUserId(roleId, userId));
     }
     @Override
-    public List<Activity> getActivitiesByRoleId(Long roleId) {
-        if (roleId == null) {
-            throw new IllegalArgumentException("ID cannot be null");
-        }
-        Role role = roleService.getRoleById(roleId);
-        if (role == null) {
-            throw new RoleNotFoundException(roleId);
-        }
-        List<Activity> activities = activityRepository.findByRole(role);
-        if (activities.isEmpty()){
-            throw new NoActivityFoundWithParameterException("categoryId",roleId.toString());
-        }
-        return activities;
-    }
-    @Override
-    public List<Activity> getActivitiesByCategoryId(Long categoryId) {
-        if (categoryId == null) {
-            throw new IllegalArgumentException("ID cannot be null");
-        }
-        Category category = categoryService.getCategoryById(categoryId);
-
-        List<Activity> activities = activityRepository.findByCategory(category);
-        if (activities.isEmpty()){
-            throw new NoActivityFoundWithParameterException("categoryId",categoryId.toString());
-        }
-        return activities;
+    public List<ActivityResponse> getActivitiesByCategoryId(long categoryId, long userId) {
+        return this.mapper.convertToFullResponseList(this.repository.findByCategoryIdAndUserId(categoryId, userId));
     }
 }

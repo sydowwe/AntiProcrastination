@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 @SuppressWarnings("unused")
-public class EmailRequest {
+public class EmailRequest implements IRequest{
     private String email;
 }

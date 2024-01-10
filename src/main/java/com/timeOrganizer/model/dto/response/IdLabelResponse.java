@@ -1,14 +1,14 @@
 package com.timeOrganizer.model.dto.response;
 
-import com.timeOrganizer.model.entity.AbstractEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class IdLabelResponse implements IResponse{
-    private Long id;
+public class IdLabelResponse extends IdResponse {
     private String label;
-    public IdLabelResponse(AbstractEntity entity) {
-        this.id = entity.getId();
-        this.label = entity.getName();
+    public IdLabelResponse(NameTextResponse nameTextResponse){
+        super(nameTextResponse.getId());
+        this.setLabel(nameTextResponse.getName());
     }
 }

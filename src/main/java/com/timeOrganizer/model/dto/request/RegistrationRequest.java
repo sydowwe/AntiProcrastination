@@ -4,11 +4,7 @@ import lombok.Getter;
 
 @Getter
 @SuppressWarnings("unused")
-public class RegistrationRequest {
-    private String name;
-    private String surname;
+public class RegistrationRequest extends UserRequest{
 //    private String username;
-    private String email;
     private String password;
-    private boolean use2FA;
 }

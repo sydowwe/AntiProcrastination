@@ -1,16 +1,12 @@
 package com.timeOrganizer.model.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class LoginResponse {
-    private long id;
+@SuperBuilder
+public class LoginResponse extends IdResponse {
     private String email;
     private String token;
     private boolean has2FA;

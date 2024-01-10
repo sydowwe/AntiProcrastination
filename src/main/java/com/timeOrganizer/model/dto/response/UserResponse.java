@@ -1,16 +1,13 @@
 package com.timeOrganizer.model.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserResponse implements IResponse{
-    private Long id;
+public class UserResponse extends IdResponse {
     private String name;
     private String surname;
     private String email;

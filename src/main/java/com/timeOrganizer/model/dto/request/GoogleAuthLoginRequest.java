@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 @SuppressWarnings("unused")
-public class GoogleAuthLoginRequest {
-    private String email;
+public class GoogleAuthLoginRequest extends EmailRequest{
     private String code;
 }

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @SuppressWarnings("unused")
-public class HistoryRequest {
+public class HistoryRequest implements IRequest{
     private Long activityId;
     private String startTimestamp;
     private MyIntTime length;

@@ -1,25 +1,24 @@
 package com.timeOrganizer.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Data
 @Builder
 @Entity
 @Table(name = "task_urgency", schema = "test")
-public class Urgency {
-    @Id
-    private long id;
+public class Urgency extends AbstractEntity{
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
     private String text;
-    @Setter
     private String color;
+    private int priority;
 /*    @Setter
     private String icon;*/
     @OneToMany(mappedBy = "urgency")

@@ -1,34 +1,38 @@
 package com.timeOrganizer.controller;
 
 import com.timeOrganizer.exception.RequiredParameterMissingException;
+import com.timeOrganizer.exception.UserNotInSecurityContext;
+import com.timeOrganizer.model.dto.response.NameTextResponse;
 import com.timeOrganizer.model.dto.response.IdLabelResponse;
-import com.timeOrganizer.model.entity.AbstractEntity;
-import org.springframework.http.MediaType;
+import com.timeOrganizer.security.LoggedUser;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/api", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public abstract class MyController {
     @PostMapping("/common")
     public String commonEndpoint() {
         return "This is a common endpoint";
     }
 
-    public List<IdLabelResponse> mapToIdNameResponseList(List<? extends AbstractEntity> list) {
+    public List<IdLabelResponse> mapToIdNameResponseList(List<? extends NameTextResponse> list) {
         return list.stream()
                 .map(IdLabelResponse::new)
                 .collect(Collectors.toList());
     }
 
-    public IdLabelResponse mapToIdNameResponse(AbstractEntity entity) {
-        return new IdLabelResponse(entity);
+    public IdLabelResponse mapToIdNameResponse(NameTextResponse nameTextResponse) {
+        return new IdLabelResponse(nameTextResponse);
     }
 
     public Map<String, Object> oneParamResponse(String key, Object value) {
@@ -60,5 +64,18 @@ public abstract class MyController {
             }
         };
 
+    }
+    protected URI getCreatedResourceURI(long id){
+        return ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(id)
+                .toUri();
+    }
+    protected LoggedUser getLoggedUser() throws UserNotInSecurityContext {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || !(authentication.getPrincipal() instanceof LoggedUser)) {
+            throw new EntityNotFoundException("User not in security context");
+        }
+        return (LoggedUser) authentication.getPrincipal();
     }
 }

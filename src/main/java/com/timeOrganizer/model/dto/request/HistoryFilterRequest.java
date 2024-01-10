@@ -6,7 +6,7 @@ import java.time.ZonedDateTime;
 
 @Getter
 @SuppressWarnings("unused")
-public class HistoryFilterRequest {
+public class HistoryFilterRequest implements IRequest{
     private Long activityId;
     private Long roleId;
     private Long categoryId;

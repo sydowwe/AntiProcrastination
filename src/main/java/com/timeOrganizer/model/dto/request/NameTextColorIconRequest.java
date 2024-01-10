@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 @SuppressWarnings("unused")
-public class NameTextColorIconRequest {
+public class NameTextColorIconRequest implements IRequest {
     private String name;
     private String text;
     private String color;
