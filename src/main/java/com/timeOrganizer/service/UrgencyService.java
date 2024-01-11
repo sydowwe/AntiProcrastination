@@ -9,6 +9,7 @@ import com.timeOrganizer.repository.IUrgencyRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.RollbackException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,5 +46,13 @@ public class UrgencyService extends MyService<Urgency,IUrgencyRepository, Urgenc
                         .color("green")
                         .user(user).build());
         this.repository.saveAll(defaultUrgencyItems);
+    }
+    @Override
+    protected Sort.Direction getSortDirection(){
+        return Sort.Direction.ASC;
+    }
+    @Override
+    protected String getSortByProperties(){
+        return "priorityId";
     }
 }

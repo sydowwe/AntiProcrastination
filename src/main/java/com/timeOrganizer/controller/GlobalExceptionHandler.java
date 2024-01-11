@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
         return this.createErrorResponse("2FA QR code generation", HttpStatus.FAILED_DEPENDENCY, e);
     }
     private ResponseEntity<ErrorResponse> createErrorResponse(String error, HttpStatus status,Exception e) {
-        ErrorResponse errorResponse = new ErrorResponse(error+"  ERROR!", e.getMessage(),e.getCause().getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(error+"  ERROR!", e.getMessage());
         return ResponseEntity.status(status).body(errorResponse);
     }
     // Add more @ExceptionHandler methods for other specific exceptions if needed

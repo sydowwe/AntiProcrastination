@@ -16,7 +16,8 @@ public class UrgencyController extends MyController {
     private final UrgencyService urgencyService;
     @PostMapping("/get-all")
     public ResponseEntity<List<UrgencyResponse>> getAllUrgencyItems() {
-        return ResponseEntity.ok(urgencyService.getAll(getLoggedUser().getId()));
+        var test = urgencyService.getAll(getLoggedUser().getId());
+        return ResponseEntity.ok(test);
     }
     @GetMapping("/{id}")
     public ResponseEntity<UrgencyResponse> get(@PathVariable("id") Long id) {

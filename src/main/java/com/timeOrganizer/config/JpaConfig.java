@@ -12,11 +12,13 @@ import java.util.Properties;
 public class JpaConfig {
     @Bean
     public DataSource dataSource() {
+        final String databaseName = "test";
+        //final String databaseName = "production";
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test");
-        dataSource.setUsername("root");
-        dataSource.setPassword("");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/"+databaseName);
+        dataSource.setUsername("api");
+        dataSource.setPassword("]GC&Py5v/KV9MCN");
         return dataSource;
     }
 
@@ -33,7 +35,8 @@ public class JpaConfig {
     private Properties jpaProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        properties.put("hibernate.hbm2ddl.auto", "update");
+        properties.put("hibernate.hbm2ddl.auto", "create");
+        //properties.put("hibernate.hbm2ddl.auto", "update");
         properties.put("hibernate.show_sql", true);
         properties.put("hibernate.format_sql", true);
         return properties;

@@ -1,9 +1,6 @@
 package com.timeOrganizer.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,10 +12,15 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @Entity
-@Table(name = "to_do_list", schema = "test")
+@Table(name = "to_do_list", schema = "test",
+        uniqueConstraints = {
+        @UniqueConstraint(name = "unique_userId_name",columnNames = {"userId", "name"}),
+    }, indexes = @Index(name = "idx_userId_urgencyId",columnList = "userId,urgencyId")
+)
 public class ToDoList extends NameTextEntity {
+    @Column(nullable = false)
     private boolean isDone;
     @ManyToOne
-    @JoinColumn(name = "urgencyId")
+    @JoinColumn(name = "urgencyId", nullable = false)
     private Urgency urgency;
 }

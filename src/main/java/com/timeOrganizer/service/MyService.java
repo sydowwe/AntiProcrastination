@@ -27,7 +27,8 @@ public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extend
     }
 
     public List<RESPONSE> getAll(long userId) {
-        return mapper.convertToFullResponseList(repository.findAllByUserId(userId, Sort.by(Sort.Direction.DESC, "id")));
+        var test = repository.findAllByUserId(userId, this.getSort());
+        return mapper.convertToFullResponseList(test);
     }
 
     public void deleteById(@NonNull long id) throws EntityNotFoundException {
@@ -59,5 +60,14 @@ public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extend
         ENTITY entity = this.getById(id);
         entity = this.mapper.updateEntityFromRequest(entity,request);
         return this.mapper.convertToFullResponse(this.repository.save(entity));
+    }
+    protected Sort.Direction getSortDirection(){
+        return Sort.Direction.DESC;
+    }
+    protected String getSortByProperties(){
+        return "id";
+    }
+    private Sort getSort(){
+        return Sort.by(this.getSortDirection(), this.getSortByProperties());
     }
 }

@@ -6,7 +6,6 @@ import lombok.*;
 
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Data
@@ -14,8 +13,13 @@ import java.util.List;
 @Entity
 @Table(name = "user", schema = "test")
 @ToString(exclude="scratchCodes")
-public class User extends AbstractEntity{
+public class User implements IEntity{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String surname;
     //    private String username;
     @Column(unique = true, nullable = false)
@@ -30,8 +34,20 @@ public class User extends AbstractEntity{
     private List<Integer> scratchCodes;
     @Column(nullable = false)
     private boolean isStayLoggedIn;
+
+
+    @OneToMany(mappedBy = "user")
+    private List<Activity> activityList;
+    @OneToMany(mappedBy = "user")
+    private List<Category> categoryList;
+    @OneToMany(mappedBy = "user")
+    private List<History> historyList;
+    @OneToMany(mappedBy = "user")
+    private List<Role> roleList;
     @OneToMany(mappedBy = "user")
     private List<ToDoList> toDoLists;
+    @OneToMany(mappedBy = "user")
+    private List<Urgency> urgencyList;
     public boolean has2FA() {
         return this.secretKey2FA != null && !this.secretKey2FA.isBlank();
     }

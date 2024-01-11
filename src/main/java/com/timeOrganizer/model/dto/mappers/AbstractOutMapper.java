@@ -1,11 +1,11 @@
 package com.timeOrganizer.model.dto.mappers;
 
 import com.timeOrganizer.model.dto.response.IResponse;
-import com.timeOrganizer.model.entity.AbstractEntity;
+import com.timeOrganizer.model.entity.IEntity;
 
 import java.util.List;
 
-public abstract class AbstractOutMapper <ENTITY extends AbstractEntity, RESPONSE extends IResponse>{
+public abstract class AbstractOutMapper <ENTITY extends IEntity, RESPONSE extends IResponse>{
     public List<RESPONSE> convertToFullResponseList(List<ENTITY> entityList) {
         return entityList.stream()
                 .map(this::convertToFullResponse)

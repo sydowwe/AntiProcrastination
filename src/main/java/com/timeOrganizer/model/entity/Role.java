@@ -3,6 +3,7 @@ package com.timeOrganizer.model.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +17,7 @@ import java.util.List;
 @Data
 @SuperBuilder
 @Entity
-@Table(name = "role", schema = "test")
+@Table(name = "role", schema = "test", uniqueConstraints = @UniqueConstraint(name = "unique_userId_name",columnNames = {"userId", "name"}))
 public class Role extends NameTextEntity{
     @OneToMany(mappedBy = "role")
     private List<Activity> activities;

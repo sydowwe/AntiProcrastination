@@ -25,7 +25,7 @@ public class CategoryController extends MyController{
     }
     @PostMapping("/get-options-by-role/{roleId}")
     public ResponseEntity<List<IdLabelResponse>> getByRole(@PathVariable @NonNull long roleId) {
-        return ResponseEntity.ok(mapToIdNameResponseList(categoryService.getCategoriesByRole(roleId, getLoggedUser().getId())));
+        return ResponseEntity.ok(mapToIdNameResponseList(categoryService.getCategoriesByRoleId(roleId, getLoggedUser().getId())));
     }
     @PostMapping("/create")
     public ResponseEntity<?> createNewCategory(@RequestBody NameTextColorIconRequest newCategory){

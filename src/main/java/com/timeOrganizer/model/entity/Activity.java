@@ -6,14 +6,16 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@Entity
-@Table(name = "activity", schema = "test")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
+@Entity
+@Table(name = "activity", schema = "test", uniqueConstraints = @UniqueConstraint(name = "unique_userId_name", columnNames = {"userId", "name"}))
 public class Activity extends NameTextEntity {
+    @Column(nullable = false)
     private boolean isOnToDoList;
+    @Column(nullable = false)
     private boolean isUnavoidable;
     @ManyToOne
     @JoinColumn(name = "roleId", nullable = false)

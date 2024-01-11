@@ -24,7 +24,7 @@ public class RoleController extends MyController {
         return ResponseEntity.ok(mapToIdNameResponseList(roleService.getAll(this.getLoggedUser().getId())));
     }
     @PostMapping("/get-options-by-category/{categoryId}")
-    public ResponseEntity<List<IdLabelResponse>> getByCategory(@PathVariable Long categoryId) {
+    public ResponseEntity<List<IdLabelResponse>> getByCategoryId(@PathVariable Long categoryId) {
         return ResponseEntity.ok(mapToIdNameResponseList(this.roleService.getRolesByCategory(categoryId,this.getLoggedUser().getId())));
     }
     @PostMapping("/create")

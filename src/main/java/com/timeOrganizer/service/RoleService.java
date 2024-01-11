@@ -8,26 +8,16 @@ import com.timeOrganizer.repository.IRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional
 public class RoleService extends MyService<Role,IRoleRepository,RoleResponse,NameTextColorIconRequest,RoleMapper> implements IRoleService {
-    private final ActivityService activityService;
     @Autowired
-    public RoleService(IRoleRepository repository, RoleMapper mapper, UserService userService, ActivityService activityService) {
+    public RoleService(IRoleRepository repository, RoleMapper mapper, UserService userService) {
         super(repository, mapper, userService);
-        this.activityService = activityService;
     }
     public List<RoleResponse> getRolesByCategory(long categoryId, long userId) {
-        List<RoleResponse> roles = new ArrayList<>();
-        activityService.getActivitiesByCategoryId(categoryId, userId).forEach(activity -> {
-            if(!roles.contains(activity.getRole())){
-                roles.add(activity.getRole());
-            }
-        });
-        return roles;
+        return this.mapper.convertToFullResponseList(this.repository.findByActivities_Category_IdAndUserId(categoryId,userId));
     }
 }

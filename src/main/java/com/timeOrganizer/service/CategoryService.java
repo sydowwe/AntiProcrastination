@@ -9,25 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional
 public class CategoryService extends MyService<Category,ICategoryRepository, CategoryResponse,NameTextColorIconRequest,CategoryMapper> implements ICategoryService{
-    private final ActivityService activityService;
     @Autowired
-    public CategoryService(ICategoryRepository repository, CategoryMapper mapper, UserService userService, ActivityService activityService) {
+    public CategoryService(ICategoryRepository repository, CategoryMapper mapper, UserService userService) {
         super(repository, mapper, userService);
-        this.activityService = activityService;
     }
-    public List<CategoryResponse> getCategoriesByRole(long roleId, long userId){
-        List<CategoryResponse> categories = new ArrayList<>();
-        activityService.getActivitiesByRoleId(roleId,userId).forEach(activity -> {
-            if(!categories.contains(activity.getCategory())){
-                categories.add(activity.getCategory());
-            }
-        });
-        return categories;
+    public List<CategoryResponse> getCategoriesByRoleId(long roleId, long userId) {
+        return this.mapper.convertToFullResponseList(this.repository.findAllByActivities_Role_IdAndUserId(roleId,userId));
     }
 }
