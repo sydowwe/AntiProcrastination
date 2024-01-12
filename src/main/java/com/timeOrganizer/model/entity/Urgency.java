@@ -1,15 +1,17 @@
 package com.timeOrganizer.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
-@SuperBuilder
 @Entity
 @Table(name = "task_urgency", schema = "test", uniqueConstraints = @UniqueConstraint(name = "unique_userId_name",columnNames = {"userId", "priority"}))
 public class Urgency extends AbstractEntity{
@@ -22,4 +24,11 @@ public class Urgency extends AbstractEntity{
     private String icon;*/
     @OneToMany(mappedBy = "urgency")
     private List<ToDoList> toDoListItems;
+
+    public Urgency(String text, String color, int priority, User user) {
+        super(user);
+        this.text = text;
+        this.color = color;
+        this.priority = priority;
+    }
 }

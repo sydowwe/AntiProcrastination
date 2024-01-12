@@ -2,9 +2,11 @@ package com.timeOrganizer.model.dto.mappers;
 
 import com.timeOrganizer.model.dto.request.NameTextColorIconRequest;
 import com.timeOrganizer.model.dto.response.CategoryResponse;
+import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.Category;
-import com.timeOrganizer.model.entity.User;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component
 public class CategoryMapper extends AbstractInOutMapper<Category,CategoryResponse, NameTextColorIconRequest>{
@@ -19,21 +21,16 @@ public class CategoryMapper extends AbstractInOutMapper<Category,CategoryRespons
                 .build();
     }
     @Override
-    public Category createEntityFromRequest(NameTextColorIconRequest request, User user) {
-        return Category.builder()
-                .name(request.getName())
-                .text(request.getText())
-                .color(request.getColor())
-                .icon(request.getIcon())
-                .user(user)
-                .build();
-    }
-    @Override
-    public Category updateEntityFromRequest(Category entity, NameTextColorIconRequest request) {
+    public Category updateEntityFromRequest(Category entity, NameTextColorIconRequest request, Map<String, ? extends AbstractEntity> dependencies) {
         entity.setName(request.getName());
         entity.setText(request.getText());
         entity.setColor(request.getColor());
         entity.setIcon(request.getIcon());
         return entity;
+    }
+
+    @Override
+    Category createEmptyEntity() {
+        return new Category();
     }
 }

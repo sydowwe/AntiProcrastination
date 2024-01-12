@@ -9,15 +9,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
-public class UserMapper extends AbstractInOutMapper<User,UserResponse,UserRequest> {
-    @Override
-    public UserResponse convertToFullResponse(User user) {
+public class UserMapper{
+    public UserResponse convertToUserSettingsResponse(LoggedUser user){
         return UserResponse.builder()
                 .id(user.getId())
                 .name(StringUtils.capitalize(user.getName()))
                 .surname(StringUtils.capitalize(user.getSurname()))
                 .email(user.getEmail())
-                .has2FA(user.has2FA())
+                .has2FA(user.isHas2FA())
                 .build();
     }
     public EditedUserResponse convertToEditedUserSettingsResponse(User user, String token, byte[] qrCode){
@@ -43,22 +42,7 @@ public class UserMapper extends AbstractInOutMapper<User,UserResponse,UserReques
                 .surname(user.getSurname())
                 .build();
     }
-    public UserResponse convertToUserSettingsResponse(LoggedUser user){
-        return UserResponse.builder()
-                .id(user.getId())
-                .name(StringUtils.capitalize(user.getName()))
-                .surname(StringUtils.capitalize(user.getSurname()))
-                .email(user.getEmail())
-                .has2FA(user.isHas2FA())
-                .build();
-    }
 
-    @Override
-    public User createEntityFromRequest(UserRequest request, User user) {
-        return null;
-    }
-
-    @Override
     public User updateEntityFromRequest(User entity, UserRequest request) {
         entity.setName(request.getName().toLowerCase());
         entity.setSurname(request.getSurname().toLowerCase());

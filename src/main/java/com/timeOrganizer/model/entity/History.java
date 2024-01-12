@@ -4,14 +4,12 @@ import com.timeOrganizer.helper.MyIntTime;
 import com.timeOrganizer.helper.MyIntTimeDBConverter;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
 
 @EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Data
-@SuperBuilder
 @Entity
 @Table(name = "history", schema = "test")
 //TODO MAYBE ADD indexing

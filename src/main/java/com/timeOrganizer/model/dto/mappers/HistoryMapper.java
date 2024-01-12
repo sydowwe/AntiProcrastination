@@ -2,18 +2,18 @@ package com.timeOrganizer.model.dto.mappers;
 
 import com.timeOrganizer.model.dto.request.HistoryRequest;
 import com.timeOrganizer.model.dto.response.HistoryResponse;
+import com.timeOrganizer.model.entity.AbstractEntity;
+import com.timeOrganizer.model.entity.Activity;
 import com.timeOrganizer.model.entity.History;
-import com.timeOrganizer.model.entity.User;
-import com.timeOrganizer.service.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.time.ZonedDateTime;
+import java.util.Map;
 
 
 @Component
 @RequiredArgsConstructor
 public class HistoryMapper extends AbstractInOutMapper<History, HistoryResponse, HistoryRequest>{
-    private final ActivityService activityService;
     private final ActivityMapper activityMapper;
     @Override
     public HistoryResponse convertToFullResponse(History history) {
@@ -25,18 +25,15 @@ public class HistoryMapper extends AbstractInOutMapper<History, HistoryResponse,
                 .build();
     }
     @Override
-    public History createEntityFromRequest(HistoryRequest request, User user) {
-        return History.builder()
-                .activity(activityService.getReference(request.getActivityId()))
-                .length(request.getLength())
-                .start(ZonedDateTime.parse(request.getStartTimestamp()))
-                .build();
-    }
-    @Override
-    public History updateEntityFromRequest(History entity, HistoryRequest request) {
+    public History updateEntityFromRequest(History entity, HistoryRequest request, Map<String, ? extends AbstractEntity> dependencies) {
         entity.setStart(ZonedDateTime.parse(request.getStartTimestamp()));
         entity.setLength(request.getLength());
-        entity.setActivity(activityService.getReference(request.getActivityId()));
+        entity.setActivity((Activity) dependencies.get("activity"));
         return entity;
+    }
+
+    @Override
+    History createEmptyEntity() {
+        return new History();
     }
 }

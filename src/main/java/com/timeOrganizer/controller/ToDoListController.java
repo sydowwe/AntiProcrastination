@@ -1,6 +1,7 @@
 package com.timeOrganizer.controller;
 
 import com.timeOrganizer.helper.JsonRequestMapping;
+import com.timeOrganizer.model.dto.request.IdIsDoneRequest;
 import com.timeOrganizer.model.dto.request.ToDoListRequest;
 import com.timeOrganizer.model.dto.response.*;
 import com.timeOrganizer.service.ToDoListService;
@@ -22,6 +23,18 @@ public class ToDoListController extends MyController {
     @GetMapping("/{id}")
     public ResponseEntity<IdLabelResponse> get(@PathVariable("id") Long id) {
         return ResponseEntity.ok(this.mapToIdNameResponse(toDoListService.getResponseById(id)));
+    }
+    @PostMapping("/change-done")
+    public ResponseEntity<SuccessResponse> changeDone(@RequestBody IdIsDoneRequest request) {
+        toDoListService.setIsDone(request);
+        return ResponseEntity
+                .ok(new SuccessResponse("changed"));
+    }
+    @PostMapping("/batch-change-done")
+    public ResponseEntity<SuccessResponse> batchChangeDone(@RequestBody List<IdIsDoneRequest> request) {
+        toDoListService.batchSetIsDone(request);
+        return ResponseEntity
+                .ok(new SuccessResponse("changed"));
     }
     @PostMapping("/add")
     public ResponseEntity<ToDoListResponse> addToDoListItem(@RequestBody ToDoListRequest toDoListRequest) {

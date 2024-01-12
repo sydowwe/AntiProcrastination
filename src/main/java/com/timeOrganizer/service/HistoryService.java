@@ -4,6 +4,7 @@ import com.timeOrganizer.model.dto.mappers.HistoryMapper;
 import com.timeOrganizer.model.dto.request.HistoryFilterRequest;
 import com.timeOrganizer.model.dto.request.HistoryRequest;
 import com.timeOrganizer.model.dto.response.HistoryResponse;
+import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.History;
 import com.timeOrganizer.repository.HistorySpecifications;
 import com.timeOrganizer.repository.IHistoryRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -35,5 +37,10 @@ public class HistoryService extends MyService<History ,IHistoryRepository,Histor
                 filterRequest.getDateTo(),
                 filterRequest.getHoursBack());
         return this.mapper.convertToFullResponseList(this.repository.findAll(spec));
+    }
+
+    @Override
+    protected Map<String, ? extends AbstractEntity> getDependencies(HistoryRequest request) {
+        return Map.of("activity",activityService.getReference(request.getActivityId()));
     }
 }

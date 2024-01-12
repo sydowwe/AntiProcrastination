@@ -4,17 +4,18 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @MappedSuperclass
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Data
-@SuperBuilder
 public abstract class AbstractEntity implements IEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     private User user;
+    protected  AbstractEntity(User user){
+        this.user = user;
+    }
 }

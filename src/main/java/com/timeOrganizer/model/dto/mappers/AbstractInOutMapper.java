@@ -2,10 +2,24 @@ package com.timeOrganizer.model.dto.mappers;
 
 import com.timeOrganizer.model.dto.request.IRequest;
 import com.timeOrganizer.model.dto.response.IResponse;
-import com.timeOrganizer.model.entity.IEntity;
+import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.User;
 
-public abstract class AbstractInOutMapper<ENTITY extends IEntity, RESPONSE extends IResponse, REQUEST extends IRequest> extends AbstractOutMapper<ENTITY, RESPONSE>{
-    public abstract ENTITY createEntityFromRequest(REQUEST request, User user);
-    public abstract ENTITY updateEntityFromRequest(ENTITY entity, REQUEST request);
+import java.util.Map;
+
+public abstract class AbstractInOutMapper<ENTITY extends AbstractEntity, RESPONSE extends IResponse, REQUEST extends IRequest> extends AbstractOutMapper<ENTITY, RESPONSE>{
+
+    public ENTITY createEntityFromRequest(REQUEST request, User user, Map<String,? extends AbstractEntity> dependencies){
+        ENTITY entity = this.createBaseEntityWithUser(user);
+        entity = this.updateEntityFromRequest(entity,request,dependencies);
+        return entity;
+    }
+
+    public abstract ENTITY updateEntityFromRequest(ENTITY entity, REQUEST request, Map<String, ? extends AbstractEntity> dependencies);
+    abstract ENTITY createEmptyEntity();
+    ENTITY createBaseEntityWithUser(User user){
+        ENTITY entity = this.createEmptyEntity();
+        entity.setUser(user);
+        return entity;
+    }
 }

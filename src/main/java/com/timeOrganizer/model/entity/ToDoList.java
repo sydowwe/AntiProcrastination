@@ -1,16 +1,13 @@
 package com.timeOrganizer.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Data
-@SuperBuilder
 @Entity
 @Table(name = "to_do_list", schema = "test",
         uniqueConstraints = {
@@ -19,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 )
 public class ToDoList extends NameTextEntity {
     @Column(nullable = false)
-    private boolean isDone;
+    private boolean isDone = false;
     @ManyToOne
     @JoinColumn(name = "urgencyId", nullable = false)
     private Urgency urgency;

@@ -2,16 +2,18 @@ package com.timeOrganizer.model.dto.mappers;
 
 import com.timeOrganizer.model.dto.request.ToDoListRequest;
 import com.timeOrganizer.model.dto.response.ToDoListResponse;
+import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.ToDoList;
-import com.timeOrganizer.model.entity.User;
-import com.timeOrganizer.service.UrgencyService;
+import com.timeOrganizer.model.entity.Urgency;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 public class ToDoListMapper extends AbstractInOutMapper<ToDoList,ToDoListResponse,ToDoListRequest>{
-    private final UrgencyService urgencyService;
+    private final UrgencyMapper urgencyMapper;
     @Override
     public ToDoListResponse convertToFullResponse(ToDoList toDoListItem) {
         return ToDoListResponse.builder()
@@ -19,24 +21,18 @@ public class ToDoListMapper extends AbstractInOutMapper<ToDoList,ToDoListRespons
                 .name(toDoListItem.getName())
                 .text(toDoListItem.getText())
                 .isDone(toDoListItem.isDone())
-                .urgency(new UrgencyMapper().convertToFullResponse(toDoListItem.getUrgency()))
+                .urgency(toDoListItem.getUrgency() != null ? urgencyMapper.convertToFullResponse(toDoListItem.getUrgency()) : null)
                 .build();
     }
     @Override
-    public ToDoList createEntityFromRequest(ToDoListRequest request, User user) {
-        return ToDoList.builder()
-                .name(request.getName())
-                .text(request.getText())
-                .urgency(urgencyService.getReference(request.getUrgencyId()))
-                .isDone(false)
-                .user(user)
-                .build();
-    }
-    @Override
-    public ToDoList updateEntityFromRequest(ToDoList entity, ToDoListRequest request) {
+    public ToDoList updateEntityFromRequest(ToDoList entity, ToDoListRequest request, Map<String, ? extends AbstractEntity> dependencies) {
         entity.setName(request.getName());
         entity.setText(request.getText());
-        entity.setUrgency(urgencyService.getReference(request.getUrgencyId()));
-        return null;
+        entity.setUrgency((Urgency) dependencies.get("urgency"));
+        return entity;
+    }
+    @Override
+    ToDoList createEmptyEntity() {
+        return new ToDoList();
     }
 }

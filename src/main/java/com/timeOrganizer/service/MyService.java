@@ -11,10 +11,13 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
+@Transactional
 public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extends IMyRepository<ENTITY>, RESPONSE extends IdResponse, REQUEST extends IRequest, MAPPER extends AbstractInOutMapper<ENTITY, RESPONSE, REQUEST>> implements IMyService {
     protected final REPOSITORY repository;
     protected final MAPPER mapper;
@@ -52,15 +55,16 @@ public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extend
     }
     public RESPONSE insert(@NonNull REQUEST request, long userId) throws EntityNotFoundException, EntityExistsException {
         User user = this.userService.getUserReference(userId);
-        ENTITY entity = this.mapper.createEntityFromRequest(request,user);
+        ENTITY entity = this.mapper.createEntityFromRequest(request,user,this.getDependencies(request));
         return this.mapper.convertToFullResponse(this.repository.save(entity));
     }
     //TODO SET USER
-    public RESPONSE updateById(long id,@NonNull REQUEST request)  throws EntityNotFoundException{
+    public RESPONSE updateById(long id,@NonNull REQUEST request)  throws EntityNotFoundException, EntityExistsException{
         ENTITY entity = this.getById(id);
-        entity = this.mapper.updateEntityFromRequest(entity,request);
+        entity = this.mapper.updateEntityFromRequest(entity,request,this.getDependencies(request));
         return this.mapper.convertToFullResponse(this.repository.save(entity));
     }
+    protected abstract Map<String,? extends AbstractEntity> getDependencies(REQUEST request);
     protected Sort.Direction getSortDirection(){
         return Sort.Direction.DESC;
     }
