@@ -18,7 +18,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Transactional
-public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extends IMyRepository<ENTITY>, RESPONSE extends IdResponse, REQUEST extends IRequest, MAPPER extends AbstractInOutMapper<ENTITY, RESPONSE, REQUEST>> implements IMyService {
+public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extends IMyRepository<ENTITY>, REQUEST extends IRequest, RESPONSE extends IdResponse, MAPPER extends AbstractInOutMapper<ENTITY, REQUEST, RESPONSE>> implements IMyService {
     protected final REPOSITORY repository;
     protected final MAPPER mapper;
     //TODO MAKE userService Optional
@@ -58,7 +58,6 @@ public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extend
         ENTITY entity = this.mapper.createEntityFromRequest(request,user,this.getDependencies(request));
         return this.mapper.convertToFullResponse(this.repository.save(entity));
     }
-    //TODO SET USER
     public RESPONSE updateById(long id,@NonNull REQUEST request)  throws EntityNotFoundException, EntityExistsException{
         ENTITY entity = this.getById(id);
         entity = this.mapper.updateEntityFromRequest(entity,request,this.getDependencies(request));

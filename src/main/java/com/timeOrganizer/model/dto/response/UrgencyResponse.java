@@ -7,9 +7,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
-public class UrgencyResponse extends IdResponse {
-    private String text;
-    private String color;
+public class UrgencyResponse extends TextColorResponse {
     private int priority;
 //    private String icon;
 }

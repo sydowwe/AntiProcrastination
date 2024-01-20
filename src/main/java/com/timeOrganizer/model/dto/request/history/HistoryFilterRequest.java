@@ -1,12 +1,13 @@
-package com.timeOrganizer.model.dto.request;
+package com.timeOrganizer.model.dto.request.history;
 
+import com.timeOrganizer.model.dto.request.IRequest;
 import lombok.Getter;
 
 import java.time.ZonedDateTime;
 
 @Getter
 @SuppressWarnings("unused")
-public class HistoryFilterRequest implements IRequest{
+public class HistoryFilterRequest implements IRequest {
     private Long activityId;
     private Long roleId;
     private Long categoryId;

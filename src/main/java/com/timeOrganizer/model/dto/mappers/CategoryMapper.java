@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class CategoryMapper extends AbstractInOutMapper<Category,CategoryResponse, NameTextColorIconRequest>{
+public class CategoryMapper extends AbstractInOutMapper<Category, NameTextColorIconRequest, CategoryResponse>{
     @Override
     public CategoryResponse convertToFullResponse(Category category) {
         return CategoryResponse.builder()
@@ -30,7 +30,7 @@ public class CategoryMapper extends AbstractInOutMapper<Category,CategoryRespons
     }
 
     @Override
-    Category createEmptyEntity() {
+    protected Category createEmptyEntity() {
         return new Category();
     }
 }

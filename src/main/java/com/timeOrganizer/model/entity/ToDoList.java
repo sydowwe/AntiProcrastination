@@ -1,9 +1,9 @@
 package com.timeOrganizer.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
+
 
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
@@ -20,4 +20,9 @@ public class ToDoList extends NameTextEntity {
     @ManyToOne
     @JoinColumn(name = "urgencyId", nullable = false)
     private Urgency urgency;
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }

@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
-public class CategoryResponse extends NameTextResponse{
+public class CategoryResponse extends NameTextResponse {
     private String color;
     private String icon;
 }

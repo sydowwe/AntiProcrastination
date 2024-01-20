@@ -1,9 +1,9 @@
 package com.timeOrganizer.service;
 
 import com.timeOrganizer.model.dto.mappers.HistoryMapper;
-import com.timeOrganizer.model.dto.request.HistoryFilterRequest;
-import com.timeOrganizer.model.dto.request.HistoryRequest;
-import com.timeOrganizer.model.dto.response.HistoryResponse;
+import com.timeOrganizer.model.dto.request.history.HistoryFilterRequest;
+import com.timeOrganizer.model.dto.request.history.HistoryRequest;
+import com.timeOrganizer.model.dto.response.history.HistoryResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.History;
 import com.timeOrganizer.repository.HistorySpecifications;
@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class HistoryService extends MyService<History ,IHistoryRepository,HistoryResponse,HistoryRequest,HistoryMapper> implements IHistoryService {
+public class HistoryService extends MyService<History ,IHistoryRepository,HistoryRequest,HistoryResponse,HistoryMapper> implements IHistoryService {
     private final ActivityService activityService;
     @Autowired
     public HistoryService(IHistoryRepository repository, HistoryMapper mapper, UserService userService, ActivityService activityService) {

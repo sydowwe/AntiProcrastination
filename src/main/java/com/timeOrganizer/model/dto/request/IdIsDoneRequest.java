@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 @SuppressWarnings("unused")
-public class IdIsDoneRequest implements IRequest{
-    private long id;
+public class IdIsDoneRequest extends IdRequest{
     private boolean isDone;
 }

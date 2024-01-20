@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class ActivityMapper extends AbstractInOutMapper<Activity,ActivityResponse, ActivityRequest>{
+public class ActivityMapper extends AbstractInOutMapper<Activity, ActivityRequest,ActivityResponse>{
     private final RoleMapper roleMapper;
     private final CategoryMapper categoryMapper;
     @Override
@@ -42,7 +42,7 @@ public class ActivityMapper extends AbstractInOutMapper<Activity,ActivityRespons
     }
 
     @Override
-    Activity createEmptyEntity() {
+    protected Activity createEmptyEntity() {
         return new Activity();
     }
 }

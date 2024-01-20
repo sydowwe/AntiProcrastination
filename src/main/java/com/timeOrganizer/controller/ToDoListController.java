@@ -2,8 +2,9 @@ package com.timeOrganizer.controller;
 
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.IdIsDoneRequest;
-import com.timeOrganizer.model.dto.request.ToDoListRequest;
+import com.timeOrganizer.model.dto.request.toDoList.ToDoListRequest;
 import com.timeOrganizer.model.dto.response.*;
+import com.timeOrganizer.model.dto.response.toDoList.ToDoListResponse;
 import com.timeOrganizer.service.ToDoListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

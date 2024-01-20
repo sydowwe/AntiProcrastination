@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class UrgencyMapper  extends AbstractInOutMapper<Urgency, UrgencyResponse, UrgencyRequest> {
+public class UrgencyMapper  extends AbstractInOutMapper<Urgency, UrgencyRequest, UrgencyResponse> {
     @Override
     public UrgencyResponse convertToFullResponse(Urgency urgency) {
         return UrgencyResponse.builder()
@@ -27,7 +27,7 @@ public class UrgencyMapper  extends AbstractInOutMapper<Urgency, UrgencyResponse
         return entity;
     }
     @Override
-    Urgency createEmptyEntity() {
+    protected Urgency createEmptyEntity() {
         return new Urgency();
     }
 }

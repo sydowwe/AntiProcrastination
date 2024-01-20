@@ -1,9 +1,9 @@
 package com.timeOrganizer.controller;
 
 import com.timeOrganizer.helper.JsonRequestMapping;
-import com.timeOrganizer.model.dto.request.HistoryFilterRequest;
-import com.timeOrganizer.model.dto.request.HistoryRequest;
-import com.timeOrganizer.model.dto.response.HistoryResponse;
+import com.timeOrganizer.model.dto.request.history.HistoryFilterRequest;
+import com.timeOrganizer.model.dto.request.history.HistoryRequest;
+import com.timeOrganizer.model.dto.response.history.HistoryResponse;
 import com.timeOrganizer.service.HistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

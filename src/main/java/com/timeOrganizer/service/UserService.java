@@ -32,6 +32,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
@@ -87,6 +88,19 @@ public class UserService {
             throw new QrCode2FAGenerationException(e);
         }
         return outputStream.toByteArray();
+    }
+
+    public Oauth2LoginResponse oauth2LoginUser(OAuth2User oAuth2User) throws AuthenticationException, UserNotFoundException {
+        String email = oAuth2User.getName();
+        var test = oAuth2User.getAttributes();
+        User user = this.findByEmail(email);
+        if (user.has2FA()) {
+            //save secretKey2Fa to session by email
+            return Oauth2LoginResponse.builder().id(user.getId()).email(email).has2FA(true).authenticated(true).build();
+        } else {
+            String jwtToken = jwtService.generateToken(user.getEmail(), user.getId(), this.getLengthOfTokenExpiration(user.isStayLoggedIn()));
+            return Oauth2LoginResponse.builder().id(user.getId()).token(jwtToken).email(email).authenticated(true).has2FA(false).build();
+        }
     }
 
     public LoginResponse loginUser(LoginRequest loginRequest) throws AuthenticationException, UserNotFoundException {

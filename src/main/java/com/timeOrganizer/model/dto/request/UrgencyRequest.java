@@ -4,8 +4,6 @@ import lombok.Getter;
 
 @Getter
 @SuppressWarnings("unused")
-public class UrgencyRequest implements IRequest{
-    private String text;
-    private String color;
+public class UrgencyRequest extends TextColorRequest{
     private int priority;
 }

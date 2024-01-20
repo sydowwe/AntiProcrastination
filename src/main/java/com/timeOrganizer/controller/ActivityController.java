@@ -39,7 +39,7 @@ public class ActivityController extends MyController {
         }
         return ResponseEntity.ok(this.mapToIdNameResponseList(activityService.getActivitiesByCategoryId(categoryId, this.getLoggedUser().getId())));
     }
-//TODO
+    //TODO
     @PostMapping("/get-by-activity")
     public ResponseEntity<ActivityResponse> getActivityById(@RequestBody @NonNull Long id) {
         return ResponseEntity.ok(activityService.getResponseById(id));

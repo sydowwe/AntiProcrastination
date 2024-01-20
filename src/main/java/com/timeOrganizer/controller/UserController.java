@@ -7,6 +7,7 @@ import com.timeOrganizer.model.dto.request.LoginRequest;
 import com.timeOrganizer.model.dto.request.RegistrationRequest;
 import com.timeOrganizer.model.dto.request.UserRequest;
 import com.timeOrganizer.model.dto.response.*;
+import com.timeOrganizer.security.config.OAuth2Service;
 import com.timeOrganizer.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,10 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 @JsonRequestMapping("/user")
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController extends MyController {
     private final UserService userService;
+    private final OAuth2Service oAuth2Service;
     //    private final HttpSession session;
     @PostMapping("/auth/register")
     public ResponseEntity<RegistrationResponse> register(@RequestBody RegistrationRequest request) throws QrCode2FAGenerationException {
@@ -28,6 +34,21 @@ public class UserController extends MyController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(userService.registerUser(request));
+    }
+    @PostMapping("/auth/oauth2/callback")
+    public ResponseEntity<String> handleOAuth2Callback(@RequestBody OAuth2AuthorizationCodeGrantRequest authorizationGrantRequest) {
+        try {
+            // Exchange authorization code for OAuth2User
+            oAuth2Service.getUserInfo(authorizationGrantRequest);
+//            OAuth2User oAuth2User =
+
+            // Here, you can generate and return a JWT token as needed
+//            String jwtToken = generateJwtToken(oAuth2User);
+
+            return ResponseEntity.ok("ad");
+        } catch (OAuth2AuthenticationException e) {
+            return ResponseEntity.status(401).body("Authentication failed");
+        }
     }
     @PostMapping("/auth/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {

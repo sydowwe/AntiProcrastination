@@ -4,8 +4,7 @@ import lombok.Getter;
 
 @Getter
 @SuppressWarnings("unused")
-public class GoogleAuthRequest {
-    private long id;
+public class GoogleAuthRequest extends IdRequest {
     private String code;
 }
 

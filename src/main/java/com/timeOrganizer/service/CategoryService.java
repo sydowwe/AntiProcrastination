@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class CategoryService extends MyService<Category,ICategoryRepository, CategoryResponse,NameTextColorIconRequest,CategoryMapper> implements ICategoryService{
+public class CategoryService extends MyService<Category,ICategoryRepository,NameTextColorIconRequest, CategoryResponse,CategoryMapper> implements ICategoryService{
     @Autowired
     public CategoryService(ICategoryRepository repository, CategoryMapper mapper, UserService userService) {
         super(repository, mapper, userService);

@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class RoleService extends MyService<Role,IRoleRepository,RoleResponse,NameTextColorIconRequest,RoleMapper> implements IRoleService {
+public class RoleService extends MyService<Role,IRoleRepository,NameTextColorIconRequest,RoleResponse,RoleMapper> implements IRoleService {
     @Autowired
     public RoleService(IRoleRepository repository, RoleMapper mapper, UserService userService) {
         super(repository, mapper, userService);

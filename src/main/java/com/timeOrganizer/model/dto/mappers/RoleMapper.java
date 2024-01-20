@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class RoleMapper extends AbstractInOutMapper<Role, RoleResponse, NameTextColorIconRequest>{
+public class RoleMapper extends AbstractInOutMapper<Role, NameTextColorIconRequest, RoleResponse>{
     @Override
     public RoleResponse convertToFullResponse(Role role) {
         return RoleResponse.builder()
@@ -29,7 +29,7 @@ public class RoleMapper extends AbstractInOutMapper<Role, RoleResponse, NameText
     }
 
     @Override
-    Role createEmptyEntity() {
+    protected Role createEmptyEntity() {
         return new Role();
     }
 }

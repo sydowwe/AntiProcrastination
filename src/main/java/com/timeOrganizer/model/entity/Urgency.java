@@ -1,17 +1,18 @@
 package com.timeOrganizer.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "task_urgency", schema = "test", uniqueConstraints = @UniqueConstraint(name = "unique_userId_name",columnNames = {"userId", "priority"}))
 public class Urgency extends AbstractEntity{
@@ -20,9 +21,8 @@ public class Urgency extends AbstractEntity{
     private String color;
     @Column(nullable = false)
     private int priority;
-/*    @Setter
-    private String icon;*/
     @OneToMany(mappedBy = "urgency")
+    @ToString.Exclude
     private List<ToDoList> toDoListItems;
 
     public Urgency(String text, String color, int priority, User user) {
@@ -30,5 +30,9 @@ public class Urgency extends AbstractEntity{
         this.text = text;
         this.color = color;
         this.priority = priority;
+    }
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }

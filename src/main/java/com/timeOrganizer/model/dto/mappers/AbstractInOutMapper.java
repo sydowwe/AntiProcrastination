@@ -7,7 +7,7 @@ import com.timeOrganizer.model.entity.User;
 
 import java.util.Map;
 
-public abstract class AbstractInOutMapper<ENTITY extends AbstractEntity, RESPONSE extends IResponse, REQUEST extends IRequest> extends AbstractOutMapper<ENTITY, RESPONSE>{
+public abstract class AbstractInOutMapper<ENTITY extends AbstractEntity, REQUEST extends IRequest, RESPONSE extends IResponse> extends AbstractOutMapper<ENTITY, RESPONSE>{
 
     public ENTITY createEntityFromRequest(REQUEST request, User user, Map<String,? extends AbstractEntity> dependencies){
         ENTITY entity = this.createBaseEntityWithUser(user);
@@ -16,7 +16,7 @@ public abstract class AbstractInOutMapper<ENTITY extends AbstractEntity, RESPONS
     }
 
     public abstract ENTITY updateEntityFromRequest(ENTITY entity, REQUEST request, Map<String, ? extends AbstractEntity> dependencies);
-    abstract ENTITY createEmptyEntity();
+    protected abstract ENTITY createEmptyEntity();
     ENTITY createBaseEntityWithUser(User user){
         ENTITY entity = this.createEmptyEntity();
         entity.setUser(user);

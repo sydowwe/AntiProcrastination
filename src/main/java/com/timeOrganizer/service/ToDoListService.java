@@ -1,9 +1,9 @@
 package com.timeOrganizer.service;
 
-import com.timeOrganizer.model.dto.mappers.ToDoListMapper;
+import com.timeOrganizer.model.dto.mappers.toDoList.ToDoListMapper;
 import com.timeOrganizer.model.dto.request.IdIsDoneRequest;
-import com.timeOrganizer.model.dto.request.ToDoListRequest;
-import com.timeOrganizer.model.dto.response.ToDoListResponse;
+import com.timeOrganizer.model.dto.request.toDoList.ToDoListRequest;
+import com.timeOrganizer.model.dto.response.toDoList.ToDoListResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.ToDoList;
 import com.timeOrganizer.repository.IToDoListRepository;
@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class ToDoListService extends MyService<ToDoList,IToDoListRepository,ToDoListResponse,ToDoListRequest,ToDoListMapper> implements IToDoListService {
+public class ToDoListService extends MyService<ToDoList,IToDoListRepository,ToDoListRequest,ToDoListResponse,ToDoListMapper> implements IToDoListService {
     private final UrgencyService urgencyService;
     @Autowired
     public ToDoListService(IToDoListRepository repository, ToDoListMapper mapper, UserService userService, UrgencyService urgencyService) {

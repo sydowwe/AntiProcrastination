@@ -1,12 +1,12 @@
 package com.timeOrganizer.model.dto.request;
 
+import lombok.Data;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @SuppressWarnings("unused")
-public class ToDoListRequest implements IRequest {
+public class NameTextRequest implements IRequest {
     private String name;
     private String text;
-    private long urgencyId;
-    private boolean isDone;
 }

@@ -1,7 +1,7 @@
 package com.timeOrganizer.model.dto.mappers;
 
-import com.timeOrganizer.model.dto.request.HistoryRequest;
-import com.timeOrganizer.model.dto.response.HistoryResponse;
+import com.timeOrganizer.model.dto.request.history.HistoryRequest;
+import com.timeOrganizer.model.dto.response.history.HistoryResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.Activity;
 import com.timeOrganizer.model.entity.History;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class HistoryMapper extends AbstractInOutMapper<History, HistoryResponse, HistoryRequest>{
+public class HistoryMapper extends AbstractInOutMapper<History, HistoryRequest, HistoryResponse>{
     private final ActivityMapper activityMapper;
     @Override
     public HistoryResponse convertToFullResponse(History history) {
@@ -33,7 +33,7 @@ public class HistoryMapper extends AbstractInOutMapper<History, HistoryResponse,
     }
 
     @Override
-    History createEmptyEntity() {
+    protected History createEmptyEntity() {
         return new History();
     }
 }

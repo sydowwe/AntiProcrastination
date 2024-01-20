@@ -19,7 +19,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class UrgencyService extends MyService<Urgency,IUrgencyRepository, UrgencyResponse, UrgencyRequest,UrgencyMapper> implements IUrgencyService {
+public class UrgencyService extends MyService<Urgency,IUrgencyRepository, UrgencyRequest, UrgencyResponse,UrgencyMapper> implements IUrgencyService {
     @Autowired
     public UrgencyService(IUrgencyRepository repository, UrgencyMapper mapper) {
         super(repository, mapper, null);

@@ -1,7 +1,9 @@
-package com.timeOrganizer.model.dto.mappers;
+package com.timeOrganizer.model.dto.mappers.toDoList;
 
-import com.timeOrganizer.model.dto.request.ToDoListRequest;
-import com.timeOrganizer.model.dto.response.ToDoListResponse;
+import com.timeOrganizer.model.dto.mappers.AbstractInOutMapper;
+import com.timeOrganizer.model.dto.mappers.UrgencyMapper;
+import com.timeOrganizer.model.dto.request.toDoList.ToDoListRequest;
+import com.timeOrganizer.model.dto.response.toDoList.ToDoListResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.ToDoList;
 import com.timeOrganizer.model.entity.Urgency;
@@ -12,7 +14,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class ToDoListMapper extends AbstractInOutMapper<ToDoList,ToDoListResponse,ToDoListRequest>{
+public class ToDoListMapper extends AbstractInOutMapper<ToDoList,ToDoListRequest,ToDoListResponse> {
     private final UrgencyMapper urgencyMapper;
     @Override
     public ToDoListResponse convertToFullResponse(ToDoList toDoListItem) {
@@ -32,7 +34,7 @@ public class ToDoListMapper extends AbstractInOutMapper<ToDoList,ToDoListRespons
         return entity;
     }
     @Override
-    ToDoList createEmptyEntity() {
+    protected ToDoList createEmptyEntity() {
         return new ToDoList();
     }
 }
