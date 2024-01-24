@@ -16,8 +16,8 @@ import java.util.Map;
 @Transactional
 public class RoleService extends MyService<Role,IRoleRepository,NameTextColorIconRequest,RoleResponse,RoleMapper> implements IRoleService {
     @Autowired
-    public RoleService(IRoleRepository repository, RoleMapper mapper, UserService userService) {
-        super(repository, mapper, userService);
+    public RoleService(IRoleRepository repository, RoleMapper mapper) {
+        super(repository, mapper);
     }
     public List<RoleResponse> getRolesByCategory(long categoryId, long userId) {
         return this.mapper.convertToFullResponseList(this.repository.findByActivities_Category_IdAndUserId(categoryId,userId));

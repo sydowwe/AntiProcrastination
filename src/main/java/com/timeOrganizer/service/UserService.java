@@ -49,6 +49,7 @@ public class UserService {
     private final EmailService emailService;
     private final UserMapper userMapper;
     private final UrgencyService urgencyService;
+    private final RoutineToDoListTimePeriodService routineToDoListTimePeriodService;
     @Value("${token.expirationLong}")
     private int TOKEN_EXPIRATION_IN_HOURS_LONG;
     @Value("${token.expirationShort}")
@@ -254,6 +255,7 @@ public class UserService {
     }
 
     private void setDefaultSettings(User user) throws EntityExistsException, RollbackException {
-        urgencyService.createDefaultUrgencyItems(user);
+        urgencyService.createDefaultItems(user);
+        routineToDoListTimePeriodService.createDefaultItems(user);
     }
 }

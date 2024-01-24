@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @JsonRequestMapping("/routine-to-do-list")
 @RequiredArgsConstructor
-public class RoutineTodoListController extends MyController{
+public class RoutineToDoListController extends MyController{
     private final RoutineToDoListService routineToDoListService;
     @PostMapping("/get-all")
     public ResponseEntity<List<RoutineToDoListResponse>> getAllRoutineToDoListItems() {
@@ -39,9 +39,9 @@ public class RoutineTodoListController extends MyController{
         return ResponseEntity
                 .ok(new SuccessResponse("changed"));
     }
-    @PostMapping("/add")
-    public ResponseEntity<RoutineToDoListResponse> addRoutineToDoListItem(@RequestBody RoutineToDoListRequest routineToDoListRequest) {
-        RoutineToDoListResponse newRoutineToDoListItem = routineToDoListService.insert(routineToDoListRequest, this.getLoggedUser().getId());
+    @PostMapping("/create")
+    public ResponseEntity<RoutineToDoListResponse> createRoutineToDoListItem(@RequestBody RoutineToDoListRequest routineToDoListRequest) {
+        RoutineToDoListResponse newRoutineToDoListItem = routineToDoListService.insert(routineToDoListRequest, this.getLoggedUser().getReference());
         return ResponseEntity
                 .created(this.getCreatedResourceURI(newRoutineToDoListItem.getId()))
                 .body(newRoutineToDoListItem);

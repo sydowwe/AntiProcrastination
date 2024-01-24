@@ -34,14 +34,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         try {
-            if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                LoggedUser user = userDetailsService.loadById(jwtService.extractId(authHeader));
-                if (jwtService.isTokenValid(authHeader, user)) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            user, null, user.getAuthorities());
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                }
+            LoggedUser user = userDetailsService.loadById(jwtService.extractId(authHeader));
+            if (jwtService.isTokenValid(authHeader, user)) {
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        user, null, user.getAuthorities());
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         } catch (EntityNotFoundException | NumberFormatException e) {
             handleException(response, HttpStatus.NOT_FOUND, e.getMessage());
@@ -52,6 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
+
     private void handleException(HttpServletResponse response, HttpStatus status, String message) throws IOException {
         response.setStatus(status.value());
         response.getWriter().write(message);

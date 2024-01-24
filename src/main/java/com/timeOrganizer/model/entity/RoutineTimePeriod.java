@@ -16,10 +16,18 @@ public class RoutineTimePeriod extends AbstractEntity {
     @Column(nullable = false)
     private String text;
     private String color;
-    private int length;
+    private int lengthInDays;
     @OneToMany(mappedBy = "timePeriod")
     @ToString.Exclude
     private List<RoutineToDoList> toDoListItems;
+
+    public RoutineTimePeriod(String text, String color, int lengthInDays, User user) {
+        super(user);
+        this.text = text;
+        this.color = color;
+        this.lengthInDays = lengthInDays;
+    }
+
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();

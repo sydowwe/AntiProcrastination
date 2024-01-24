@@ -52,7 +52,7 @@ public class ActivityController extends MyController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createNewActivity(@RequestBody ActivityRequest formData) {
-        ActivityResponse newActivity = activityService.insert(formData, this.getLoggedUser().getId());
+        ActivityResponse newActivity = activityService.insert(formData, this.getLoggedUser().getReference());
         URI uri = this.getCreatedResourceURI(newActivity.getId());
         return ResponseEntity.created(uri).build();
     }

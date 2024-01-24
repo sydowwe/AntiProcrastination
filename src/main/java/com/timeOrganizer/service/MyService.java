@@ -23,7 +23,6 @@ public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extend
     protected final MAPPER mapper;
     //TODO MAKE userService Optional
 
-    protected final UserService userService;
 
     public RESPONSE getResponseById(long id) throws EntityNotFoundException {
         return mapper.convertToFullResponse(this.getById(id));
@@ -53,9 +52,8 @@ public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extend
     public ENTITY getReference(long id) throws EntityNotFoundException {
         return this.repository.getReferenceById(id);
     }
-    public RESPONSE insert(@NonNull REQUEST request, long userId) throws EntityNotFoundException, EntityExistsException {
-        User user = this.userService.getUserReference(userId);
-        ENTITY entity = this.mapper.createEntityFromRequest(request,user,this.getDependencies(request));
+    public RESPONSE insert(@NonNull REQUEST request, User userReference) throws EntityNotFoundException, EntityExistsException {
+        ENTITY entity = this.mapper.createEntityFromRequest(request,userReference,this.getDependencies(request));
         return this.mapper.convertToFullResponse(this.repository.save(entity));
     }
     public RESPONSE updateById(long id,@NonNull REQUEST request)  throws EntityNotFoundException, EntityExistsException{

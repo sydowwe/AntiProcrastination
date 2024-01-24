@@ -29,7 +29,7 @@ public class RoleController extends MyController {
     }
     @PostMapping("/create")
     public ResponseEntity<IdLabelResponse> createNewRole(@RequestBody NameTextColorIconRequest newRole) {
-        IdLabelResponse roleOption = mapToIdNameResponse(roleService.insert(newRole, getLoggedUser().getId()));
+        IdLabelResponse roleOption = mapToIdNameResponse(roleService.insert(newRole, getLoggedUser().getReference()));
         URI uri = this.getCreatedResourceURI(roleOption.getId());
         return ResponseEntity.created(uri).body(roleOption);
     }

@@ -7,14 +7,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+
 public class MyUserDetailsService implements UserDetailsService {
     private final IUserRepository userRepository;
     private final UserMapper userMapper;
+    @Transactional
     public LoggedUser loadById(long id) throws EntityNotFoundException{
-        return userMapper.toLoggedUser(userRepository.findById(id).orElseThrow(()->new EntityNotFoundException(String.valueOf(id))));
+        return userMapper.toLoggedUser(userRepository.getReferenceById(id));
     }
     @Override
     public LoggedUser loadUserByUsername(String email) throws UsernameNotFoundException {

@@ -30,16 +30,16 @@ public class UserMapper{
                 .qrCode(qrCode)
                 .build();
     }
-    public LoggedUser toLoggedUser(User user){
+    public LoggedUser toLoggedUser(User reference){
         return LoggedUser.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .role(user.getRole())
-                .isStayLoggedIn(user.isStayLoggedIn())
-                .has2FA(user.has2FA())
-                .name(user.getName())
-                .surname(user.getSurname())
+                .reference(reference)
+                .id(reference.getId())
+                .email(reference.getEmail())
+                .role(reference.getRole())
+                .isStayLoggedIn(reference.isStayLoggedIn())
+                .has2FA(reference.has2FA())
+                .name(reference.getName())
+                .surname(reference.getSurname())
                 .build();
     }
 

@@ -21,7 +21,7 @@ public class HistoryController extends MyController {
     private final HistoryService historyService;
     @PostMapping("/add-new-record")
     public ResponseEntity<URI> addNewActivityToHistory(@RequestBody HistoryRequest newRecordRequest) {
-        var record = historyService.insert(newRecordRequest, getLoggedUser().getId());
+        var record = historyService.insert(newRecordRequest, getLoggedUser().getReference());
         return ResponseEntity.created(this.getCreatedResourceURI(record.getId())).build();
     }
     @PostMapping("/get-all")

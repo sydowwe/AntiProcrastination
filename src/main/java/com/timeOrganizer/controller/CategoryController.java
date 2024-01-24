@@ -29,7 +29,7 @@ public class CategoryController extends MyController{
     }
     @PostMapping("/create")
     public ResponseEntity<?> createNewCategory(@RequestBody NameTextColorIconRequest newCategory){
-        IdLabelResponse categoryOption = mapToIdNameResponse(categoryService.insert(newCategory,this.getLoggedUser().getId()));
+        IdLabelResponse categoryOption = mapToIdNameResponse(categoryService.insert(newCategory,this.getLoggedUser().getReference()));
 
         return ResponseEntity.created(this.getCreatedResourceURI(categoryOption.getId()))
                 .body(categoryOption);

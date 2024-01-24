@@ -21,8 +21,8 @@ public class ActivityService extends MyService<Activity,IActivityRepository,Acti
     private final CategoryService categoryService;
 
     @Autowired
-    public ActivityService(IActivityRepository repository, ActivityMapper mapper, UserService userService, RoleService roleService, CategoryService categoryService) {
-        super(repository, mapper, userService);
+    public ActivityService(IActivityRepository repository, ActivityMapper mapper, RoleService roleService, CategoryService categoryService) {
+        super(repository, mapper);
         this.roleService = roleService;
         this.categoryService = categoryService;
     }

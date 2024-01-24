@@ -39,7 +39,7 @@ public class ToDoListController extends MyController {
     }
     @PostMapping("/add")
     public ResponseEntity<ToDoListResponse> addToDoListItem(@RequestBody ToDoListRequest toDoListRequest) {
-        ToDoListResponse newToDoListItem = toDoListService.insert(toDoListRequest, this.getLoggedUser().getId());
+        ToDoListResponse newToDoListItem = toDoListService.insert(toDoListRequest, this.getLoggedUser().getReference());
         return ResponseEntity
                 .created(this.getCreatedResourceURI(newToDoListItem.getId()))
                 .body(newToDoListItem);

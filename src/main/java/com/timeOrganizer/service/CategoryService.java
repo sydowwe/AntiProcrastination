@@ -17,8 +17,8 @@ import java.util.Map;
 @Transactional
 public class CategoryService extends MyService<Category,ICategoryRepository,NameTextColorIconRequest, CategoryResponse,CategoryMapper> implements ICategoryService{
     @Autowired
-    public CategoryService(ICategoryRepository repository, CategoryMapper mapper, UserService userService) {
-        super(repository, mapper, userService);
+    public CategoryService(ICategoryRepository repository, CategoryMapper mapper) {
+        super(repository, mapper);
     }
     public List<CategoryResponse> getCategoriesByRoleId(long roleId, long userId) {
         return this.mapper.convertToFullResponseList(this.repository.findAllByActivities_Role_IdAndUserId(roleId,userId));

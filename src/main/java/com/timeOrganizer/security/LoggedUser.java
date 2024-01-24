@@ -1,5 +1,6 @@
 package com.timeOrganizer.security;
 
+import com.timeOrganizer.model.entity.User;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +21,7 @@ public class LoggedUser implements UserDetails {
     private boolean has2FA;
     private String name;
     private String surname;
+    private User reference;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

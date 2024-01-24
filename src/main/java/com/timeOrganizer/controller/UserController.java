@@ -15,10 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 @JsonRequestMapping("/user")
@@ -27,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController extends MyController {
     private final UserService userService;
     private final OAuth2Service oAuth2Service;
+
     //    private final HttpSession session;
     @PostMapping("/auth/register")
     public ResponseEntity<RegistrationResponse> register(@RequestBody RegistrationRequest request) throws QrCode2FAGenerationException {

@@ -21,8 +21,8 @@ import java.util.Map;
 public class ToDoListService extends MyService<ToDoList,IToDoListRepository,ToDoListRequest,ToDoListResponse,ToDoListMapper> implements IToDoListService {
     private final UrgencyService urgencyService;
     @Autowired
-    public ToDoListService(IToDoListRepository repository, ToDoListMapper mapper, UserService userService, UrgencyService urgencyService) {
-        super(repository, mapper, userService);
+    public ToDoListService(IToDoListRepository repository, ToDoListMapper mapper, UrgencyService urgencyService) {
+        super(repository, mapper);
         this.urgencyService = urgencyService;
     }
     @Override

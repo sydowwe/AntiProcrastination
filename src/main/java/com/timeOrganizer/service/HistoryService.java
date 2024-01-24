@@ -21,8 +21,8 @@ import java.util.Map;
 public class HistoryService extends MyService<History ,IHistoryRepository,HistoryRequest,HistoryResponse,HistoryMapper> implements IHistoryService {
     private final ActivityService activityService;
     @Autowired
-    public HistoryService(IHistoryRepository repository, HistoryMapper mapper, UserService userService, ActivityService activityService) {
-        super(repository, mapper, userService);
+    public HistoryService(IHistoryRepository repository, HistoryMapper mapper, ActivityService activityService) {
+        super(repository, mapper);
         this.activityService = activityService;
     }
     @Override

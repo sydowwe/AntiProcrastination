@@ -20,8 +20,8 @@ import java.util.Map;
 public class RoutineToDoListService extends MyService<RoutineToDoList, IRoutineToDoListRepository, RoutineToDoListRequest, RoutineToDoListResponse, RoutineToDoListMapper> implements IToDoListService {
     private final RoutineToDoListTimePeriodService timePeriodService;
     @Autowired
-    public RoutineToDoListService(IRoutineToDoListRepository repository, RoutineToDoListMapper mapper, UserService userService, RoutineToDoListTimePeriodService timePeriodService) {
-        super(repository, mapper, userService);
+    public RoutineToDoListService(IRoutineToDoListRepository repository, RoutineToDoListMapper mapper, RoutineToDoListTimePeriodService timePeriodService) {
+        super(repository, mapper);
         this.timePeriodService = timePeriodService;
     }
     @Override

@@ -22,10 +22,10 @@ import java.util.Map;
 public class UrgencyService extends MyService<Urgency,IUrgencyRepository, UrgencyRequest, UrgencyResponse,UrgencyMapper> implements IUrgencyService {
     @Autowired
     public UrgencyService(IUrgencyRepository repository, UrgencyMapper mapper) {
-        super(repository, mapper, null);
+        super(repository, mapper);
     }
     @Override
-    public void createDefaultUrgencyItems(User user) throws EntityExistsException, RollbackException {
+    public void createDefaultItems(User user) throws EntityExistsException, RollbackException {
         this.repository.saveAll(
                 List.of(
                         new Urgency("Today", "#FF5252", 1, user),         // Red

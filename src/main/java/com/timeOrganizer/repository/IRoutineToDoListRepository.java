@@ -18,7 +18,7 @@ public interface IRoutineToDoListRepository extends  IMyRepository<RoutineToDoLi
             "       COLLECT(t) as routineToDoListItems " +
             "FROM RoutineToDoList t " +
             "WHERE t.user.id = :userId " +
-            "GROUP BY t.timePeriod.length")
+            "GROUP BY t.timePeriod.lengthInDays")
     List<RoutineToDoListGroupedByTimePeriod> getAllByUserIdGroupedByTimePeriod(@Param("userId") long userId);
     @Modifying
     @Query("UPDATE ToDoList t SET t.isDone = :isDone WHERE t.id = :id")
