@@ -2,10 +2,7 @@ package com.timeOrganizer.controller;
 
 import com.timeOrganizer.exception.QrCode2FAGenerationException;
 import com.timeOrganizer.helper.JsonRequestMapping;
-import com.timeOrganizer.model.dto.request.GoogleAuthLoginRequest;
-import com.timeOrganizer.model.dto.request.LoginRequest;
-import com.timeOrganizer.model.dto.request.RegistrationRequest;
-import com.timeOrganizer.model.dto.request.UserRequest;
+import com.timeOrganizer.model.dto.request.*;
 import com.timeOrganizer.model.dto.response.*;
 import com.timeOrganizer.security.config.OAuth2Service;
 import com.timeOrganizer.service.UserService;
@@ -63,7 +60,7 @@ public class UserController extends MyController {
         return ResponseEntity.ok("Logout successful");
     }
     @PostMapping("/auth/forgotten-password")
-    public ResponseEntity<String> forgottenPassword(@RequestBody GoogleAuthLoginRequest request) {
+    public ResponseEntity<String> forgottenPassword(@RequestBody EmailRequest request) {
         try {
             userService.resetPassword(request.getEmail());
         } catch (EntityNotFoundException notFoundException) {

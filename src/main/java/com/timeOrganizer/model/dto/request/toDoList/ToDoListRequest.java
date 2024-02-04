@@ -1,11 +1,10 @@
 package com.timeOrganizer.model.dto.request.toDoList;
 
-import com.timeOrganizer.model.dto.response.toDoList.BaseToDoListResponse;
-import com.timeOrganizer.model.dto.request.IRequest;
+import com.timeOrganizer.model.dto.request.NameTextRequest;
 import lombok.Getter;
 
 @Getter
 @SuppressWarnings("unused")
-public class ToDoListRequest extends BaseToDoListRequest {
+public class ToDoListRequest extends NameTextRequest {
     private long urgencyId;
 }

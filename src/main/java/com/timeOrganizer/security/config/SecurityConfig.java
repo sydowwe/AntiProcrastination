@@ -7,7 +7,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2ClientConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -21,15 +20,15 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-    private final MyOauth2SuccessHandler successHandler;
-    private final MyOauth2FailureHandler failureHandler;
+//    private final MyOauth2SuccessHandler successHandler;
+//    private final MyOauth2FailureHandler failureHandler;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors().and().csrf()
                     .disable()
                     .authorizeHttpRequests()
-                    .requestMatchers(HttpMethod.POST,"/user/auth/**")
+                    .requestMatchers(HttpMethod.POST,"/user/auth/**","/user/auth/login")
                     .permitAll()
                     .anyRequest()
                     .authenticated()

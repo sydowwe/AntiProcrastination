@@ -17,7 +17,7 @@ public class MyUserDetailsService implements UserDetailsService {
     private final UserMapper userMapper;
     @Transactional
     public LoggedUser loadById(long id) throws EntityNotFoundException{
-        return userMapper.toLoggedUser(userRepository.getReferenceById(id));
+        return userMapper.toLoggedUser( userRepository.getReferenceById(id));
     }
     @Override
     public LoggedUser loadUserByUsername(String email) throws UsernameNotFoundException {

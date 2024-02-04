@@ -6,6 +6,7 @@ import com.timeOrganizer.model.dto.request.toDoList.RoutineToDoListRequest;
 import com.timeOrganizer.model.dto.response.toDoList.RoutineToDoListResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.RoutineToDoList;
+import com.timeOrganizer.model.groupedData.RoutineToDoListGroupedByTimePeriod;
 import com.timeOrganizer.repository.IRoutineToDoListRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,8 @@ public class RoutineToDoListService extends MyService<RoutineToDoList, IRoutineT
         }
         toDoListItems.forEach(item->item.setDone(requestList.get(0).isDone()));
         this.repository.saveAll(toDoListItems);
+    }
+    public List<RoutineToDoListGroupedByTimePeriod> getAllByUserIdGroupedByTimePeriod(long userId){
+        return this.repository.getAllByUserIdGroupedByTimePeriod(userId);
     }
 }

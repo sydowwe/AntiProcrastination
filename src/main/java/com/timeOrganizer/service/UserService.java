@@ -43,6 +43,7 @@ import java.util.Base64;
 @RequiredArgsConstructor
 public class UserService {
     private final IUserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final GoogleAuthenticator gAuth;
@@ -59,7 +60,7 @@ public class UserService {
 
     public RegistrationResponse registerUser(RegistrationRequest registration) throws PersistenceException, QrCode2FAGenerationException {
         RegistrationResponse response;
-        User newUser = User.builder().name(registration.getName()).surname(registration.getSurname()).email(registration.getEmail()).password(new BCryptPasswordEncoder().encode(registration.getPassword())).role(UserRole.USER).build();
+        User newUser = User.builder().name(registration.getName()).surname(registration.getSurname()).email(registration.getEmail()).password(passwordEncoder.encode(registration.getPassword())).role(UserRole.USER).build();
         if (registration.isHas2FA()) {
             GoogleAuthenticatorKey credentials = gAuth.createCredentials();
             newUser.setSecretKey2FA(credentials.getKey());
@@ -105,7 +106,7 @@ public class UserService {
     }
 
     public LoginResponse loginUser(LoginRequest loginRequest) throws AuthenticationException, UserNotFoundException {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+//        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         User user = this.findByEmail(loginRequest.getEmail());
         if (user.isStayLoggedIn() != loginRequest.isStayLoggedIn()) {
             userRepository.updateStayLoggedInById(user.getId(), loginRequest.isStayLoggedIn());

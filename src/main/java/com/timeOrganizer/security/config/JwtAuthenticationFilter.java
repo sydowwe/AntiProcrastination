@@ -34,12 +34,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         try {
-            LoggedUser user = userDetailsService.loadById(jwtService.extractId(authHeader));
-            if (jwtService.isTokenValid(authHeader, user)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        user, null, user.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                LoggedUser user = userDetailsService.loadById(jwtService.extractId(authHeader));
+                if (jwtService.isTokenValid(authHeader, user)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            user, user.getPassword(), user.getAuthorities());
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
         } catch (EntityNotFoundException | NumberFormatException e) {
             handleException(response, HttpStatus.NOT_FOUND, e.getMessage());
