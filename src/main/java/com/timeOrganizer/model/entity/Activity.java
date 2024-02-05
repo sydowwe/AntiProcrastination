@@ -6,8 +6,9 @@ import lombok.*;
 import java.util.List;
 
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
+@ToString(exclude = {"historyList"})
 @Entity
 @Table(name = "activity", schema = "test", uniqueConstraints = @UniqueConstraint(name = "unique_userId_name", columnNames = {"userId", "name"}))
 public class Activity extends NameTextEntity {

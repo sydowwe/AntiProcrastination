@@ -8,11 +8,12 @@ import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 @Entity
 @Table(name = "user", schema = "test")
-@ToString(exclude="scratchCodes")
+@ToString(exclude = {"scratchCodes", "activityList", "categoryList", "historyList", "roleList", "toDoLists", "urgencyList"})
 public class User implements IEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

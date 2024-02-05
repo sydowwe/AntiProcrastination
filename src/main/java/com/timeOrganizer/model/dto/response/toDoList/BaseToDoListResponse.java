@@ -1,6 +1,6 @@
 package com.timeOrganizer.model.dto.response.toDoList;
 
-import com.timeOrganizer.model.dto.response.IResponse;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.timeOrganizer.model.dto.response.NameTextResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,5 +10,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class BaseToDoListResponse extends NameTextResponse {
-    private boolean isDone = false;
+    @JsonProperty(value = "isDone")
+    private boolean isDone;
 }

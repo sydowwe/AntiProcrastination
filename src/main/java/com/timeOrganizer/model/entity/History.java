@@ -3,8 +3,10 @@ package com.timeOrganizer.model.entity;
 import com.timeOrganizer.helper.MyIntTime;
 import com.timeOrganizer.helper.MyIntTimeDBConverter;
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.proxy.HibernateProxy;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.ZonedDateTime;
 
@@ -26,9 +28,5 @@ public class History extends AbstractEntity{
     private MyIntTime length;
     public int getLengthInSeconds() {
         return length.getHours() * 3600 + length.getMinutes() * 60 + length.getSeconds();
-    }
-    @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }

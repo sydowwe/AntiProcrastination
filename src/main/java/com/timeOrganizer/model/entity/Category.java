@@ -9,8 +9,9 @@ import lombok.*;
 import java.util.List;
 
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
+@ToString(exclude = {"activities"})
 @Entity
 @Table(name = "category", schema = "test",
         uniqueConstraints = @UniqueConstraint(name = "unique_userId_name",columnNames = {"userId", "name"})

@@ -68,7 +68,7 @@ public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extend
     protected String getSortByProperties(){
         return "id";
     }
-    private Sort getSort(){
+    protected Sort getSort(){
         return Sort.by(this.getSortDirection(), this.getSortByProperties());
     }
 }

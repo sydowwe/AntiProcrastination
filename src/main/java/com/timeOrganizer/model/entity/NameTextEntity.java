@@ -7,8 +7,9 @@ import lombok.*;
 @MappedSuperclass
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
+@ToString
 public abstract class NameTextEntity extends AbstractEntity{
     @Column(nullable = false)
     private String name;

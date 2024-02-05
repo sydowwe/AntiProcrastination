@@ -10,6 +10,7 @@ import com.timeOrganizer.repository.IRoutineToDoListTimePeriodRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.RollbackException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,10 @@ public class RoutineToDoListTimePeriodService extends MyService<RoutineTimePerio
                         new RoutineTimePeriod("Yearly", "#A5CCF3", 365, user)       // Grey
                 )
         );
+    }
+    @Override
+    protected Sort.Direction getSortDirection(){
+        return Sort.Direction.ASC;
     }
     @Override
     protected Map<String, ? extends AbstractEntity> getDependencies(TimePeriodRequest request) {

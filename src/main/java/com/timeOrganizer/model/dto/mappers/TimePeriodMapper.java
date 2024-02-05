@@ -16,7 +16,7 @@ public class TimePeriodMapper extends AbstractInOutMapper<RoutineTimePeriod, Tim
                 .id(timePeriod.getId())
                 .text(timePeriod.getText())
                 .color(timePeriod.getColor())
-                .length(timePeriod.getLengthInDays()).build();
+                .lengthInDays(timePeriod.getLengthInDays()).build();
     }
     @Override
     public RoutineTimePeriod updateEntityFromRequest(RoutineTimePeriod entity, TimePeriodRequest request, Map<String, ? extends AbstractEntity> dependencies) {

@@ -1,5 +1,6 @@
 package com.timeOrganizer.controller;
 
+import com.timeOrganizer.exception.BatchDeleteException;
 import com.timeOrganizer.exception.IdInTokenFormatException;
 import com.timeOrganizer.exception.QrCode2FAGenerationException;
 import com.timeOrganizer.exception.UserNotInSecurityContext;
@@ -45,6 +46,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(QrCode2FAGenerationException.class)
     public ResponseEntity<ErrorResponse> handleQrCode2FAGenerationException(QrCode2FAGenerationException e) {
         return this.createErrorResponse("2FA QR code generation", HttpStatus.FAILED_DEPENDENCY, e);
+    }
+    @ExceptionHandler(BatchDeleteException.class)
+    public ResponseEntity<ErrorResponse> handleBatchDeleteException(BatchDeleteException e) {
+        return this.createErrorResponse("Batch delete failed", HttpStatus.MULTI_STATUS, e);
     }
     private ResponseEntity<ErrorResponse> createErrorResponse(String error, HttpStatus status,Exception e) {
         ErrorResponse errorResponse = new ErrorResponse(error+"  ERROR!", e.getMessage());

@@ -1,8 +1,10 @@
 package com.timeOrganizer.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.proxy.HibernateProxy;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @NoArgsConstructor
 @Getter
@@ -20,9 +22,4 @@ public class RoutineToDoList extends NameTextEntity {
     @ManyToOne
     @JoinColumn(name = "timePeriodId", nullable = false)
     private RoutineTimePeriod timePeriod;
-
-    @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
-    }
 }

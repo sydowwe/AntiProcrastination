@@ -2,6 +2,7 @@ package com.timeOrganizer.controller;
 
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.IdIsDoneRequest;
+import com.timeOrganizer.model.dto.request.IdRequest;
 import com.timeOrganizer.model.dto.request.toDoList.ToDoListRequest;
 import com.timeOrganizer.model.dto.response.*;
 import com.timeOrganizer.model.dto.response.toDoList.ToDoListResponse;
@@ -52,5 +53,11 @@ public class ToDoListController extends MyController {
     public ResponseEntity<IdResponse> deleteToDoListItem(@PathVariable("id") Long id) {
         toDoListService.deleteById(id);
         return ResponseEntity.ok(new IdResponse(id));
+    }
+    @PostMapping("/batch-delete")
+    public ResponseEntity<SuccessResponse> batchDelete(@RequestBody List<IdRequest> request) {
+        toDoListService.batchDelete(request);
+        return ResponseEntity
+                .ok(new SuccessResponse("deleted"));
     }
 }

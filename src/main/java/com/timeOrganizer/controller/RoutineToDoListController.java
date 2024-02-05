@@ -2,10 +2,12 @@ package com.timeOrganizer.controller;
 
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.IdIsDoneRequest;
+import com.timeOrganizer.model.dto.request.IdRequest;
 import com.timeOrganizer.model.dto.request.toDoList.RoutineToDoListRequest;
 import com.timeOrganizer.model.dto.response.IdLabelResponse;
 import com.timeOrganizer.model.dto.response.IdResponse;
 import com.timeOrganizer.model.dto.response.SuccessResponse;
+import com.timeOrganizer.model.dto.response.toDoList.RoutineToDoListGroupedResponse;
 import com.timeOrganizer.model.dto.response.toDoList.RoutineToDoListResponse;
 import com.timeOrganizer.service.RoutineToDoListService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +22,8 @@ import java.util.List;
 public class RoutineToDoListController extends MyController{
     private final RoutineToDoListService routineToDoListService;
     @PostMapping("/get-all")
-    public ResponseEntity<List<RoutineToDoListResponse>> getAllRoutineToDoListItems() {
-        return ResponseEntity.ok(routineToDoListService.getAll(this.getLoggedUser().getId()));
+    public ResponseEntity<List<RoutineToDoListGroupedResponse>> getAllRoutineToDoListItems() {
+        return ResponseEntity.ok(routineToDoListService.getAllByUserIdGroupedByTimePeriod(this.getLoggedUser().getId()));
     }
     @GetMapping("/{id}")
     public ResponseEntity<IdLabelResponse> get(@PathVariable("id") Long id) {
@@ -39,7 +41,7 @@ public class RoutineToDoListController extends MyController{
         return ResponseEntity
                 .ok(new SuccessResponse("changed"));
     }
-    @PostMapping("/create")
+    @PostMapping("/add")
     public ResponseEntity<RoutineToDoListResponse> createRoutineToDoListItem(@RequestBody RoutineToDoListRequest routineToDoListRequest) {
         RoutineToDoListResponse newRoutineToDoListItem = routineToDoListService.insert(routineToDoListRequest, this.getLoggedUser().getReference());
         return ResponseEntity
@@ -54,5 +56,11 @@ public class RoutineToDoListController extends MyController{
     public ResponseEntity<IdResponse> deleteRoutineToDoListItem(@PathVariable("id") Long id) {
         routineToDoListService.deleteById(id);
         return ResponseEntity.ok(new IdResponse(id));
+    }
+    @PostMapping("/batch-delete")
+    public ResponseEntity<SuccessResponse> batchDelete(@RequestBody List<IdRequest> request) {
+        routineToDoListService.batchDelete(request);
+        return ResponseEntity
+                .ok(new SuccessResponse("deleted"));
     }
 }

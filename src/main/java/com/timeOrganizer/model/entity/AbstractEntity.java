@@ -2,10 +2,8 @@ package com.timeOrganizer.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @MappedSuperclass
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,9 +26,5 @@ public abstract class AbstractEntity implements IEntity{
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
-    }
-    @Override
-    public int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }
