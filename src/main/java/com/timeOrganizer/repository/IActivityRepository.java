@@ -1,7 +1,6 @@
 package com.timeOrganizer.repository;
 
 import com.timeOrganizer.model.entity.Activity;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,8 +10,5 @@ public interface IActivityRepository extends IMyRepository<Activity> {
     List<Activity> findByRoleIdAndUserId(long roleId, long userId);
 
     List<Activity> findByCategoryIdAndUserId(long categoryId, long userId);
-
-    @Override
-    List<Activity> findAllByUserId(long userId, Sort sort);
 }
 

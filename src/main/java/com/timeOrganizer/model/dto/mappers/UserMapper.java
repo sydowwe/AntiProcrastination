@@ -40,6 +40,7 @@ public class UserMapper{
                 .has2FA(reference.has2FA())
                 .name(reference.getName())
                 .surname(reference.getSurname())
+                .password(reference.getPassword())
                 .build();
     }
 

@@ -1,8 +1,6 @@
 package com.timeOrganizer.service;
 
-import com.timeOrganizer.exception.BatchDeleteException;
 import com.timeOrganizer.model.dto.mappers.toDoList.RoutineToDoListMapper;
-import com.timeOrganizer.model.dto.request.IdIsDoneRequest;
 import com.timeOrganizer.model.dto.request.IdRequest;
 import com.timeOrganizer.model.dto.request.toDoList.RoutineToDoListRequest;
 import com.timeOrganizer.model.dto.response.toDoList.RoutineToDoListGroupedResponse;
@@ -34,26 +32,8 @@ public class RoutineToDoListService extends MyService<RoutineToDoList, IRoutineT
         return Map.of("timePeriod",timePeriodService.getReference(request.getTimePeriodId()));
     }
 
-    public void setIsDone(IdIsDoneRequest request) throws EntityNotFoundException {
-        if (this.repository.updateDoneById(request.getId(),request.isDone()) < 1){
-            throw new EntityNotFoundException();
-        }
-    }
-    public void batchSetIsDone(List<IdIsDoneRequest> requestList) throws EntityNotFoundException {
-        var ids = requestList.stream().map(IdIsDoneRequest::getId).toList();
-        List<RoutineToDoList> toDoListItems = this.repository.findAllById(ids);
-        if (toDoListItems.size() != ids.size()) {
-            throw new EntityNotFoundException();
-        }
-        toDoListItems.forEach(item->item.setDone(requestList.get(0).isDone()));
-        this.repository.saveAll(toDoListItems);
-    }
-    public void batchDelete(List<IdRequest> idList) throws BatchDeleteException {
-        var ids = idList.stream().map(IdRequest::getId).toList();
-        int deletedIds = this.repository.batchDelete(ids);
-        if (deletedIds != ids.size()) {
-            throw new BatchDeleteException();
-        }
+    public void setIsDone(List<IdRequest> requestList) throws EntityNotFoundException {
+        this.repository.updateIsDoneByIds(requestList.stream().map(IdRequest::getId).toList());
     }
     public List<RoutineToDoListGroupedResponse> getAllByUserIdGroupedByTimePeriod(long userId){
         var allItems = this.repository.findAllByUserId(userId,this.getSort());

@@ -14,9 +14,9 @@ import java.util.List;
 @Transactional
 public interface IRoutineToDoListRepository extends  IMyRepository<RoutineToDoList> {
     @Modifying
-    @Query("UPDATE RoutineToDoList t SET t.isDone = :isDone WHERE t.id = :id")
-    int updateDoneById(@Param("id") long id, @Param("isDone") boolean isDone) throws EntityNotFoundException;
-    @Modifying
+    @Query("UPDATE RoutineToDoList t SET t.isDone = CAST(NOT (t.isDone) AS boolean) WHERE t.id IN :ids")
+    void updateIsDoneByIds(@Param("ids") List<Long> ids) throws EntityNotFoundException;
+/*    @Modifying
     @Query("DELETE FROM RoutineToDoList t WHERE t.id IN :ids")
-    int batchDelete(@Param("ids") List<Long> ids);
+    int batchDelete(@Param("ids") List<Long> ids);*/
 }

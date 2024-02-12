@@ -32,10 +32,10 @@ public class ActivityMapper extends AbstractInOutMapper<Activity, ActivityReques
     }
     @Override
     public Activity updateEntityFromRequest(Activity entity, ActivityRequest request, Map<String, ? extends AbstractEntity> dependencies) {
-        entity.setName(request.getActivity());
-        entity.setText(request.getDescription());
+        entity.setName(request.getName());
+        entity.setText(request.getText());
         entity.setOnToDoList(request.getIsOnToDoList());
-        entity.setOnToDoList(request.getIsObligatory());
+        entity.setOnToDoList(request.getIsOnToDoList());
         entity.setRole((Role) dependencies.get("role"));
         entity.setCategory((Category) dependencies.get("category"));
         return entity;

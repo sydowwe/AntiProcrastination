@@ -1,10 +1,11 @@
 package com.timeOrganizer.controller;
 
 import com.timeOrganizer.helper.JsonRequestMapping;
-import com.timeOrganizer.model.dto.request.IdIsDoneRequest;
 import com.timeOrganizer.model.dto.request.IdRequest;
 import com.timeOrganizer.model.dto.request.toDoList.ToDoListRequest;
-import com.timeOrganizer.model.dto.response.*;
+import com.timeOrganizer.model.dto.response.IdLabelResponse;
+import com.timeOrganizer.model.dto.response.IdResponse;
+import com.timeOrganizer.model.dto.response.SuccessResponse;
 import com.timeOrganizer.model.dto.response.toDoList.ToDoListResponse;
 import com.timeOrganizer.service.ToDoListService;
 import lombok.RequiredArgsConstructor;
@@ -26,15 +27,9 @@ public class ToDoListController extends MyController {
     public ResponseEntity<IdLabelResponse> get(@PathVariable("id") Long id) {
         return ResponseEntity.ok(this.mapToIdNameResponse(toDoListService.getResponseById(id)));
     }
-    @PostMapping("/change-done")
-    public ResponseEntity<SuccessResponse> changeDone(@RequestBody IdIsDoneRequest request) {
-        toDoListService.setIsDone(request);
-        return ResponseEntity
-                .ok(new SuccessResponse("changed"));
-    }
-    @PostMapping("/batch-change-done")
-    public ResponseEntity<SuccessResponse> batchChangeDone(@RequestBody List<IdIsDoneRequest> request) {
-        toDoListService.batchSetIsDone(request);
+    @PatchMapping("/change-done")
+    public ResponseEntity<SuccessResponse> changeDone(@RequestBody List<IdRequest> requestList) {
+        toDoListService.setIsDone(requestList);
         return ResponseEntity
                 .ok(new SuccessResponse("changed"));
     }

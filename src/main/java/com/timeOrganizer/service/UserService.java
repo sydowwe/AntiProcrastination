@@ -106,7 +106,7 @@ public class UserService {
     }
 
     public LoginResponse loginUser(LoginRequest loginRequest) throws AuthenticationException, UserNotFoundException {
-//        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         User user = this.findByEmail(loginRequest.getEmail());
         if (user.isStayLoggedIn() != loginRequest.isStayLoggedIn()) {
             userRepository.updateStayLoggedInById(user.getId(), loginRequest.isStayLoggedIn());

@@ -1,7 +1,9 @@
 package com.timeOrganizer.service;
 
+import com.timeOrganizer.exception.BatchDeleteException;
 import com.timeOrganizer.model.dto.mappers.AbstractInOutMapper;
 import com.timeOrganizer.model.dto.request.IRequest;
+import com.timeOrganizer.model.dto.request.IdRequest;
 import com.timeOrganizer.model.dto.response.IdResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.User;
@@ -36,14 +38,12 @@ public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extend
     public void deleteById(@NonNull long id) throws EntityNotFoundException {
         repository.deleteById(id);
     }
-
-    public boolean isPresent(long id) {
-        try {
-            this.getReference(id);
-        } catch (EntityNotFoundException e) {
-            return false;
+    public void batchDelete(List<IdRequest> idList) throws BatchDeleteException {
+        List<Long> ids = idList.stream().map(IdRequest::getId).toList();
+        int deletedIds = this.repository.batchDelete(ids);
+        if (deletedIds != ids.size()) {
+            throw new BatchDeleteException();
         }
-        return true;
     }
     protected ENTITY getById(long id) throws EntityNotFoundException{
         return repository.findById(id)

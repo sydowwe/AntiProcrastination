@@ -16,10 +16,8 @@ import java.util.Map;
 @Service
 @Transactional
 public class ActivityService extends MyService<Activity,IActivityRepository,ActivityRequest,ActivityResponse,ActivityMapper> implements IActivityService {
-
     private final RoleService roleService;
     private final CategoryService categoryService;
-
     @Autowired
     public ActivityService(IActivityRepository repository, ActivityMapper mapper, RoleService roleService, CategoryService categoryService) {
         super(repository, mapper);
