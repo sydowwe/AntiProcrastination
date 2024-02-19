@@ -9,11 +9,11 @@ import com.timeOrganizer.exception.QrCode2FAGenerationException;
 import com.timeOrganizer.exception.UserNotFoundException;
 import com.timeOrganizer.helper.EmailService;
 import com.timeOrganizer.model.dto.mappers.UserMapper;
-import com.timeOrganizer.model.dto.request.GoogleAuthLoginRequest;
-import com.timeOrganizer.model.dto.request.LoginRequest;
-import com.timeOrganizer.model.dto.request.RegistrationRequest;
-import com.timeOrganizer.model.dto.request.UserRequest;
-import com.timeOrganizer.model.dto.response.*;
+import com.timeOrganizer.model.dto.request.user.GoogleAuthLoginRequest;
+import com.timeOrganizer.model.dto.request.user.LoginRequest;
+import com.timeOrganizer.model.dto.request.user.RegistrationRequest;
+import com.timeOrganizer.model.dto.request.user.UserRequest;
+import com.timeOrganizer.model.dto.response.user.*;
 import com.timeOrganizer.model.entity.User;
 import com.timeOrganizer.repository.IUserRepository;
 import com.timeOrganizer.security.LoggedUser;
@@ -41,7 +41,7 @@ import java.util.Base64;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements IUserService{
     private final IUserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -50,14 +50,14 @@ public class UserService {
     private final EmailService emailService;
     private final UserMapper userMapper;
     private final UrgencyService urgencyService;
-    private final RoutineToDoListTimePeriodService routineToDoListTimePeriodService;
+    private final RoutineToDoListTimePeriodTimePeriodService routineToDoListTimePeriodService;
     @Value("${token.expirationLong}")
     private int TOKEN_EXPIRATION_IN_HOURS_LONG;
     @Value("${token.expirationShort}")
     private int TOKEN_EXPIRATION_IN_HOURS_SHORT;
     @Value("${app.name}")
     private String APP_NAME;
-
+    @Override
     public RegistrationResponse registerUser(RegistrationRequest registration) throws PersistenceException, QrCode2FAGenerationException {
         RegistrationResponse response;
         User newUser = User.builder().name(registration.getName()).surname(registration.getSurname()).email(registration.getEmail()).password(passwordEncoder.encode(registration.getPassword())).role(UserRole.USER).build();
@@ -91,10 +91,9 @@ public class UserService {
         }
         return outputStream.toByteArray();
     }
-
+    @Override
     public Oauth2LoginResponse oauth2LoginUser(OAuth2User oAuth2User) throws AuthenticationException, UserNotFoundException {
         String email = oAuth2User.getName();
-        var test = oAuth2User.getAttributes();
         User user = this.findByEmail(email);
         if (user.has2FA()) {
             //save secretKey2Fa to session by email
@@ -104,7 +103,7 @@ public class UserService {
             return Oauth2LoginResponse.builder().id(user.getId()).token(jwtToken).email(email).authenticated(true).has2FA(false).build();
         }
     }
-
+    @Override
     public LoginResponse loginUser(LoginRequest loginRequest) throws AuthenticationException, UserNotFoundException {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         User user = this.findByEmail(loginRequest.getEmail());
@@ -119,7 +118,7 @@ public class UserService {
             return LoginResponse.builder().id(user.getId()).token(jwtToken).email(loginRequest.getEmail()).has2FA(false).build();
         }
     }
-
+    @Override
     public GoogleAuthResponse validate2FALogin(GoogleAuthLoginRequest request) throws UserNotFoundException {
         User user = this.findByEmail(request.getEmail());
         if (gAuth.authorize(user.getSecretKey2FA(), Integer.parseInt(request.getCode()))) {
@@ -129,11 +128,11 @@ public class UserService {
             return new GoogleAuthResponse(false, null);
         }
     }
-
+    @Override
     public void logout(String token) {
         jwtService.invalidateToken(token);
     }
-
+    @Override
     public void resetPassword(String email) throws UserNotFoundException {
         String tempPassword = this.generateTemporaryPassword();
         int test = userRepository.updatePasswordByEmail(email, new BCryptPasswordEncoder().encode(tempPassword));
@@ -145,25 +144,26 @@ public class UserService {
     }
 
     //TODO Check if no changes made so no other requests needed
+    @Override
     public boolean wereSensitiveChangesMade(LoggedUser loggedUser, UserRequest changedUser) {
         return !(loggedUser.getEmail().equals(changedUser.getEmail()) && loggedUser.isHas2FA() == changedUser.isHas2FA());
     }
-
+    @Override
     public boolean verifyPasswordAndReturn2FAStatus(String token, String password) throws AuthenticationException {
         User loggedUser = getLoggedUser(token);
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loggedUser.getEmail(), password));
         return loggedUser.has2FA();
     }
-
+    @Override
     public boolean validate2FA(String token, int code) throws EntityNotFoundException, NumberFormatException {
         User loggedUser = getLoggedUser(token);
         return gAuth.authorize(loggedUser.getSecretKey2FA(), code);
     }
-
+    @Override
     public UserResponse getLoggedUserData(LoggedUser loggedUser) {
         return userMapper.convertToUserSettingsResponse(loggedUser);
     }
-
+    @Override
     public EditedUserResponse editLoggedUserData(String token, UserRequest request) throws EntityNotFoundException, NumberFormatException,
             QrCode2FAGenerationException {
         User loggedUser = this.getLoggedUser(token);
@@ -183,13 +183,13 @@ public class UserService {
         userRepository.save(loggedUser);
         return userMapper.convertToEditedUserSettingsResponse(loggedUser, newToken, qrCode);
     }
-
+    @Override
     public void changeLoggedUserPassword(String token, String newPassword) throws EntityNotFoundException {
         User loggedUser = getLoggedUser(token);
         loggedUser.setPassword(new BCryptPasswordEncoder().encode(newPassword));
         userRepository.save(loggedUser);
     }
-
+    @Override
     public void deleteLoggedUserAccount(String token) throws EntityNotFoundException, NumberFormatException {
         try {
             long id = jwtService.extractId(token);
@@ -200,7 +200,7 @@ public class UserService {
             throw new EntityNotFoundException("Entity with id: " + jwtService.extractId(token) + "NOT FOUND");
         }
     }
-
+    @Override
     public byte[] get2FAQrCode(String token) throws EntityNotFoundException, NumberFormatException, QrCode2FAGenerationException {
         User loggedUser = getLoggedUser(token);
         GoogleAuthenticatorKey credentials = new GoogleAuthenticatorKey.Builder(loggedUser.getSecretKey2FA())
@@ -210,12 +210,13 @@ public class UserService {
     }
 
     //TODO Create new qr when no scratchCodes left
+    @Override
     public int get2FAScratchCode(String token) throws EntityNotFoundException, NumberFormatException, QrCode2FAGenerationException {
         User loggedUser = getLoggedUser(token);
         int scratchCode;
         try {
             var scratchCodes = loggedUser.getScratchCodes();
-            scratchCode = scratchCodes.remove(0);
+            scratchCode = scratchCodes.removeFirst();
             loggedUser.setScratchCodes(scratchCodes);
         } catch (IndexOutOfBoundsException e) {
             GoogleAuthenticatorKey credentials = gAuth.createCredentials();
@@ -229,11 +230,7 @@ public class UserService {
     }
 
     //=================================HELPER METHODS================================================================
-    public User getUserReference(long id) throws UserNotFoundException {
-        return this.userRepository.getReferenceById(id);
-    }
-
-    public User getLoggedUser(String token) throws UserNotFoundException, IdInTokenFormatException {
+    private User getLoggedUser(String token) throws UserNotFoundException, IdInTokenFormatException {
         return this.findById(jwtService.extractId(token));
     }
 

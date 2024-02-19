@@ -1,6 +1,6 @@
 package com.timeOrganizer.controller;
 
-import com.timeOrganizer.model.dto.response.UrgencyResponse;
+import com.timeOrganizer.model.dto.response.toDoList.UrgencyResponse;
 import com.timeOrganizer.service.UrgencyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

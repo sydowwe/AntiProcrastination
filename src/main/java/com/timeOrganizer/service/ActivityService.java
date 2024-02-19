@@ -24,7 +24,10 @@ public class ActivityService extends MyService<Activity,IActivityRepository,Acti
         this.roleService = roleService;
         this.categoryService = categoryService;
     }
-
+    @Override
+    protected Map<String, ? extends AbstractEntity> getDependencies(ActivityRequest request) {
+        return Map.of("role",this.roleService.getReference(request.getCategoryId()),"category",this.categoryService.getReference(request.getCategoryId()));
+    }
     @Override
     public List<ActivityResponse> getActivitiesByRoleId(long roleId, long userId) {
         return this.mapper.convertToFullResponseList(this.repository.findByRoleIdAndUserId(roleId, userId));
@@ -32,10 +35,5 @@ public class ActivityService extends MyService<Activity,IActivityRepository,Acti
     @Override
     public List<ActivityResponse> getActivitiesByCategoryId(long categoryId, long userId) {
         return this.mapper.convertToFullResponseList(this.repository.findByCategoryIdAndUserId(categoryId, userId));
-    }
-
-    @Override
-    protected Map<String, ? extends AbstractEntity> getDependencies(ActivityRequest request) {
-        return Map.of("role",this.roleService.getReference(request.getCategoryId()),"category",this.categoryService.getReference(request.getCategoryId()));
     }
 }

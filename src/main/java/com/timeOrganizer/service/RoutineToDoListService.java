@@ -1,7 +1,7 @@
 package com.timeOrganizer.service;
 
 import com.timeOrganizer.model.dto.mappers.toDoList.RoutineToDoListMapper;
-import com.timeOrganizer.model.dto.request.IdRequest;
+import com.timeOrganizer.model.dto.request.extendable.IdRequest;
 import com.timeOrganizer.model.dto.request.toDoList.RoutineToDoListRequest;
 import com.timeOrganizer.model.dto.response.toDoList.RoutineToDoListGroupedResponse;
 import com.timeOrganizer.model.dto.response.toDoList.RoutineToDoListResponse;
@@ -20,25 +20,35 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class RoutineToDoListService extends MyService<RoutineToDoList, IRoutineToDoListRepository, RoutineToDoListRequest, RoutineToDoListResponse, RoutineToDoListMapper> implements IToDoListService {
-    private final RoutineToDoListTimePeriodService timePeriodService;
-    @Autowired
-    public RoutineToDoListService(IRoutineToDoListRepository repository, RoutineToDoListMapper mapper, RoutineToDoListTimePeriodService timePeriodService) {
-        super(repository, mapper);
-        this.timePeriodService = timePeriodService;
-    }
-    @Override
-    protected Map<String, ? extends AbstractEntity> getDependencies(RoutineToDoListRequest request) {
-        return Map.of("timePeriod",timePeriodService.getReference(request.getTimePeriodId()));
-    }
+public class RoutineToDoListService extends MyService<RoutineToDoList, IRoutineToDoListRepository, RoutineToDoListRequest, RoutineToDoListResponse, RoutineToDoListMapper> implements IRoutineTodoListService
+{
+	private final RoutineToDoListTimePeriodTimePeriodService timePeriodService;
 
-    public void setIsDone(List<IdRequest> requestList) throws EntityNotFoundException {
-        this.repository.updateIsDoneByIds(requestList.stream().map(IdRequest::getId).toList());
-    }
-    public List<RoutineToDoListGroupedResponse> getAllByUserIdGroupedByTimePeriod(long userId){
-        var allItems = this.repository.findAllByUserId(userId,this.getSort());
-        Map<RoutineTimePeriod, List<RoutineToDoList>> groupedByTimePeriod = allItems.stream()
-                .collect(Collectors.groupingBy(RoutineToDoList::getTimePeriod));
-        return this.mapper.convertToGroupedResponseAndSort(groupedByTimePeriod);
-    }
+	@Autowired
+	public RoutineToDoListService(IRoutineToDoListRepository repository, RoutineToDoListMapper mapper, RoutineToDoListTimePeriodTimePeriodService timePeriodService)
+	{
+		super(repository, mapper);
+		this.timePeriodService = timePeriodService;
+	}
+
+	@Override
+	protected Map<String, ? extends AbstractEntity> getDependencies(RoutineToDoListRequest request)
+	{
+		return Map.of("timePeriod", timePeriodService.getReference(request.getTimePeriodId()));
+	}
+
+	@Override
+	public void setIsDone(List<IdRequest> requestList) throws EntityNotFoundException
+	{
+		this.repository.updateIsDoneByIds(requestList.stream().map(IdRequest::getId).toList());
+	}
+
+	@Override
+	public List<RoutineToDoListGroupedResponse> getAllByUserIdGroupedByTimePeriod(long userId)
+	{
+		var allItems = this.repository.findAllByUserId(userId, this.getSort());
+		Map<RoutineTimePeriod, List<RoutineToDoList>> groupedByTimePeriod = allItems.stream()
+			.collect(Collectors.groupingBy(RoutineToDoList::getTimePeriod));
+		return this.mapper.convertToGroupedResponseAndSort(groupedByTimePeriod);
+	}
 }

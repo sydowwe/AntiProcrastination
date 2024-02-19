@@ -1,6 +1,6 @@
 package com.timeOrganizer.model.dto.mappers;
 
-import com.timeOrganizer.model.dto.request.NameTextColorIconRequest;
+import com.timeOrganizer.model.dto.request.extendable.NameTextColorIconRequest;
 import com.timeOrganizer.model.dto.response.RoleResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.Role;

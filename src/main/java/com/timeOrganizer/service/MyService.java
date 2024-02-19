@@ -2,15 +2,19 @@ package com.timeOrganizer.service;
 
 import com.timeOrganizer.exception.BatchDeleteException;
 import com.timeOrganizer.model.dto.mappers.AbstractInOutMapper;
-import com.timeOrganizer.model.dto.request.IRequest;
-import com.timeOrganizer.model.dto.request.IdRequest;
-import com.timeOrganizer.model.dto.response.IdResponse;
+import com.timeOrganizer.model.dto.request.extendable.IRequest;
+import com.timeOrganizer.model.dto.request.extendable.IdRequest;
+import com.timeOrganizer.model.dto.response.extendable.IdResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.User;
 import com.timeOrganizer.repository.IMyRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.exception.DataException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,9 +56,18 @@ public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extend
     public ENTITY getReference(long id) throws EntityNotFoundException {
         return this.repository.getReferenceById(id);
     }
-    public RESPONSE insert(@NonNull REQUEST request, User userReference) throws EntityNotFoundException, EntityExistsException {
+    public RESPONSE insert(@NonNull REQUEST request, User userReference) throws EntityNotFoundException, ConstraintViolationException, DuplicateKeyException, DataException {
         ENTITY entity = this.mapper.createEntityFromRequest(request,userReference,this.getDependencies(request));
-        return this.mapper.convertToFullResponse(this.repository.save(entity));
+        RESPONSE response = null;
+        try {
+            response = this.mapper.convertToFullResponse(this.repository.save(entity));
+        }catch (DataIntegrityViolationException ex){
+            Throwable rootCause = ex.getRootCause();
+            if (rootCause instanceof DuplicateKeyException) {
+               throw new DuplicateKeyException(ex.getMessage());
+            }
+        }
+        return response;
     }
     public RESPONSE updateById(long id,@NonNull REQUEST request)  throws EntityNotFoundException, EntityExistsException{
         ENTITY entity = this.getById(id);

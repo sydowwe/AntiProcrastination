@@ -1,6 +1,6 @@
 package com.timeOrganizer.model.dto.request.history;
 
-import com.timeOrganizer.model.dto.request.IRequest;
+import com.timeOrganizer.model.dto.request.extendable.IRequest;
 import lombok.Getter;
 
 import java.time.ZonedDateTime;

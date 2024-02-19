@@ -1,7 +1,7 @@
 package com.timeOrganizer.model.dto.request.toDoList;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.timeOrganizer.model.dto.request.NameTextRequest;
+import com.timeOrganizer.model.dto.request.extendable.NameTextRequest;
 import lombok.Getter;
 
 @Getter

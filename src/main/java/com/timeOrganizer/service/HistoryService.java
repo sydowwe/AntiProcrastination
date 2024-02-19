@@ -26,6 +26,10 @@ public class HistoryService extends MyService<History ,IHistoryRepository,Histor
         this.activityService = activityService;
     }
     @Override
+    protected Map<String, ? extends AbstractEntity> getDependencies(HistoryRequest request) {
+        return Map.of("activity",activityService.getReference(request.getActivityId()));
+    }
+    @Override
     public List<HistoryResponse> filter(HistoryFilterRequest filterRequest) {
         Specification<History> spec = HistorySpecifications.withFilter(
                 filterRequest.getActivityId(),
@@ -37,10 +41,5 @@ public class HistoryService extends MyService<History ,IHistoryRepository,Histor
                 filterRequest.getDateTo(),
                 filterRequest.getHoursBack());
         return this.mapper.convertToFullResponseList(this.repository.findAll(spec));
-    }
-
-    @Override
-    protected Map<String, ? extends AbstractEntity> getDependencies(HistoryRequest request) {
-        return Map.of("activity",activityService.getReference(request.getActivityId()));
     }
 }

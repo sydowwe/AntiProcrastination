@@ -1,11 +1,11 @@
 package com.timeOrganizer.controller;
 
 import com.timeOrganizer.helper.JsonRequestMapping;
-import com.timeOrganizer.model.dto.request.IdRequest;
+import com.timeOrganizer.model.dto.request.extendable.IdRequest;
 import com.timeOrganizer.model.dto.request.toDoList.ToDoListRequest;
-import com.timeOrganizer.model.dto.response.IdLabelResponse;
-import com.timeOrganizer.model.dto.response.IdResponse;
-import com.timeOrganizer.model.dto.response.SuccessResponse;
+import com.timeOrganizer.model.dto.response.general.IdLabelResponse;
+import com.timeOrganizer.model.dto.response.extendable.IdResponse;
+import com.timeOrganizer.model.dto.response.general.SuccessResponse;
 import com.timeOrganizer.model.dto.response.toDoList.ToDoListResponse;
 import com.timeOrganizer.service.ToDoListService;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.timeOrganizer.model.dto.mappers;
 
-import com.timeOrganizer.model.dto.response.IResponse;
+import com.timeOrganizer.model.dto.response.extendable.IResponse;
 import com.timeOrganizer.model.entity.IEntity;
 
 import java.util.List;

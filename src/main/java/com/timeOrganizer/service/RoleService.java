@@ -1,7 +1,7 @@
 package com.timeOrganizer.service;
 
 import com.timeOrganizer.model.dto.mappers.RoleMapper;
-import com.timeOrganizer.model.dto.request.NameTextColorIconRequest;
+import com.timeOrganizer.model.dto.request.extendable.NameTextColorIconRequest;
 import com.timeOrganizer.model.dto.response.RoleResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.Role;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class RoleService extends MyService<Role,IRoleRepository,NameTextColorIconRequest,RoleResponse,RoleMapper> implements IRoleService {
+public class RoleService extends MyService<Role,IRoleRepository,NameTextColorIconRequest,RoleResponse,RoleMapper> {
     @Autowired
     public RoleService(IRoleRepository repository, RoleMapper mapper) {
         super(repository, mapper);

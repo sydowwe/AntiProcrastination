@@ -16,10 +16,11 @@ public class Activity extends NameTextEntity {
     private boolean isOnToDoList;
     @Column(nullable = false)
     private boolean isUnavoidable;
-    @ManyToOne
+    //TODO ADD cascade types
+    @ManyToOne(optional = false)
     @JoinColumn(name = "roleId", nullable = false)
     private Role role;
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "categoryId", nullable = false)
     private Category category;
     @OneToMany(mappedBy = "activity")

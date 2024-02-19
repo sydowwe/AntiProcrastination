@@ -1,8 +1,8 @@
 package com.timeOrganizer.model.dto.mappers;
 
-import com.timeOrganizer.model.dto.request.UserRequest;
-import com.timeOrganizer.model.dto.response.EditedUserResponse;
-import com.timeOrganizer.model.dto.response.UserResponse;
+import com.timeOrganizer.model.dto.request.user.UserRequest;
+import com.timeOrganizer.model.dto.response.user.EditedUserResponse;
+import com.timeOrganizer.model.dto.response.user.UserResponse;
 import com.timeOrganizer.model.entity.User;
 import com.timeOrganizer.security.LoggedUser;
 import org.springframework.stereotype.Component;

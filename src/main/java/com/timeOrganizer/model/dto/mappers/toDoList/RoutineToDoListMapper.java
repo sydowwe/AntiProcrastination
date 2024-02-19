@@ -1,7 +1,6 @@
 package com.timeOrganizer.model.dto.mappers.toDoList;
 
 import com.timeOrganizer.model.dto.mappers.AbstractInOutMapper;
-import com.timeOrganizer.model.dto.mappers.TimePeriodMapper;
 import com.timeOrganizer.model.dto.request.toDoList.RoutineToDoListRequest;
 import com.timeOrganizer.model.dto.response.toDoList.RoutineToDoListGroupedResponse;
 import com.timeOrganizer.model.dto.response.toDoList.RoutineToDoListResponse;

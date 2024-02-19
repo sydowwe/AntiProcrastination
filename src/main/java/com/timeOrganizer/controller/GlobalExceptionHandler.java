@@ -4,9 +4,9 @@ import com.timeOrganizer.exception.BatchDeleteException;
 import com.timeOrganizer.exception.IdInTokenFormatException;
 import com.timeOrganizer.exception.QrCode2FAGenerationException;
 import com.timeOrganizer.exception.UserNotInSecurityContext;
-import com.timeOrganizer.model.dto.response.ErrorResponse;
-import jakarta.persistence.EntityExistsException;
+import com.timeOrganizer.model.dto.response.general.ErrorResponse;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -23,8 +23,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleEntityNotFoundExceptionException(EntityNotFoundException e) {
         return this.createErrorResponse("Entity not found", HttpStatus.NOT_FOUND, e);
     }
-    @ExceptionHandler(EntityExistsException.class)
-    public ResponseEntity<ErrorResponse> handleEntityExistsException(EntityExistsException e) {
+    @ExceptionHandler(DuplicateKeyException.class)
+    public ResponseEntity<ErrorResponse> handleEntityExistsException(DuplicateKeyException e) {
         return this.createErrorResponse("Entity already exists", HttpStatus.CONFLICT, e);
     }
    /* @ExceptionHandler(URISyntaxException.class)

@@ -1,7 +1,7 @@
 package com.timeOrganizer.service;
 
 import com.timeOrganizer.model.dto.mappers.CategoryMapper;
-import com.timeOrganizer.model.dto.request.NameTextColorIconRequest;
+import com.timeOrganizer.model.dto.request.extendable.NameTextColorIconRequest;
 import com.timeOrganizer.model.dto.response.CategoryResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.Category;
@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class CategoryService extends MyService<Category,ICategoryRepository,NameTextColorIconRequest, CategoryResponse,CategoryMapper> implements ICategoryService{
+public class CategoryService extends MyService<Category,ICategoryRepository,NameTextColorIconRequest, CategoryResponse,CategoryMapper>{
     @Autowired
     public CategoryService(ICategoryRepository repository, CategoryMapper mapper) {
         super(repository, mapper);
@@ -23,7 +23,6 @@ public class CategoryService extends MyService<Category,ICategoryRepository,Name
     public List<CategoryResponse> getCategoriesByRoleId(long roleId, long userId) {
         return this.mapper.convertToFullResponseList(this.repository.findAllByActivities_Role_IdAndUserId(roleId,userId));
     }
-
     @Override
     protected Map<String, ? extends AbstractEntity> getDependencies(NameTextColorIconRequest request) {
         return null;

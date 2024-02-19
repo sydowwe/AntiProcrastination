@@ -3,7 +3,7 @@ package com.timeOrganizer.controller;
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.ActivityRequest;
 import com.timeOrganizer.model.dto.response.ActivityResponse;
-import com.timeOrganizer.model.dto.response.IdLabelResponse;
+import com.timeOrganizer.model.dto.response.general.IdLabelResponse;
 import com.timeOrganizer.service.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

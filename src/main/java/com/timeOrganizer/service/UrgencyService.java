@@ -1,8 +1,8 @@
 package com.timeOrganizer.service;
 
-import com.timeOrganizer.model.dto.mappers.UrgencyMapper;
-import com.timeOrganizer.model.dto.request.UrgencyRequest;
-import com.timeOrganizer.model.dto.response.UrgencyResponse;
+import com.timeOrganizer.model.dto.mappers.toDoList.UrgencyMapper;
+import com.timeOrganizer.model.dto.request.toDoList.UrgencyRequest;
+import com.timeOrganizer.model.dto.response.toDoList.UrgencyResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.Urgency;
 import com.timeOrganizer.model.entity.User;
@@ -25,22 +25,9 @@ public class UrgencyService extends MyService<Urgency,IUrgencyRepository, Urgenc
         super(repository, mapper);
     }
     @Override
-    public void createDefaultItems(User user) throws EntityExistsException, RollbackException {
-        this.repository.saveAll(
-                List.of(
-                        new Urgency("Today", "#FF5252", 1, user),         // Red
-                        new Urgency("This week", "#FFA726", 2, user),      // Orange
-                        new Urgency("This month", "#FFD600", 3, user),     // Yellow
-                        new Urgency("This year", "#4CAF50", 4, user)       // Green
-                )
-        );
-    }
-
-    @Override
     protected Map<String, ? extends AbstractEntity> getDependencies(UrgencyRequest request) {
         return null;
     }
-
     @Override
     protected Sort.Direction getSortDirection(){
         return Sort.Direction.ASC;
@@ -48,5 +35,17 @@ public class UrgencyService extends MyService<Urgency,IUrgencyRepository, Urgenc
     @Override
     protected String getSortByProperties(){
         return "priority";
+    }
+
+    @Override
+    public void createDefaultItems(User user) throws EntityExistsException, RollbackException {
+        this.repository.saveAll(
+            List.of(
+                new Urgency("Today", "#FF5252", 1, user),         // Red
+                new Urgency("This week", "#FFA726", 2, user),      // Orange
+                new Urgency("This month", "#FFD600", 3, user),     // Yellow
+                new Urgency("This year", "#4CAF50", 4, user)       // Green
+            )
+        );
     }
 }

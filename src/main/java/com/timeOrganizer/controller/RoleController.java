@@ -1,8 +1,8 @@
 package com.timeOrganizer.controller;
 
 import com.timeOrganizer.helper.JsonRequestMapping;
-import com.timeOrganizer.model.dto.request.NameTextColorIconRequest;
-import com.timeOrganizer.model.dto.response.IdLabelResponse;
+import com.timeOrganizer.model.dto.request.extendable.NameTextColorIconRequest;
+import com.timeOrganizer.model.dto.response.general.IdLabelResponse;
 import com.timeOrganizer.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

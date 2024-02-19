@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface IHistoryService {
     List<HistoryResponse> filter(HistoryFilterRequest filterRequest);
-
 }

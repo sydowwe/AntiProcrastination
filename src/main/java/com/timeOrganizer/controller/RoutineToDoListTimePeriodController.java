@@ -1,8 +1,8 @@
 package com.timeOrganizer.controller;
 
-import com.timeOrganizer.model.dto.request.TimePeriodRequest;
-import com.timeOrganizer.model.dto.response.TimePeriodResponse;
-import com.timeOrganizer.service.RoutineToDoListTimePeriodService;
+import com.timeOrganizer.model.dto.request.toDoList.TimePeriodRequest;
+import com.timeOrganizer.model.dto.response.toDoList.TimePeriodResponse;
+import com.timeOrganizer.service.RoutineToDoListTimePeriodTimePeriodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/routine-to-do-list-time-period")
 @RequiredArgsConstructor
 public class RoutineToDoListTimePeriodController extends MyController {
-    private final RoutineToDoListTimePeriodService timePeriodService;
+    private final RoutineToDoListTimePeriodTimePeriodService timePeriodService;
     @PostMapping("/get-all")
     public ResponseEntity<List<TimePeriodResponse>> getAllUrgencyItems() {
         var test = timePeriodService.getAll(getLoggedUser().getId());

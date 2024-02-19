@@ -1,7 +1,7 @@
 package com.timeOrganizer.model.dto.request.history;
 
 import com.timeOrganizer.helper.MyIntTime;
-import com.timeOrganizer.model.dto.request.IRequest;
+import com.timeOrganizer.model.dto.request.extendable.IRequest;
 import lombok.Getter;
 
 @Getter

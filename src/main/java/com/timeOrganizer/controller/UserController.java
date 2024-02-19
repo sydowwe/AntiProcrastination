@@ -2,8 +2,9 @@ package com.timeOrganizer.controller;
 
 import com.timeOrganizer.exception.QrCode2FAGenerationException;
 import com.timeOrganizer.helper.JsonRequestMapping;
-import com.timeOrganizer.model.dto.request.*;
-import com.timeOrganizer.model.dto.response.*;
+import com.timeOrganizer.model.dto.request.user.*;
+import com.timeOrganizer.model.dto.response.general.SuccessResponse;
+import com.timeOrganizer.model.dto.response.user.*;
 import com.timeOrganizer.security.config.OAuth2Service;
 import com.timeOrganizer.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
