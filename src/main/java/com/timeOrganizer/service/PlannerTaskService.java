@@ -1,7 +1,8 @@
 package com.timeOrganizer.service;
 
 import com.timeOrganizer.model.dto.mappers.PlannerTaskMapper;
-import com.timeOrganizer.model.dto.request.PlannerTaskRequest;
+import com.timeOrganizer.model.dto.request.taskPlanner.PlannerFilterRequest;
+import com.timeOrganizer.model.dto.request.taskPlanner.PlannerTaskRequest;
 import com.timeOrganizer.model.dto.response.PlannerTaskResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.PlannerTask;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -33,5 +36,11 @@ public class PlannerTaskService extends MyService<PlannerTask, IPlannerTaskRepos
 	@Override
 	protected String getSortByProperties(){
 		return "startTimestamp";
+	}
+
+	public List<PlannerTaskResponse> getAllByDateAndHourSpan(long userId,PlannerFilterRequest request){
+		Instant filterStartPoint = Instant.parse(request.getFilterDate());
+		Instant filterEndPoint = Instant.parse(request.getFilterDate()).plusSeconds(request.getHourSpan()*3600L);
+		return mapper.convertToFullResponseList(repository.getAllByDateAndHourSpan(userId,filterStartPoint,filterEndPoint));
 	}
 }

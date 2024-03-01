@@ -1,7 +1,8 @@
 package com.timeOrganizer.controller;
 
 import com.timeOrganizer.helper.JsonRequestMapping;
-import com.timeOrganizer.model.dto.request.PlannerTaskRequest;
+import com.timeOrganizer.model.dto.request.taskPlanner.PlannerFilterRequest;
+import com.timeOrganizer.model.dto.request.taskPlanner.PlannerTaskRequest;
 import com.timeOrganizer.model.dto.request.extendable.IdRequest;
 import com.timeOrganizer.model.dto.response.PlannerTaskResponse;
 import com.timeOrganizer.model.dto.response.extendable.IdResponse;
@@ -15,13 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@JsonRequestMapping("/planner")
+@JsonRequestMapping("/task-planner")
 @RequiredArgsConstructor
-public class PlannerTaskController extends MyController{
+public class TaskPlannerController extends MyController{
 	private final PlannerTaskService plannerTaskService;
 	@PostMapping("/get-all")
-	public ResponseEntity<List<PlannerTaskResponse>> getAllPlannerTasks() {
-		return ResponseEntity.ok(plannerTaskService.getAll(this.getLoggedUser().getId()));
+	public ResponseEntity<List<PlannerTaskResponse>> getAllPlannerTasks(PlannerFilterRequest request) {
+		return ResponseEntity.ok(plannerTaskService.getAllByDateAndHourSpan(this.getLoggedUser().getId(),request));
 	}
 	@GetMapping("/{id}")
 	public ResponseEntity<IdLabelResponse> get(@PathVariable("id") Long id) {

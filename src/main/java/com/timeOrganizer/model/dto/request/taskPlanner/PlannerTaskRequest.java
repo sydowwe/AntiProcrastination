@@ -1,4 +1,4 @@
-package com.timeOrganizer.model.dto.request;
+package com.timeOrganizer.model.dto.request.taskPlanner;
 
 import com.timeOrganizer.model.dto.request.extendable.NameTextColorRequest;
 import lombok.Getter;

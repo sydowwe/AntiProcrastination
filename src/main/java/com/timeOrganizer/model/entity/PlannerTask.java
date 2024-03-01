@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 @NoArgsConstructor
 @Getter
@@ -16,7 +16,7 @@ import java.time.ZonedDateTime;
 @Table(name = "plannerTask", schema = "test", uniqueConstraints = @UniqueConstraint(name = "unique_userId_startTimestamp",columnNames = {"userId", "startTimestamp"}))
 public class PlannerTask extends NameTextColorEntity{
     @Column(nullable = false)
-    private ZonedDateTime startTimestamp;
+    private Instant startTimestamp;
     @Column(nullable = false)
     private int minuteLength;
     @ManyToOne
