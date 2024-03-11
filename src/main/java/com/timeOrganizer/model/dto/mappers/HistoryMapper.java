@@ -7,7 +7,8 @@ import com.timeOrganizer.model.entity.Activity;
 import com.timeOrganizer.model.entity.History;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import java.time.ZonedDateTime;
+
+import java.time.Instant;
 import java.util.Map;
 
 
@@ -20,13 +21,13 @@ public class HistoryMapper extends AbstractInOutMapper<History, HistoryRequest, 
         return HistoryResponse.builder()
                 .id(history.getId())
                 .activity(activityMapper.convertToFullResponse(history.getActivity()))
-                .startTimestamp(history.getStart().toLocalDateTime().toString())
+                .startTimestamp(history.getStart().toString())
                 .length(history.getLengthInSeconds())
                 .build();
     }
     @Override
     public History updateEntityFromRequest(History entity, HistoryRequest request, Map<String, ? extends AbstractEntity> dependencies) {
-        entity.setStart(ZonedDateTime.parse(request.getStartTimestamp()));
+        entity.setStart(Instant.parse(request.getStartTimestamp()));
         entity.setLength(request.getLength());
         entity.setActivity((Activity) dependencies.get("activity"));
         return entity;

@@ -5,10 +5,11 @@ import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 public class HistorySpecifications {
-    public static Specification<History> withFilter(Long activityId, Long roleId, Long categoryId, Boolean isFromToDoList, Boolean isUnavoidable, ZonedDateTime dateFrom, ZonedDateTime dateTo, Long hoursBack) {
+    public static Specification<History> withFilter(Long activityId, Long roleId, Long categoryId, Boolean isFromToDoList, Boolean isUnavoidable, Instant dateFrom, Instant dateTo, Long hoursBack) {
         return (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             if (activityId != null) {
@@ -37,13 +38,14 @@ public class HistorySpecifications {
 
                 predicate = criteriaBuilder.and(
                         predicate,
-                        criteriaBuilder.lessThanOrEqualTo(criteriaBuilder.diff(startInSeconds, lengthInSeconds), dateTo.toEpochSecond())
+                        criteriaBuilder.lessThanOrEqualTo(criteriaBuilder.sum(startInSeconds, lengthInSeconds), dateTo.getEpochSecond())
                 );
+                if (hoursBack != null) {
+                    Instant dateMinusHours = dateTo.minus(hoursBack, ChronoUnit.HOURS);
+                    predicate = criteriaBuilder.and(predicate, criteriaBuilder.greaterThanOrEqualTo(root.get("start"), dateMinusHours));
+                }
             }
-            if (hoursBack != null) {
-                ZonedDateTime dateMinusHours = ZonedDateTime.now().minusHours(hoursBack);
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.greaterThanOrEqualTo(root.get("start"), dateMinusHours));
-            }
+
             return predicate;
         };
     }

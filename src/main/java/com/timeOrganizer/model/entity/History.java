@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -22,7 +22,7 @@ public class History extends AbstractEntity{
     @JoinColumn(name = "activityId",nullable = false)
     private Activity activity;
     @Column(nullable = false)
-    private ZonedDateTime start;
+    private Instant start;
     @Convert(converter = MyIntTimeDBConverter.class)
     @Column(nullable = false)
     private MyIntTime length;

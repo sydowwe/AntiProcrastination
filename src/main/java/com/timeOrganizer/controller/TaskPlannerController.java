@@ -20,8 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TaskPlannerController extends MyController{
 	private final PlannerTaskService plannerTaskService;
-	@PostMapping("/get-all")
-	public ResponseEntity<List<PlannerTaskResponse>> getAllPlannerTasks(PlannerFilterRequest request) {
+	@PostMapping("/apply-filter")
+	public ResponseEntity<List<PlannerTaskResponse>> applyFilter(@RequestBody PlannerFilterRequest request) {
 		return ResponseEntity.ok(plannerTaskService.getAllByDateAndHourSpan(this.getLoggedUser().getId(),request));
 	}
 	@GetMapping("/{id}")
