@@ -23,18 +23,20 @@ import java.util.stream.Collectors;
 public class RoutineToDoListService extends MyService<RoutineToDoList, IRoutineToDoListRepository, RoutineToDoListRequest, RoutineToDoListResponse, RoutineToDoListMapper> implements IRoutineTodoListService
 {
 	private final RoutineToDoListTimePeriodTimePeriodService timePeriodService;
+	private final ActivityService activityService;
 
 	@Autowired
-	public RoutineToDoListService(IRoutineToDoListRepository repository, RoutineToDoListMapper mapper, RoutineToDoListTimePeriodTimePeriodService timePeriodService)
+	public RoutineToDoListService(IRoutineToDoListRepository repository, RoutineToDoListMapper mapper, ActivityService activityService,RoutineToDoListTimePeriodTimePeriodService timePeriodService)
 	{
 		super(repository, mapper);
+		this.activityService = activityService;
 		this.timePeriodService = timePeriodService;
 	}
 
 	@Override
 	protected Map<String, ? extends AbstractEntity> getDependencies(RoutineToDoListRequest request)
 	{
-		return Map.of("timePeriod", timePeriodService.getReference(request.getTimePeriodId()));
+		return Map.of("activity",activityService.getReference(request.getActivityId()),"timePeriod", timePeriodService.getReference(request.getTimePeriodId()));
 	}
 
 	@Override

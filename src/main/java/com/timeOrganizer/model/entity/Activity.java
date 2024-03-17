@@ -20,8 +20,8 @@ public class Activity extends NameTextEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "roleId", nullable = false)
     private Role role;
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "categoryId", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "categoryId")
     private Category category;
     @OneToMany(mappedBy = "activity")
     private List<History> historyList;

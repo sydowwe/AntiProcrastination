@@ -1,6 +1,6 @@
 package com.timeOrganizer.service;
 
-import com.timeOrganizer.model.dto.response.ActivityResponse;
+import com.timeOrganizer.model.dto.response.activity.ActivityResponse;
 
 import java.util.List;
 

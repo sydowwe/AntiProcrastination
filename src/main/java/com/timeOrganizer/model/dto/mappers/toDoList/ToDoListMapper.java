@@ -1,9 +1,11 @@
 package com.timeOrganizer.model.dto.mappers.toDoList;
 
 import com.timeOrganizer.model.dto.mappers.AbstractInOutMapper;
+import com.timeOrganizer.model.dto.mappers.ActivityMapper;
 import com.timeOrganizer.model.dto.request.toDoList.ToDoListRequest;
 import com.timeOrganizer.model.dto.response.toDoList.ToDoListResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
+import com.timeOrganizer.model.entity.Activity;
 import com.timeOrganizer.model.entity.ToDoList;
 import com.timeOrganizer.model.entity.Urgency;
 import lombok.RequiredArgsConstructor;
@@ -15,20 +17,19 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ToDoListMapper extends AbstractInOutMapper<ToDoList,ToDoListRequest,ToDoListResponse> {
     private final UrgencyMapper urgencyMapper;
+    private final ActivityMapper activityMapper;
     @Override
     public ToDoListResponse convertToFullResponse(ToDoList toDoListItem) {
         return ToDoListResponse.builder()
                 .id(toDoListItem.getId())
-                .name(toDoListItem.getName())
-                .text(toDoListItem.getText())
                 .isDone(toDoListItem.isDone())
-                .urgency(toDoListItem.getUrgency() != null ? urgencyMapper.convertToFullResponse(toDoListItem.getUrgency()) : null)
+                .activity(activityMapper.convertToFullResponse(toDoListItem.getActivity()))
+                .urgency(urgencyMapper.convertToFullResponse(toDoListItem.getUrgency()))
                 .build();
     }
     @Override
     public ToDoList updateEntityFromRequest(ToDoList entity, ToDoListRequest request, Map<String, ? extends AbstractEntity> dependencies) {
-        entity.setName(request.getName());
-        entity.setText(request.getText());
+        entity.setActivity((Activity) dependencies.get("activity"));
         entity.setUrgency((Urgency) dependencies.get("urgency"));
         return entity;
     }

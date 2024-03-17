@@ -6,7 +6,7 @@ import com.timeOrganizer.model.dto.request.taskPlanner.PlannerTaskRequest;
 import com.timeOrganizer.model.dto.request.extendable.IdRequest;
 import com.timeOrganizer.model.dto.response.PlannerTaskResponse;
 import com.timeOrganizer.model.dto.response.extendable.IdResponse;
-import com.timeOrganizer.model.dto.response.general.IdLabelResponse;
+import com.timeOrganizer.model.dto.response.general.SelectOptionResponse;
 import com.timeOrganizer.model.dto.response.general.SuccessResponse;
 import com.timeOrganizer.service.PlannerTaskService;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +25,8 @@ public class TaskPlannerController extends MyController{
 		return ResponseEntity.ok(plannerTaskService.getAllByDateAndHourSpan(this.getLoggedUser().getId(),request));
 	}
 	@GetMapping("/{id}")
-	public ResponseEntity<IdLabelResponse> get(@PathVariable("id") Long id) {
-		return ResponseEntity.ok(this.mapToIdNameResponse(plannerTaskService.getResponseById(id)));
+	public ResponseEntity<SelectOptionResponse> get(@PathVariable("id") Long id) {
+		return ResponseEntity.ok(this.mapToSelectOptionResponse(plannerTaskService.getResponseById(id)));
 	}
 
 	@PostMapping("/add")

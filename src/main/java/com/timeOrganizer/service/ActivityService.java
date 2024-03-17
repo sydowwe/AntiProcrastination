@@ -2,7 +2,7 @@ package com.timeOrganizer.service;
 
 import com.timeOrganizer.model.dto.mappers.ActivityMapper;
 import com.timeOrganizer.model.dto.request.ActivityRequest;
-import com.timeOrganizer.model.dto.response.ActivityResponse;
+import com.timeOrganizer.model.dto.response.activity.ActivityResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.Activity;
 import com.timeOrganizer.repository.IActivityRepository;
@@ -26,7 +26,8 @@ public class ActivityService extends MyService<Activity,IActivityRepository,Acti
     }
     @Override
     protected Map<String, ? extends AbstractEntity> getDependencies(ActivityRequest request) {
-        return Map.of("role",this.roleService.getReference(request.getCategoryId()),"category",this.categoryService.getReference(request.getCategoryId()));
+        return request.getCategoryId()!=null ? Map.of("role",this.roleService.getReference(request.getRoleId()),"category",this.categoryService.getReference(request.getCategoryId()))
+            : Map.of("role",this.roleService.getReference(request.getRoleId()));
     }
     @Override
     public List<ActivityResponse> getActivitiesByRoleId(long roleId, long userId) {

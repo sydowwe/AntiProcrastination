@@ -3,10 +3,11 @@ package com.timeOrganizer.model.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @MappedSuperclass
 @NoArgsConstructor
-@AllArgsConstructor
+@SuperBuilder
 @Getter
 @Setter
 @ToString

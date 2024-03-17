@@ -2,8 +2,8 @@ package com.timeOrganizer.controller;
 
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.ActivityRequest;
-import com.timeOrganizer.model.dto.response.ActivityResponse;
-import com.timeOrganizer.model.dto.response.general.IdLabelResponse;
+import com.timeOrganizer.model.dto.response.activity.ActivityOptionResponse;
+import com.timeOrganizer.model.dto.response.activity.ActivityResponse;
 import com.timeOrganizer.service.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @JsonRequestMapping("/activity")
@@ -20,8 +21,8 @@ public class ActivityController extends MyController {
     private final ActivityService activityService;
 
     @PostMapping("/get-all-options")
-    public ResponseEntity<List<IdLabelResponse>> getAllActivities() {
-        return ResponseEntity.ok(mapToIdNameResponseList(activityService.getAll(this.getLoggedUser().getId())));
+    public ResponseEntity<List<ActivityOptionResponse>> getAllActivities() {
+        return ResponseEntity.ok(mapToActivityOptionResponseList(activityService.getAll(this.getLoggedUser().getId())));
     }
 
     @PostMapping("/get-options-by-role/{roleId}")
@@ -29,7 +30,7 @@ public class ActivityController extends MyController {
         if (roleId == null || roleId == 0) {
             return ResponseEntity.badRequest().body("roleId must not be null or 0");
         }
-        return ResponseEntity.ok(this.mapToIdNameResponseList(activityService.getActivitiesByRoleId(roleId, this.getLoggedUser().getId())));
+        return ResponseEntity.ok(this.mapToActivityOptionResponseList(activityService.getActivitiesByRoleId(roleId, this.getLoggedUser().getId())));
     }
 
     @PostMapping("/get-options-by-category/{categoryId}")
@@ -37,7 +38,7 @@ public class ActivityController extends MyController {
         if (categoryId == null || categoryId == 0) {
             return ResponseEntity.badRequest().body("categoryId must not be null or 0");
         }
-        return ResponseEntity.ok(this.mapToIdNameResponseList(activityService.getActivitiesByCategoryId(categoryId, this.getLoggedUser().getId())));
+        return ResponseEntity.ok(this.mapToActivityOptionResponseList(activityService.getActivitiesByCategoryId(categoryId, this.getLoggedUser().getId())));
     }
     //TODO
     @PostMapping("/get-by-activity")
@@ -47,13 +48,18 @@ public class ActivityController extends MyController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(this.mapToIdNameResponse(activityService.getResponseById(id)));
+        return ResponseEntity.ok(this.mapToSelectOptionResponse(activityService.getResponseById(id)));
     }
 
     @PostMapping("/create")
     public ResponseEntity<?> createNewActivity(@RequestBody ActivityRequest formData) {
         ActivityResponse newActivity = activityService.insert(formData, this.getLoggedUser().getReference());
         URI uri = this.getCreatedResourceURI(newActivity.getId());
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(newActivity);
+    }
+    public List<ActivityOptionResponse> mapToActivityOptionResponseList(List<? extends ActivityResponse> list) {
+        return list.stream()
+            .map(ActivityOptionResponse::new)
+            .collect(Collectors.toList());
     }
 }

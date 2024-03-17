@@ -1,5 +1,7 @@
-package com.timeOrganizer.model.dto.response;
+package com.timeOrganizer.model.dto.response.activity;
 
+import com.timeOrganizer.model.dto.response.CategoryResponse;
+import com.timeOrganizer.model.dto.response.RoleResponse;
 import com.timeOrganizer.model.dto.response.extendable.NameTextResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

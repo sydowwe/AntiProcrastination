@@ -3,7 +3,7 @@ package com.timeOrganizer.controller;
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.extendable.IdRequest;
 import com.timeOrganizer.model.dto.request.toDoList.RoutineToDoListRequest;
-import com.timeOrganizer.model.dto.response.general.IdLabelResponse;
+import com.timeOrganizer.model.dto.response.general.SelectOptionResponse;
 import com.timeOrganizer.model.dto.response.extendable.IdResponse;
 import com.timeOrganizer.model.dto.response.general.SuccessResponse;
 import com.timeOrganizer.model.dto.response.toDoList.RoutineToDoListGroupedResponse;
@@ -25,8 +25,9 @@ public class RoutineToDoListController extends MyController{
         return ResponseEntity.ok(routineToDoListService.getAllByUserIdGroupedByTimePeriod(this.getLoggedUser().getId()));
     }
     @GetMapping("/{id}")
-    public ResponseEntity<IdLabelResponse> get(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(this.mapToIdNameResponse(routineToDoListService.getResponseById(id)));
+    public ResponseEntity<SelectOptionResponse> get(@PathVariable("id") Long id) {
+        var response =  routineToDoListService.getResponseById(id);
+        return ResponseEntity.ok(this.mapToSelectOptionResponse(response.getId(),response.getActivity().getName()));
     }
     @PostMapping("/change-done")
     public ResponseEntity<SuccessResponse> changeDone(@RequestBody List<IdRequest> requestList) {

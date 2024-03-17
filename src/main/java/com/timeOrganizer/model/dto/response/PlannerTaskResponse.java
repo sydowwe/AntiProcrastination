@@ -1,5 +1,6 @@
 package com.timeOrganizer.model.dto.response;
 
+import com.timeOrganizer.model.dto.response.activity.ActivityResponse;
 import com.timeOrganizer.model.dto.response.extendable.NameTextColorResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

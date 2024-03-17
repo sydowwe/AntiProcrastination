@@ -1,6 +1,7 @@
 package com.timeOrganizer.model.dto.mappers.toDoList;
 
 import com.timeOrganizer.model.dto.mappers.AbstractInOutMapper;
+import com.timeOrganizer.model.dto.mappers.ActivityMapper;
 import com.timeOrganizer.model.dto.request.toDoList.RoutineToDoListRequest;
 import com.timeOrganizer.model.dto.response.toDoList.RoutineToDoListGroupedResponse;
 import com.timeOrganizer.model.dto.response.toDoList.RoutineToDoListResponse;
@@ -16,21 +17,20 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class RoutineToDoListMapper extends AbstractInOutMapper<RoutineToDoList, RoutineToDoListRequest, RoutineToDoListResponse> {
     private final TimePeriodMapper timePeriodMapper;
+    private final ActivityMapper activityMapper;
     @Override
     public RoutineToDoListResponse convertToFullResponse(RoutineToDoList toDoListItem) {
         return RoutineToDoListResponse.builder()
                 .id(toDoListItem.getId())
-                .name(toDoListItem.getName())
-                .text(toDoListItem.getText())
                 .isDone(toDoListItem.isDone())
-                .timePeriod(toDoListItem.getTimePeriod() != null ? timePeriodMapper.convertToFullResponse(toDoListItem.getTimePeriod()) : null)
+                .activity(activityMapper.convertToFullResponse(toDoListItem.getActivity()))
+                .timePeriod(timePeriodMapper.convertToFullResponse(toDoListItem.getTimePeriod()))
                 .build();
     }
     @Override
     public RoutineToDoList updateEntityFromRequest(RoutineToDoList entity, RoutineToDoListRequest request, Map<String, ? extends AbstractEntity> dependencies) {
-        entity.setName(request.getName());
-        entity.setText(request.getText());
         entity.setDone(request.isDone());
+        entity.setActivity((Activity) dependencies.get("activity"));
         entity.setTimePeriod((RoutineTimePeriod) dependencies.get("timePeriod"));
         return entity;
     }

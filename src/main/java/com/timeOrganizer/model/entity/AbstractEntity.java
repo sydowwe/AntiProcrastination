@@ -2,11 +2,13 @@ package com.timeOrganizer.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
 @MappedSuperclass
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder
 @Getter
 @Setter
 @ToString

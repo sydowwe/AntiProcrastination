@@ -13,13 +13,14 @@ import java.time.Instant;
 @Setter
 @ToString
 @Entity
-@Table(name = "plannerTask", schema = "test", uniqueConstraints = @UniqueConstraint(name = "unique_userId_startTimestamp",columnNames = {"userId", "startTimestamp"}))
-public class PlannerTask extends NameTextColorEntity{
+@Table(name = "plannerTask", schema = "test", uniqueConstraints = @UniqueConstraint(name = "unique_userId_startTimestamp", columnNames = {"userId", "startTimestamp"}))
+public class PlannerTask extends AbstractEntity{
     @Column(nullable = false)
     private Instant startTimestamp;
     @Column(nullable = false)
     private int minuteLength;
-    @ManyToOne
-    @JoinColumn(name = "activityId")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "activityId",nullable = false)
     private Activity activity;
+    private String color;
 }

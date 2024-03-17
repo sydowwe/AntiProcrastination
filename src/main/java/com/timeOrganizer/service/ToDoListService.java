@@ -21,18 +21,20 @@ import java.util.Map;
 public class ToDoListService extends MyService<ToDoList, IToDoListRepository, ToDoListRequest, ToDoListResponse, ToDoListMapper> implements IToDoListService
 {
 	private final UrgencyService urgencyService;
+	private final ActivityService activityService;
 
 	@Autowired
-	public ToDoListService(IToDoListRepository repository, ToDoListMapper mapper, UrgencyService urgencyService)
+	public ToDoListService(IToDoListRepository repository, ToDoListMapper mapper, ActivityService activityService,UrgencyService urgencyService)
 	{
 		super(repository, mapper);
+		this.activityService = activityService;
 		this.urgencyService = urgencyService;
 	}
 
 	@Override
 	protected Map<String, ? extends AbstractEntity> getDependencies(ToDoListRequest request)
 	{
-		return Map.of("urgency", urgencyService.getReference(request.getUrgencyId()));
+		return Map.of("activity",activityService.getReference(request.getActivityId()),"urgency", urgencyService.getReference(request.getUrgencyId()));
 	}
 
 	@Override

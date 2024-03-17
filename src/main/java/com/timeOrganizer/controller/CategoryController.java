@@ -2,7 +2,7 @@ package com.timeOrganizer.controller;
 
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.extendable.NameTextColorIconRequest;
-import com.timeOrganizer.model.dto.response.general.IdLabelResponse;
+import com.timeOrganizer.model.dto.response.general.SelectOptionResponse;
 import com.timeOrganizer.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +20,16 @@ import java.util.List;
 public class CategoryController extends MyController{
     private final CategoryService categoryService;
     @PostMapping("/get-all-options")
-    public ResponseEntity<List<IdLabelResponse>> getAllOptions(){
-        return ResponseEntity.ok(mapToIdNameResponseList(categoryService.getAll(getLoggedUser().getId())));
+    public ResponseEntity<List<SelectOptionResponse>> getAllOptions(){
+        return ResponseEntity.ok(mapToSelectOptionResponseList(categoryService.getAll(getLoggedUser().getId())));
     }
     @PostMapping("/get-options-by-role/{roleId}")
-    public ResponseEntity<List<IdLabelResponse>> getByRole(@PathVariable @NonNull long roleId) {
-        return ResponseEntity.ok(mapToIdNameResponseList(categoryService.getCategoriesByRoleId(roleId, getLoggedUser().getId())));
+    public ResponseEntity<List<SelectOptionResponse>> getByRole(@PathVariable @NonNull long roleId) {
+        return ResponseEntity.ok(mapToSelectOptionResponseList(categoryService.getCategoriesByRoleId(roleId, getLoggedUser().getId())));
     }
     @PostMapping("/create")
     public ResponseEntity<?> createNewCategory(@RequestBody NameTextColorIconRequest newCategory){
-        IdLabelResponse categoryOption = mapToIdNameResponse(categoryService.insert(newCategory,this.getLoggedUser().getReference()));
+        SelectOptionResponse categoryOption = mapToSelectOptionResponse(categoryService.insert(newCategory,this.getLoggedUser().getReference()));
 
         return ResponseEntity.created(this.getCreatedResourceURI(categoryOption.getId()))
                 .body(categoryOption);

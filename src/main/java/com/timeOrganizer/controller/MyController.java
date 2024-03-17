@@ -2,7 +2,7 @@ package com.timeOrganizer.controller;
 
 import com.timeOrganizer.exception.RequiredParameterMissingException;
 import com.timeOrganizer.exception.UserNotInSecurityContext;
-import com.timeOrganizer.model.dto.response.general.IdLabelResponse;
+import com.timeOrganizer.model.dto.response.general.SelectOptionResponse;
 import com.timeOrganizer.model.dto.response.extendable.NameTextResponse;
 import com.timeOrganizer.security.LoggedUser;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,14 +25,17 @@ public abstract class MyController {
         return "This is a common endpoint";
     }
 
-    public List<IdLabelResponse> mapToIdNameResponseList(List<? extends NameTextResponse> list) {
+    public List<SelectOptionResponse> mapToSelectOptionResponseList(List<? extends NameTextResponse> list) {
         return list.stream()
-                .map(IdLabelResponse::new)
+                .map(SelectOptionResponse::new)
                 .collect(Collectors.toList());
     }
 
-    public IdLabelResponse mapToIdNameResponse(NameTextResponse nameTextResponse) {
-        return new IdLabelResponse(nameTextResponse);
+    public SelectOptionResponse mapToSelectOptionResponse(NameTextResponse nameTextResponse) {
+        return new SelectOptionResponse(nameTextResponse);
+    }
+    public SelectOptionResponse mapToSelectOptionResponse(long id, String name) {
+        return new SelectOptionResponse(id,name);
     }
 
     public Map<String, Object> oneParamResponse(String key, Object value) {

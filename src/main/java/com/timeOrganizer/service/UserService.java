@@ -51,6 +51,7 @@ public class UserService implements IUserService{
     private final UserMapper userMapper;
     private final UrgencyService urgencyService;
     private final RoutineToDoListTimePeriodTimePeriodService routineToDoListTimePeriodService;
+    private final RoleService roleService;
     @Value("${token.expirationLong}")
     private int TOKEN_EXPIRATION_IN_HOURS_LONG;
     @Value("${token.expirationShort}")
@@ -255,5 +256,6 @@ public class UserService implements IUserService{
     private void setDefaultSettings(User user) throws EntityExistsException, RollbackException {
         urgencyService.createDefaultItems(user);
         routineToDoListTimePeriodService.createDefaultItems(user);
+        roleService.createDefaultItems(user);
     }
 }

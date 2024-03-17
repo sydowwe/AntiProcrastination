@@ -5,10 +5,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @NoArgsConstructor
+@SuperBuilder
 @Getter
 @Setter
 @ToString(exclude = {"activities"})

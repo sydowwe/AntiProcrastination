@@ -1,6 +1,6 @@
 package com.timeOrganizer.model.dto.response.history;
 
-import com.timeOrganizer.model.dto.response.ActivityResponse;
+import com.timeOrganizer.model.dto.response.activity.ActivityResponse;
 import com.timeOrganizer.model.dto.response.extendable.IdResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

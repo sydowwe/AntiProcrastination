@@ -29,7 +29,6 @@ public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extend
     protected final MAPPER mapper;
     //TODO MAKE userService Optional
 
-
     public RESPONSE getResponseById(long id) throws EntityNotFoundException {
         return mapper.convertToFullResponse(this.getById(id));
     }

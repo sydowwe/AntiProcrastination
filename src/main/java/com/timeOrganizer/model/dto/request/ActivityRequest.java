@@ -9,5 +9,5 @@ public class ActivityRequest extends NameTextRequest {
     private Boolean isOnToDoList;
     private boolean isUnavoidable;
     private long roleId;
-    private long categoryId;
+    private Long categoryId;
 }

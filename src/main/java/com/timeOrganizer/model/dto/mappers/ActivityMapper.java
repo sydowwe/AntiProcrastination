@@ -1,7 +1,7 @@
 package com.timeOrganizer.model.dto.mappers;
 
 import com.timeOrganizer.model.dto.request.ActivityRequest;
-import com.timeOrganizer.model.dto.response.ActivityResponse;
+import com.timeOrganizer.model.dto.response.activity.ActivityResponse;
 import com.timeOrganizer.model.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
