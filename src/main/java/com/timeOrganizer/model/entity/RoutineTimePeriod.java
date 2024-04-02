@@ -17,13 +17,15 @@ public class RoutineTimePeriod extends AbstractEntity {
     private String text;
     private String color;
     private int lengthInDays;
+    private boolean isHiddenInView;
     @OneToMany(mappedBy = "timePeriod")
     private List<RoutineToDoList> toDoListItems;
 
-    public RoutineTimePeriod(String text, String color, int lengthInDays, User user) {
+    public RoutineTimePeriod(String text, String color, int lengthInDays, boolean isHiddenInView, User user) {
         super(user);
         this.text = text;
         this.color = color;
         this.lengthInDays = lengthInDays;
+        this.isHiddenInView = isHiddenInView;
     }
 }

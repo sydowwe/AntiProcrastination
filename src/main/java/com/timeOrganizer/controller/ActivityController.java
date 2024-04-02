@@ -22,7 +22,7 @@ public class ActivityController extends MyController {
 
     @PostMapping("/get-all-options")
     public ResponseEntity<List<ActivityOptionResponse>> getAllActivities() {
-        return ResponseEntity.ok(mapToActivityOptionResponseList(activityService.getAll(this.getLoggedUser().getId())));
+        return ResponseEntity.ok(mapToActivityOptionResponseList(activityService.getAllAsResponse(this.getLoggedUser().getId())));
     }
 
     @PostMapping("/get-options-by-role/{roleId}")

@@ -1,12 +1,14 @@
 package com.timeOrganizer.service;
 
 import com.timeOrganizer.model.dto.mappers.PlannerTaskMapper;
+import com.timeOrganizer.model.dto.request.extendable.IdRequest;
 import com.timeOrganizer.model.dto.request.taskPlanner.PlannerFilterRequest;
 import com.timeOrganizer.model.dto.request.taskPlanner.PlannerTaskRequest;
 import com.timeOrganizer.model.dto.response.PlannerTaskResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.PlannerTask;
 import com.timeOrganizer.repository.IPlannerTaskRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -42,5 +44,12 @@ public class PlannerTaskService extends MyService<PlannerTask, IPlannerTaskRepos
 		Instant filterStartPoint = Instant.parse(request.getFilterDate());
 		Instant filterEndPoint = Instant.parse(request.getFilterDate()).plusSeconds(request.getHourSpan()*3600L);
 		return mapper.convertToFullResponseList(repository.getAllByDateAndHourSpan(userId,filterStartPoint,filterEndPoint));
+	}
+	public void setIsDone(List<IdRequest> requestList) throws EntityNotFoundException
+	{
+		int affectedRows = this.repository.updateIsDoneByIds(requestList.stream().map(IdRequest::getId).toList());
+		if (affectedRows<=0){
+			//throw new UpdateFailedException();
+		}
 	}
 }

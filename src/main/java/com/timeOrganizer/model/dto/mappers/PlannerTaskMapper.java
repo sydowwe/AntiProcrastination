@@ -23,6 +23,7 @@ public class PlannerTaskMapper extends AbstractInOutMapper<PlannerTask, PlannerT
 			.startTimestamp(plannerTask.getStartTimestamp().toString())
 			.minuteLength(plannerTask.getMinuteLength())
 			.color(plannerTask.getColor())
+			.isDone(plannerTask.isDone())
 			.activity(
 				plannerTask.getActivity() != null
 					? activityMapper.convertToFullResponse(plannerTask.getActivity())
@@ -36,6 +37,7 @@ public class PlannerTaskMapper extends AbstractInOutMapper<PlannerTask, PlannerT
 		entity.setStartTimestamp(Instant.parse(request.getStartTimestamp()));
 		entity.setMinuteLength(request.getMinuteLength());
 		entity.setColor(request.getColor());
+		entity.setDone(request.isDone());
 		entity.setActivity(
 			!dependencies.isEmpty() && dependencies.containsKey("activity")
 			? (Activity) dependencies.get("activity")

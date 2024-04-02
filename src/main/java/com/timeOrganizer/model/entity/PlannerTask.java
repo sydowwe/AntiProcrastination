@@ -23,4 +23,5 @@ public class PlannerTask extends AbstractEntity{
     @JoinColumn(name = "activityId",nullable = false)
     private Activity activity;
     private String color;
+    private boolean isDone;
 }

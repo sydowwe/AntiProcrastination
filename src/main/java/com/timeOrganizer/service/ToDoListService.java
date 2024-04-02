@@ -52,6 +52,9 @@ public class ToDoListService extends MyService<ToDoList, IToDoListRepository, To
 	@Override
 	public void setIsDone(List<IdRequest> requestList) throws EntityNotFoundException
 	{
-		this.repository.updateIsDoneByIds(requestList.stream().map(IdRequest::getId).toList());
+		int affectedRows = this.repository.updateIsDoneByIds(requestList.stream().map(IdRequest::getId).toList());
+		if (affectedRows<=0){
+			//throw new UpdateFailedException();
+		}
 	}
 }

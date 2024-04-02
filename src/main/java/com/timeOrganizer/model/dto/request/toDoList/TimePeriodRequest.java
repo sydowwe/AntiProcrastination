@@ -7,4 +7,5 @@ import lombok.Getter;
 @SuppressWarnings("unused")
 public class TimePeriodRequest extends TextColorRequest {
     private int length;
+    private boolean isHiddenInView;
 }

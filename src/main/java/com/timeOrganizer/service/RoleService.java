@@ -33,9 +33,9 @@ public class RoleService extends MyService<Role,IRoleRepository,NameTextColorIco
         return null;
     }
 
-    public long getRoleByView(String viewName, long userId) throws EntityNotFoundException
+    public RoleResponse getRoleByName(String name, long userId) throws EntityNotFoundException
     {
-        return repository.findByNameAndUserId(viewName.replace(" ", ""),userId).orElseThrow(()->new EntityNotFoundException("Role with name "+ viewName+" not found")).getId();
+        return mapper.convertToFullResponse(repository.findByNameAndUserId(name,userId).orElseThrow(()->new EntityNotFoundException("Role with name "+ name +" not found")));
     }
     public void createDefaultItems(User user) throws EntityExistsException, RollbackException
     {

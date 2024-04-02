@@ -22,7 +22,7 @@ public class HistoryMapper extends AbstractInOutMapper<History, HistoryRequest, 
                 .id(history.getId())
                 .activity(activityMapper.convertToFullResponse(history.getActivity()))
                 .startTimestamp(history.getStart().toString())
-                .length(history.getLengthInSeconds())
+                .length(history.getLength())
                 .build();
     }
     @Override

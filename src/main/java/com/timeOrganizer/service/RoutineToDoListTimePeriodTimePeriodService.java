@@ -33,13 +33,17 @@ public class RoutineToDoListTimePeriodTimePeriodService extends MyService<Routin
     protected Sort.Direction getSortDirection(){
         return Sort.Direction.ASC;
     }
+
+    public void changeIsHiddenInView(long id){
+        int affectedRows = this.repository.updateIsHiddenInView(id);
+    }
     public void createDefaultItems(User user) throws EntityExistsException, RollbackException {
         this.repository.saveAll(
             List.of(
-                new RoutineTimePeriod("Daily", "#92F58C", 1, user),         // Green
-                new RoutineTimePeriod("Weekly", "#936AF1", 7, user),      // purple
-                new RoutineTimePeriod("Monthly", "#2C7EF4", 30, user),     // blue
-                new RoutineTimePeriod("Yearly", "#A5CCF3", 365, user)       // Grey
+                new RoutineTimePeriod("Daily", "#92F58C", 1, false, user),         // Green
+                new RoutineTimePeriod("Weekly", "#936AF1", 7, false, user),      // purple
+                new RoutineTimePeriod("Monthly", "#2C7EF4", 30, false, user),     // blue
+                new RoutineTimePeriod("Yearly", "#A5CCF3", 365, false, user)       // Grey
             )
         );
     }

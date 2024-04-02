@@ -2,6 +2,7 @@ package com.timeOrganizer.controller;
 
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.extendable.NameTextColorIconRequest;
+import com.timeOrganizer.model.dto.response.RoleResponse;
 import com.timeOrganizer.model.dto.response.general.SelectOptionResponse;
 import com.timeOrganizer.service.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +22,11 @@ public class RoleController extends MyController {
     private final RoleService roleService;
     @PostMapping("/get-all-options")
     public ResponseEntity<List<SelectOptionResponse>> getAllOptions() {
-        return ResponseEntity.ok(mapToSelectOptionResponseList(roleService.getAll(this.getLoggedUser().getId())));
+        return ResponseEntity.ok(mapToSelectOptionResponseList(roleService.getAllAsResponse(this.getLoggedUser().getId())));
     }
-    @PostMapping("/get-by-view/{viewName}")
-    public ResponseEntity<Long> getByView(@PathVariable String viewName) {
-        return ResponseEntity.ok(roleService.getRoleByView(viewName,this.getLoggedUser().getId()));
+    @PostMapping("/get-by-name/{name}")
+    public ResponseEntity<RoleResponse> getByName(@PathVariable String name) {
+        return ResponseEntity.ok(roleService.getRoleByName(name,this.getLoggedUser().getId()));
     }
     @PostMapping("/get-options-by-category/{categoryId}")
     public ResponseEntity<List<SelectOptionResponse>> getByCategoryId(@PathVariable Long categoryId) {

@@ -17,13 +17,15 @@ public class TimePeriodMapper extends AbstractInOutMapper<RoutineTimePeriod, Tim
                 .id(timePeriod.getId())
                 .text(timePeriod.getText())
                 .color(timePeriod.getColor())
-                .lengthInDays(timePeriod.getLengthInDays()).build();
+                .lengthInDays(timePeriod.getLengthInDays())
+                .isHiddenInView(timePeriod.isHiddenInView()).build();
     }
     @Override
     public RoutineTimePeriod updateEntityFromRequest(RoutineTimePeriod entity, TimePeriodRequest request, Map<String, ? extends AbstractEntity> dependencies) {
         entity.setLengthInDays(request.getLength());
         entity.setText(request.getText());
         entity.setColor(request.getColor());
+        entity.setHiddenInView(request.isHiddenInView());
         return entity;
     }
 

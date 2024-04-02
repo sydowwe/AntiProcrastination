@@ -28,7 +28,12 @@ public class TaskPlannerController extends MyController{
 	public ResponseEntity<SelectOptionResponse> get(@PathVariable("id") Long id) {
 		return ResponseEntity.ok(this.mapToSelectOptionResponse(plannerTaskService.getResponseById(id)));
 	}
-
+	@PatchMapping("/change-done")
+	public ResponseEntity<SuccessResponse> changeDone(@RequestBody List<IdRequest> requestList) {
+		plannerTaskService.setIsDone(requestList);
+		return ResponseEntity
+			.ok(new SuccessResponse("changed"));
+	}
 	@PostMapping("/add")
 	public ResponseEntity<PlannerTaskResponse> addPlannerTask(@RequestBody PlannerTaskRequest request) {
 		PlannerTaskResponse newPlannerTask = plannerTaskService.insert(request, this.getLoggedUser().getReference());

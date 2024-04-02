@@ -13,4 +13,10 @@ public class MyIntTime {
     private int hours;
     private int minutes;
     private int seconds;
+
+    public MyIntTime (int seconds){
+        this.hours = seconds / 3600;
+        this.minutes = (seconds % 3600) / 60;
+        this.seconds = seconds % 60;
+    }
 }

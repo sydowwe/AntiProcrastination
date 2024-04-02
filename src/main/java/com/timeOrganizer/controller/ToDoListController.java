@@ -21,7 +21,7 @@ public class ToDoListController extends MyController {
     private final ToDoListService toDoListService;
     @PostMapping("/get-all")
     public ResponseEntity<List<ToDoListResponse>> getAllToDoListItems() {
-        return ResponseEntity.ok(toDoListService.getAll(this.getLoggedUser().getId()));
+        return ResponseEntity.ok(toDoListService.getAllAsResponse(this.getLoggedUser().getId()));
     }
     @GetMapping("/{id}")
     public ResponseEntity<SelectOptionResponse> get(@PathVariable("id") Long id) {

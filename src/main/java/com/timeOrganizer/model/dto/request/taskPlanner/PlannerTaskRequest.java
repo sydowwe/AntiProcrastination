@@ -9,4 +9,6 @@ public class PlannerTaskRequest extends NameTextColorRequest {
     private String startTimestamp;
     private int minuteLength;
     private Long activityId;
+    private boolean isDone;
+
 }

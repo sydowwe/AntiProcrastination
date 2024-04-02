@@ -29,7 +29,7 @@ public class RoutineToDoListController extends MyController{
         var response =  routineToDoListService.getResponseById(id);
         return ResponseEntity.ok(this.mapToSelectOptionResponse(response.getId(),response.getActivity().getName()));
     }
-    @PostMapping("/change-done")
+    @PatchMapping("/change-done")
     public ResponseEntity<SuccessResponse> changeDone(@RequestBody List<IdRequest> requestList) {
         routineToDoListService.setIsDone(requestList);
         return ResponseEntity

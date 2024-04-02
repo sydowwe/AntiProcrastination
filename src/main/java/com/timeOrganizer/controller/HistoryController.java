@@ -26,7 +26,7 @@ public class HistoryController extends MyController {
     }
     @PostMapping("/get-all")
     public ResponseEntity<List<HistoryResponse>> getWholeHistory() {
-        return ResponseEntity.ok(historyService.getAll(getLoggedUser().getId()));
+        return ResponseEntity.ok(historyService.getAllAsResponse(getLoggedUser().getId()));
     }
     @PostMapping("/filter")
     public ResponseEntity<List<HistoryResponse>> filterHistory(@RequestBody HistoryFilterRequest filterData) {

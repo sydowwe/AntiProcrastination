@@ -21,7 +21,7 @@ public class CategoryController extends MyController{
     private final CategoryService categoryService;
     @PostMapping("/get-all-options")
     public ResponseEntity<List<SelectOptionResponse>> getAllOptions(){
-        return ResponseEntity.ok(mapToSelectOptionResponseList(categoryService.getAll(getLoggedUser().getId())));
+        return ResponseEntity.ok(mapToSelectOptionResponseList(categoryService.getAllAsResponse(getLoggedUser().getId())));
     }
     @PostMapping("/get-options-by-role/{roleId}")
     public ResponseEntity<List<SelectOptionResponse>> getByRole(@PathVariable @NonNull long roleId) {

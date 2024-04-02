@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,9 +49,14 @@ public class RoutineToDoListService extends MyService<RoutineToDoList, IRoutineT
 	@Override
 	public List<RoutineToDoListGroupedResponse> getAllByUserIdGroupedByTimePeriod(long userId)
 	{
+		var allPossibleTimePeriods = timePeriodService.getAll(userId);
+		Map<RoutineTimePeriod, List<RoutineToDoList>> groupedByTimePeriod = allPossibleTimePeriods.stream()
+			.collect(Collectors.toMap(
+				timePeriod -> timePeriod,
+				timePeriod -> new ArrayList<>()
+			));
 		var allItems = this.repository.findAllByUserId(userId, this.getSort());
-		Map<RoutineTimePeriod, List<RoutineToDoList>> groupedByTimePeriod = allItems.stream()
-			.collect(Collectors.groupingBy(RoutineToDoList::getTimePeriod));
+		groupedByTimePeriod.putAll(allItems.stream().collect(Collectors.groupingBy(RoutineToDoList::getTimePeriod)));
 		return this.mapper.convertToGroupedResponseAndSort(groupedByTimePeriod);
 	}
 }

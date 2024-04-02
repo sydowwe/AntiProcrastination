@@ -33,9 +33,12 @@ public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extend
         return mapper.convertToFullResponse(this.getById(id));
     }
 
-    public List<RESPONSE> getAll(long userId) {
+    public List<RESPONSE> getAllAsResponse(long userId) {
         var test = repository.findAllByUserId(userId, this.getSort());
         return mapper.convertToFullResponseList(test);
+    }
+    public List<ENTITY> getAll(long userId) {
+        return repository.findAllByUserId(userId, this.getSort());
     }
 
     public void deleteById(@NonNull long id) throws EntityNotFoundException {

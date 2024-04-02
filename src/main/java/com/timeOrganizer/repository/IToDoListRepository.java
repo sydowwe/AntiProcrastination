@@ -15,5 +15,5 @@ import java.util.List;
 public interface IToDoListRepository extends  IMyRepository<ToDoList> {
     @Modifying
     @Query("UPDATE ToDoList t SET t.isDone = CAST(NOT (t.isDone) AS boolean) WHERE t.id IN :ids")
-    void updateIsDoneByIds(@Param("ids") List<Long> ids) throws EntityNotFoundException;
+    int updateIsDoneByIds(@Param("ids") List<Long> ids) throws EntityNotFoundException;
 }

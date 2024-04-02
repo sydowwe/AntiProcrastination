@@ -1,5 +1,6 @@
 package com.timeOrganizer.model.dto.response.history;
 
+import com.timeOrganizer.helper.MyIntTime;
 import com.timeOrganizer.model.dto.response.activity.ActivityResponse;
 import com.timeOrganizer.model.dto.response.extendable.IdResponse;
 import lombok.Data;
@@ -12,5 +13,5 @@ import lombok.experimental.SuperBuilder;
 public class HistoryResponse extends IdResponse {
     private ActivityResponse activity;
     private String startTimestamp;
-    private int length;
+    private MyIntTime length;
 }
