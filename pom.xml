@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.TimeOrganizer</groupId>
 	<artifactId>TimeOrganizer</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<name>TimeOrganizer</name>
 	<description>Recording activities throughout the day</description>
 	<properties>
@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<version>3.2.2</version>
+			<version>3.2.3</version>
 		</dependency>
 
 		<dependency>
@@ -104,6 +104,11 @@
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

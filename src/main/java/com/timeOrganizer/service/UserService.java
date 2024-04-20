@@ -6,8 +6,10 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.timeOrganizer.exception.IdInTokenFormatException;
 import com.timeOrganizer.exception.QrCode2FAGenerationException;
+import com.timeOrganizer.exception.UserLockedOutException;
 import com.timeOrganizer.exception.UserNotFoundException;
 import com.timeOrganizer.helper.EmailService;
+import com.timeOrganizer.helper.FailedLoginLockOutService;
 import com.timeOrganizer.model.dto.mappers.UserMapper;
 import com.timeOrganizer.model.dto.request.user.GoogleAuthLoginRequest;
 import com.timeOrganizer.model.dto.request.user.LoginRequest;
@@ -52,6 +54,7 @@ public class UserService implements IUserService{
     private final UrgencyService urgencyService;
     private final RoutineToDoListTimePeriodTimePeriodService routineToDoListTimePeriodService;
     private final RoleService roleService;
+    private final FailedLoginLockOutService failedLoginLockOutService;
     @Value("${token.expirationLong}")
     private int TOKEN_EXPIRATION_IN_HOURS_LONG;
     @Value("${token.expirationShort}")
@@ -105,8 +108,13 @@ public class UserService implements IUserService{
         }
     }
     @Override
-    public LoginResponse loginUser(LoginRequest loginRequest) throws AuthenticationException, UserNotFoundException {
+    public LoginResponse loginUser(LoginRequest loginRequest) throws UserLockedOutException,AuthenticationException, UserNotFoundException {
+        if (!failedLoginLockOutService.isUserLocked(loginRequest.getEmail())) {
+            throw new UserLockedOutException();
+        }
+        failedLoginLockOutService.addAttempt(loginRequest.getEmail());
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        failedLoginLockOutService.loginSucceeded(loginRequest.getEmail());
         User user = this.findByEmail(loginRequest.getEmail());
         if (user.isStayLoggedIn() != loginRequest.isStayLoggedIn()) {
             userRepository.updateStayLoggedInById(user.getId(), loginRequest.isStayLoggedIn());
@@ -120,12 +128,17 @@ public class UserService implements IUserService{
         }
     }
     @Override
-    public GoogleAuthResponse validate2FALogin(GoogleAuthLoginRequest request) throws UserNotFoundException {
+    public GoogleAuthResponse validate2FALogin(GoogleAuthLoginRequest request) throws UserLockedOutException,UserNotFoundException {
+        if (!failedLoginLockOutService.isUserLocked(request.getEmail())) {
+            throw new UserLockedOutException();
+        }
         User user = this.findByEmail(request.getEmail());
         if (gAuth.authorize(user.getSecretKey2FA(), Integer.parseInt(request.getCode()))) {
             String jwtToken = jwtService.generateToken(user.getEmail(), user.getId(), this.getLengthOfTokenExpiration(user.isStayLoggedIn()));
+            failedLoginLockOutService.loginSucceeded(request.getEmail());
             return new GoogleAuthResponse(true, jwtToken);
         } else {
+            failedLoginLockOutService.addAttempt(request.getEmail());
             return new GoogleAuthResponse(false, null);
         }
     }

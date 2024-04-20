@@ -1,9 +1,6 @@
 package com.timeOrganizer.controller;
 
-import com.timeOrganizer.exception.BatchDeleteException;
-import com.timeOrganizer.exception.IdInTokenFormatException;
-import com.timeOrganizer.exception.QrCode2FAGenerationException;
-import com.timeOrganizer.exception.UserNotInSecurityContext;
+import com.timeOrganizer.exception.*;
 import com.timeOrganizer.model.dto.response.general.ErrorResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DuplicateKeyException;
@@ -50,6 +47,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BatchDeleteException.class)
     public ResponseEntity<ErrorResponse> handleBatchDeleteException(BatchDeleteException e) {
         return this.createErrorResponse("Batch delete failed", HttpStatus.MULTI_STATUS, e);
+    }
+    @ExceptionHandler(UserLockedOutException.class)
+    public ResponseEntity<ErrorResponse> handleUserLockedOutException(UserLockedOutException e) {
+        return this.createErrorResponse("User locked out for " + e.getSeconds() + " seconds", HttpStatus.TOO_MANY_REQUESTS, e);
     }
     private ResponseEntity<ErrorResponse> createErrorResponse(String error, HttpStatus status,Exception e) {
         ErrorResponse errorResponse = new ErrorResponse(error+"  ERROR!", e.getMessage());

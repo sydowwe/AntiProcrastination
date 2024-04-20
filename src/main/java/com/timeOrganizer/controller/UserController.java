@@ -2,6 +2,7 @@ package com.timeOrganizer.controller;
 
 import com.timeOrganizer.exception.QrCode2FAGenerationException;
 import com.timeOrganizer.helper.JsonRequestMapping;
+import com.timeOrganizer.helper.FailedLoginLockOutService;
 import com.timeOrganizer.model.dto.request.user.*;
 import com.timeOrganizer.model.dto.response.general.SuccessResponse;
 import com.timeOrganizer.model.dto.response.user.*;
@@ -52,7 +53,7 @@ public class UserController extends MyController {
         return ResponseEntity.ok(userService.loginUser(request));
     }
     @PostMapping("/auth/validate2FA")
-    public ResponseEntity<GoogleAuthResponse> validate2FA(@RequestBody GoogleAuthLoginRequest request) {
+    public ResponseEntity<GoogleAuthResponse> validate2FALogin(@RequestBody GoogleAuthLoginRequest request) {
         return ResponseEntity.ok(userService.validate2FALogin(request));
     }
     @PostMapping("/auth/logout")
