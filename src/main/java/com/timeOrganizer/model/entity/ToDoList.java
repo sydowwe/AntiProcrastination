@@ -11,7 +11,7 @@ import lombok.*;
 @Entity
 @Table(name = "to_do_list", schema = "test",
         uniqueConstraints = {
-        @UniqueConstraint(name = "unique_userId_name",columnNames = {"userId", "activityId"}),
+        @UniqueConstraint(name = "toDoList_unique_userId_name",columnNames = {"userId", "activityId"}),
     }, indexes = @Index(name = "idx_userId_urgencyId",columnList = "userId,urgencyId")
 )
 public class ToDoList extends AbstractEntity {

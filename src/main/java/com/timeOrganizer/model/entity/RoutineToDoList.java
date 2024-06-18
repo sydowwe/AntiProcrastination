@@ -13,7 +13,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "routine_to_do_list", schema = "test",
         uniqueConstraints = {
-                @UniqueConstraint(name = "unique_userId_name",columnNames = {"userId", "activityId"}),
+                @UniqueConstraint(name = "routineToDoList_unique_userId_name",columnNames = {"userId", "activityId"}),
         }, indexes = @Index(name = "idx_userId_timePeriodId",columnList = "userId,timePeriodId")
 )
 public class RoutineToDoList extends AbstractEntity {

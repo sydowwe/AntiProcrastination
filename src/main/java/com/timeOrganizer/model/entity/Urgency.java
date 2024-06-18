@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
-@Table(name = "task_urgency", schema = "test", uniqueConstraints = @UniqueConstraint(name = "unique_userId_name",columnNames = {"userId", "priority"}))
+@Table(name = "task_urgency", schema = "test", uniqueConstraints = @UniqueConstraint(name = "urgency_unique_userId_name",columnNames = {"userId", "priority"}))
 public class Urgency extends AbstractEntity{
     @Column(nullable = false)
     private String text;

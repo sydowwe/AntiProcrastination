@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @ToString(exclude = {"activities"})
 @Entity
-@Table(name = "role", schema = "test", uniqueConstraints = @UniqueConstraint(name = "unique_userId_name",columnNames = {"userId", "name"}))
+@Table(name = "role", schema = "test", uniqueConstraints = @UniqueConstraint(name = "role_unique_userId_name",columnNames = {"userId", "name"}))
 public class Role extends NameTextColorEntity{
     @OneToMany(mappedBy = "role")
     private List<Activity> activities;

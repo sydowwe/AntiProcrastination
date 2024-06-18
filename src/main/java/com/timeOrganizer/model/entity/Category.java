@@ -14,7 +14,7 @@ import java.util.List;
 @ToString(exclude = {"activities"})
 @Entity
 @Table(name = "category", schema = "test",
-        uniqueConstraints = @UniqueConstraint(name = "unique_userId_name",columnNames = {"userId", "name"})
+        uniqueConstraints = @UniqueConstraint(name = "category_unique_userId_name",columnNames = {"userId", "name"})
 )
 public class Category extends NameTextColorEntity{
     @OneToMany(mappedBy = "category")

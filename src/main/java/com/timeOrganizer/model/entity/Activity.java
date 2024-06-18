@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @ToString(exclude = {"historyList"})
 @Entity
-@Table(name = "activity", schema = "test", uniqueConstraints = @UniqueConstraint(name = "unique_userId_name", columnNames = {"userId", "name"}))
+@Table(name = "activity", schema = "test", uniqueConstraints = @UniqueConstraint(name = "activity_unique_userId_name", columnNames = {"userId", "name"}))
 public class Activity extends NameTextEntity {
     @Column(nullable = false)
     private boolean isOnToDoList;

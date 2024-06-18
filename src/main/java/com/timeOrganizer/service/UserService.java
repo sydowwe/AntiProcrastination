@@ -109,9 +109,9 @@ public class UserService implements IUserService{
     }
     @Override
     public LoginResponse loginUser(LoginRequest loginRequest) throws UserLockedOutException,AuthenticationException, UserNotFoundException {
-        if (!failedLoginLockOutService.isUserLocked(loginRequest.getEmail())) {
-            throw new UserLockedOutException();
-        }
+       /* if (!failedLoginLockOutService.isUserLocked(loginRequest.getEmail())) {
+            throw new UserLockedOutException(999);
+        }*/
         failedLoginLockOutService.addAttempt(loginRequest.getEmail());
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         failedLoginLockOutService.loginSucceeded(loginRequest.getEmail());
@@ -129,9 +129,9 @@ public class UserService implements IUserService{
     }
     @Override
     public GoogleAuthResponse validate2FALogin(GoogleAuthLoginRequest request) throws UserLockedOutException,UserNotFoundException {
-        if (!failedLoginLockOutService.isUserLocked(request.getEmail())) {
-            throw new UserLockedOutException();
-        }
+       /* if (!failedLoginLockOutService.isUserLocked(request.getEmail())) {
+            throw new UserLockedOutException(999);
+        }*/
         User user = this.findByEmail(request.getEmail());
         if (gAuth.authorize(user.getSecretKey2FA(), Integer.parseInt(request.getCode()))) {
             String jwtToken = jwtService.generateToken(user.getEmail(), user.getId(), this.getLengthOfTokenExpiration(user.isStayLoggedIn()));
