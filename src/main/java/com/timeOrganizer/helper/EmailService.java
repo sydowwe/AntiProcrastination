@@ -1,3 +1,4 @@
+/*
 package com.timeOrganizer.helper;
 
 import jakarta.mail.internet.MimeMessage;
@@ -58,3 +59,4 @@ public class EmailService implements IEmailService {
                 "</html>";
     }
 }
+*/

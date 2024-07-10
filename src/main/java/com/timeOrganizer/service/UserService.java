@@ -8,7 +8,7 @@ import com.timeOrganizer.exception.IdInTokenFormatException;
 import com.timeOrganizer.exception.QrCode2FAGenerationException;
 import com.timeOrganizer.exception.UserLockedOutException;
 import com.timeOrganizer.exception.UserNotFoundException;
-import com.timeOrganizer.helper.EmailService;
+//import com.timeOrganizer.helper.EmailService;
 import com.timeOrganizer.helper.FailedLoginLockOutService;
 import com.timeOrganizer.model.dto.mappers.UserMapper;
 import com.timeOrganizer.model.dto.request.user.GoogleAuthLoginRequest;
@@ -49,7 +49,7 @@ public class UserService implements IUserService{
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final GoogleAuthenticator gAuth;
-    private final EmailService emailService;
+//    private final EmailService emailService;
     private final UserMapper userMapper;
     private final UrgencyService urgencyService;
     private final RoutineToDoListTimePeriodTimePeriodService routineToDoListTimePeriodService;
@@ -153,8 +153,8 @@ public class UserService implements IUserService{
         if (test == 0) {
             throw new EntityNotFoundException();
         }
-        String emailBody = emailService.generateForgottenPasswordEmail(tempPassword);
-        emailService.sendEmail(email, "Password reset - " + APP_NAME, emailBody);
+//        String emailBody = emailService.generateForgottenPasswordEmail(tempPassword);
+//        emailService.sendEmail(email, "Password reset - " + APP_NAME, emailBody);
     }
 
     //TODO Check if no changes made so no other requests needed

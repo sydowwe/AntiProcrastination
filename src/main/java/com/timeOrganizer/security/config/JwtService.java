@@ -22,7 +22,7 @@ public class JwtService {
     private PrivateKey privateKey;
     private PublicKey publicKey;
     private List<String> blacklist;
-//TODO FIX value to work from config
+    //TODO FIX value to work from config
     @Value("${token.blacklistCleanupPeriodInSec}")
     private int BLACKLIST_CLEANUP_PERIOD_IN_SEC = 300;
 
