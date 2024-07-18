@@ -15,7 +15,7 @@ import java.time.Instant;
 @ToString
 @NoArgsConstructor
 @Entity
-@Table(name = "history", schema = "test")
+@Table(name = "history", schema = "public")
 //TODO MAYBE ADD indexing
 public class History extends AbstractEntity{
     @ManyToOne

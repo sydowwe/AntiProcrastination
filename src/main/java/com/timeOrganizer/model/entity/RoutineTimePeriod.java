@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @ToString(exclude = {"toDoListItems"})
 @Entity
-@Table(name = "routine_time_period", schema = "test", uniqueConstraints = @UniqueConstraint(name = "routineTimePeriod_unique_userId_name", columnNames = {"userId", "text"}))
+@Table(name = "routine_time_period", schema = "public", uniqueConstraints = @UniqueConstraint(name = "routineTimePeriod_unique_userId_name", columnNames = {"userId", "text"}))
 public class RoutineTimePeriod extends AbstractEntity {
     @Column(nullable = false)
     private String text;

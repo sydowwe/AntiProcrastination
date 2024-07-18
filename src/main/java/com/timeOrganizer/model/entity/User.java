@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @Builder
 @Entity
-@Table(name = "user", schema = "test")
+@Table(name = "user", schema = "public")
 @ToString(exclude = {"scratchCodes", "activityList", "categoryList", "historyList", "roleList", "toDoLists", "urgencyList"})
 public class User implements IEntity{
     @Id

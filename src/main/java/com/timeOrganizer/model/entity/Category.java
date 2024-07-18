@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @ToString(exclude = {"activities"})
 @Entity
-@Table(name = "category", schema = "test",
+@Table(name = "category", schema = "public",
         uniqueConstraints = @UniqueConstraint(name = "category_unique_userId_name",columnNames = {"userId", "name"})
 )
 public class Category extends NameTextColorEntity{

@@ -1,8 +1,3 @@
-FROM maven:3.9.6-amazoncorretto-21 AS build
-WORKDIR /app
-COPY . .
-COPY src/main/resources/ec-private-key.pem ./src/main/resources/ec-private-key.pem
-COPY src/main/resources/ec-public-key.pem ./src/main/resources/ec-public-key.pem
 ENV TOKEN_EXPIRATION_LONG=3600
 ENV TOKEN_EXPIRATION_SHORT=600
 ENV TOKEN_BLACKLIST_CLEANUP_PERIOD_IN_SEC=3600
@@ -22,6 +17,15 @@ ENV OAUTH2_GOOGLE_CLIENT_SECRET=my-google-client-secret
 ENV OAUTH2_GOOGLE_REDIRECT_URI=http://localhost:8080/oauth2/callback
 ENV SPRING_BOOT_RUN_ARGS=--debug
 ENV LOGGING_LEVEL=DEBUG
+ENV CORS_FRONTEND_URL=http://srv544364.hstgr.cloud:1111
+ENV SERVLET_CONTEXT_PATH=/api
+
+
+FROM maven:3.9.6-amazoncorretto-21 AS build
+WORKDIR /app
+COPY . .
+COPY src/main/resources/ec-private-key.pem ./src/main/resources/ec-private-key.pem
+COPY src/main/resources/ec-public-key.pem ./src/main/resources/ec-public-key.pem
 RUN mvn clean package
 
 FROM amazoncorretto:21.0.2-alpine3.18

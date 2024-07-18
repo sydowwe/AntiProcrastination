@@ -16,8 +16,8 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.logging.Logger;
 
 public class ECDSAKeyGenerator {
-    private static final String PRIVATE_KEY_FILEPATH = "ec-private-key.pem";
-    private static final String PUBLIC_KEY_FILEPATH = "ec-public-key.pem";
+    private static final String PRIVATE_KEY_FILEPATH = "src/main/resources/ec-private-key.pem";
+    private static final String PUBLIC_KEY_FILEPATH = "src/main/resources/ec-public-key.pem";
 
     public static PrivateKey readPrivateKey() {
         try (FileReader fileReader = new FileReader(PRIVATE_KEY_FILEPATH);
@@ -77,23 +77,23 @@ public class ECDSAKeyGenerator {
         }
     }
 
-    public static void generateAuthKeys() {
+    public static void generateAuthKeys(){
         Security.addProvider(new BouncyCastleProvider());
         String curveName = "secp384r1";
         KeyPair keyPair;
-        createDirectoriesIfNotExist();
         try {
+            createDirectoriesIfNotExist();
             keyPair = generateECDSAKeyPair(curveName);
         } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidAlgorithmParameterException e) {
             LOGGER.severe("Error generating ECDSA key pair: " + e.getMessage());
             throw new RuntimeException(e);
+        } catch (IOException e) {
+	        throw new RuntimeException(e);
         }
-        try {
-            ClassPathResource privateKeyResource = new ClassPathResource(PRIVATE_KEY_FILEPATH);
-            ClassPathResource publicKeyResource = new ClassPathResource(PUBLIC_KEY_FILEPATH);
-            writePemFile(keyPair.getPrivate(), "SECRET KEY", privateKeyResource.getFile().getPath());
+	    try {
+            writePemFile(keyPair.getPrivate(), "SECRET KEY", PRIVATE_KEY_FILEPATH);
             LOGGER.info("Private key written successfully.");
-            writePemFile(keyPair.getPublic(), "PUBLIC KEY", publicKeyResource.getFile().getPath());
+            writePemFile(keyPair.getPublic(), "PUBLIC KEY", PUBLIC_KEY_FILEPATH);
             LOGGER.info("Public key written successfully.");
         } catch (Exception e) {
             LOGGER.severe("Error writing keys to PEM files: " + e.getMessage());
@@ -110,7 +110,7 @@ public class ECDSAKeyGenerator {
 
     private static void writePemFile(Key key, String objectName, String fileName) throws Exception {
         try (FileOutputStream fos = new FileOutputStream(fileName);
-             OutputStreamWriter osw = new OutputStreamWriter(fos)) {
+            OutputStreamWriter osw = new OutputStreamWriter(fos)) {
             PemWriter writer = new PemWriter(osw);
             PemObject pemObject = new PemObject(objectName, key.getEncoded());
             writer.writeObject(pemObject);
@@ -118,16 +118,18 @@ public class ECDSAKeyGenerator {
             writer.close();
         }
     }
-    private static void createDirectoriesIfNotExist() {
+    //TODO ZISTIT CI JE TREBA ALEBO UZ SA KOPIRUJU SPRAVNE V DOCKERI
+    private static void createDirectoriesIfNotExist() throws IOException
+    {
         File privateKeyFile = new File(PRIVATE_KEY_FILEPATH);
         File publicKeyFile = new File(PUBLIC_KEY_FILEPATH);
-
-        if (!privateKeyFile.getParentFile().exists()) {
-            privateKeyFile.getParentFile().mkdirs();
+        File privateKeyParentFile = privateKeyFile.getParentFile();
+        File publicKeyFilePrivateKeyParentFile = publicKeyFile.getParentFile();
+        if (privateKeyParentFile != null && !privateKeyParentFile.exists()) {
+            privateKeyParentFile.mkdirs();
         }
-
-        if (!publicKeyFile.getParentFile().exists()) {
-            publicKeyFile.getParentFile().mkdirs();
+        if (publicKeyFilePrivateKeyParentFile != null && !publicKeyFilePrivateKeyParentFile.exists()) {
+            publicKeyFilePrivateKeyParentFile.mkdirs();
         }
     }
     private static final Logger LOGGER = Logger.getLogger(ECDSAKeyGenerator.class.getName());

@@ -11,7 +11,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "routine_to_do_list", schema = "test",
+@Table(name = "routine_to_do_list", schema = "public",
         uniqueConstraints = {
                 @UniqueConstraint(name = "routineToDoList_unique_userId_name",columnNames = {"userId", "activityId"}),
         }, indexes = @Index(name = "idx_userId_timePeriodId",columnList = "userId,timePeriodId")

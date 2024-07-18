@@ -13,7 +13,7 @@ import java.time.Instant;
 @Setter
 @ToString
 @Entity
-@Table(name = "plannerTask", schema = "test", uniqueConstraints = @UniqueConstraint(name = "plannerTask_unique_userId_startTimestamp", columnNames = {"userId", "startTimestamp"}))
+@Table(name = "plannerTask", schema = "public", uniqueConstraints = @UniqueConstraint(name = "plannerTask_unique_userId_startTimestamp", columnNames = {"userId", "startTimestamp"}))
 public class PlannerTask extends AbstractEntity{
     @Column(nullable = false)
     private Instant startTimestamp;

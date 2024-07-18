@@ -34,7 +34,8 @@ public class JwtService {
         generateAndRefreshKeys();
     }
     @Scheduled(cron = "0 0 4 * * 1")
-    private void generateAndRefreshKeys(){
+    private void generateAndRefreshKeys()
+    {
         ECDSAKeyGenerator.generateAuthKeys();
         this.privateKey = ECDSAKeyGenerator.readPrivateKey();
         this.publicKey = ECDSAKeyGenerator.readPublicKey();

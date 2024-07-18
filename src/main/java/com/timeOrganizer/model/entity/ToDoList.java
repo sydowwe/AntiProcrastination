@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @ToString
 @Entity
-@Table(name = "to_do_list", schema = "test",
+@Table(name = "to_do_list", schema = "public",
         uniqueConstraints = {
         @UniqueConstraint(name = "toDoList_unique_userId_name",columnNames = {"userId", "activityId"}),
     }, indexes = @Index(name = "idx_userId_urgencyId",columnList = "userId,urgencyId")
