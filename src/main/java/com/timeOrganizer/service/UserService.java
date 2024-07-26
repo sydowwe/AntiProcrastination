@@ -4,11 +4,9 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.timeOrganizer.exception.IdInTokenFormatException;
-import com.timeOrganizer.exception.QrCode2FAGenerationException;
-import com.timeOrganizer.exception.UserLockedOutException;
-import com.timeOrganizer.exception.UserNotFoundException;
-//import com.timeOrganizer.helper.EmailService;
+import com.timeOrganizer.exception.*;
+import com.timeOrganizer.helper.AvailableLocales;
+import com.timeOrganizer.helper.EmailService;
 import com.timeOrganizer.helper.FailedLoginLockOutService;
 import com.timeOrganizer.model.dto.mappers.UserMapper;
 import com.timeOrganizer.model.dto.request.user.GoogleAuthLoginRequest;
@@ -18,6 +16,7 @@ import com.timeOrganizer.model.dto.request.user.UserRequest;
 import com.timeOrganizer.model.dto.response.user.*;
 import com.timeOrganizer.model.entity.User;
 import com.timeOrganizer.repository.IUserRepository;
+import com.timeOrganizer.security.GoogleService;
 import com.timeOrganizer.security.LoggedUser;
 import com.timeOrganizer.security.UserRole;
 import com.timeOrganizer.security.config.JwtService;
@@ -49,12 +48,14 @@ public class UserService implements IUserService{
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final GoogleAuthenticator gAuth;
-//    private final EmailService emailService;
+    private final EmailService emailService;
     private final UserMapper userMapper;
     private final UrgencyService urgencyService;
     private final RoutineToDoListTimePeriodTimePeriodService routineToDoListTimePeriodService;
     private final RoleService roleService;
     private final FailedLoginLockOutService failedLoginLockOutService;
+    private final GoogleService googleService;
+
     @Value("${token.expirationLong}")
     private int TOKEN_EXPIRATION_IN_HOURS_LONG;
     @Value("${token.expirationShort}")
@@ -63,8 +64,20 @@ public class UserService implements IUserService{
     private String APP_NAME;
     @Override
     public RegistrationResponse registerUser(RegistrationRequest registration) throws PersistenceException, QrCode2FAGenerationException {
+        if (!googleService.verifyRecaptcha(registration.getRecaptchaToken(), "register")) {
+            throw new ReCaptchaException();
+        }
+        ;
         RegistrationResponse response;
-        User newUser = User.builder().name(registration.getName()).surname(registration.getSurname()).email(registration.getEmail()).password(passwordEncoder.encode(registration.getPassword())).role(UserRole.USER).build();
+        User newUser = User.builder()
+            .name(registration.getName())
+            .surname(registration.getSurname())
+            .email(registration.getEmail())
+            .password(passwordEncoder.encode(registration.getPassword()))
+            .role(UserRole.USER)
+            .currentLocale(registration.getCurrentLocale())
+            .timezone(registration.getTimezone())
+            .build();
         if (registration.isHas2FA()) {
             GoogleAuthenticatorKey credentials = gAuth.createCredentials();
             newUser.setSecretKey2FA(credentials.getKey());
@@ -112,6 +125,9 @@ public class UserService implements IUserService{
        /* if (!failedLoginLockOutService.isUserLocked(loginRequest.getEmail())) {
             throw new UserLockedOutException(999);
         }*/
+        if (!googleService.verifyRecaptcha(loginRequest.getRecaptchaToken(), "login")) {
+            throw new ReCaptchaException();
+        }
         failedLoginLockOutService.addAttempt(loginRequest.getEmail());
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         failedLoginLockOutService.loginSucceeded(loginRequest.getEmail());
@@ -119,12 +135,15 @@ public class UserService implements IUserService{
         if (user.isStayLoggedIn() != loginRequest.isStayLoggedIn()) {
             userRepository.updateStayLoggedInById(user.getId(), loginRequest.isStayLoggedIn());
         }
+        if (user.getTimezone() != loginRequest.getTimezone()) {
+            userRepository.updateUserTimezone(user.getId(), loginRequest.getTimezone());
+        }
         if (user.has2FA()) {
             //save secretKey2Fa to session by email
-            return LoginResponse.builder().id(user.getId()).email(loginRequest.getEmail()).has2FA(true).build();
+            return LoginResponse.builder().id(user.getId()).email(loginRequest.getEmail()).has2FA(true).currentLocale(user.getCurrentLocale()).build();
         } else {
             String jwtToken = jwtService.generateToken(user.getEmail(), user.getId(), this.getLengthOfTokenExpiration(loginRequest.isStayLoggedIn()));
-            return LoginResponse.builder().id(user.getId()).token(jwtToken).email(loginRequest.getEmail()).has2FA(false).build();
+            return LoginResponse.builder().id(user.getId()).token(jwtToken).email(loginRequest.getEmail()).has2FA(false).currentLocale(user.getCurrentLocale()).build();
         }
     }
     @Override
@@ -146,6 +165,12 @@ public class UserService implements IUserService{
     public void logout(String token) {
         jwtService.invalidateToken(token);
     }
+
+    @Override
+    public void changeCurrentLocale(AvailableLocales locale, long userId)
+    {
+        userRepository.updateCurrentLocaleById(userId, locale);
+    }
     @Override
     public void resetPassword(String email) throws UserNotFoundException {
         String tempPassword = this.generateTemporaryPassword();
@@ -153,8 +178,8 @@ public class UserService implements IUserService{
         if (test == 0) {
             throw new EntityNotFoundException();
         }
-//        String emailBody = emailService.generateForgottenPasswordEmail(tempPassword);
-//        emailService.sendEmail(email, "Password reset - " + APP_NAME, emailBody);
+        String emailBody = emailService.generateForgottenPasswordEmail(tempPassword);
+        emailService.sendEmail(email, "Password reset - " + APP_NAME, emailBody);
     }
 
     //TODO Check if no changes made so no other requests needed

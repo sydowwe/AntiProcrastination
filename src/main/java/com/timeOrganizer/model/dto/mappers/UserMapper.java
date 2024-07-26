@@ -17,6 +17,7 @@ public class UserMapper{
                 .surname(StringUtils.capitalize(user.getSurname()))
                 .email(user.getEmail())
                 .has2FA(user.isHas2FA())
+
                 .build();
     }
     public EditedUserResponse convertToEditedUserSettingsResponse(User user, String token, byte[] qrCode){
@@ -41,6 +42,8 @@ public class UserMapper{
                 .name(reference.getName())
                 .surname(reference.getSurname())
                 .password(reference.getPassword())
+            .currentLocale(reference.getCurrentLocale())
+            .timezone(reference.getTimezone())
                 .build();
     }
 

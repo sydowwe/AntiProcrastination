@@ -1,5 +1,6 @@
 package com.timeOrganizer.security;
 
+import com.timeOrganizer.helper.AvailableLocales;
 import com.timeOrganizer.model.entity.User;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,6 +23,8 @@ public class LoggedUser implements UserDetails {
     private boolean has2FA;
     private String name;
     private String surname;
+    private AvailableLocales currentLocale;
+    private ZoneId timezone;
     private User reference;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

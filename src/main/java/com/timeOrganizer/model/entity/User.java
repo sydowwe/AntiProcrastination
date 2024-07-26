@@ -1,9 +1,12 @@
 package com.timeOrganizer.model.entity;
 
+import com.timeOrganizer.helper.AvailableLocales;
+import com.timeOrganizer.helper.ZoneIdDBConverter;
 import com.timeOrganizer.security.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.ZoneId;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,12 +33,17 @@ public class User implements IEntity{
     @Column(unique = true)
     private String secretKey2FA;
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private UserRole role;
     @ElementCollection
     private List<Integer> scratchCodes;
     @Column(nullable = false)
     private boolean isStayLoggedIn;
-
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AvailableLocales currentLocale = AvailableLocales.SK;
+    @Convert(converter = ZoneIdDBConverter.class)
+    private ZoneId timezone;
 
     @OneToMany(mappedBy = "user")
     private List<Activity> activityList;

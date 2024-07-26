@@ -2,8 +2,8 @@ package com.timeOrganizer.controller;
 
 import com.timeOrganizer.exception.RequiredParameterMissingException;
 import com.timeOrganizer.exception.UserNotInSecurityContext;
-import com.timeOrganizer.model.dto.response.general.SelectOptionResponse;
 import com.timeOrganizer.model.dto.response.extendable.NameTextResponse;
+import com.timeOrganizer.model.dto.response.general.SelectOptionResponse;
 import com.timeOrganizer.security.LoggedUser;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.Authentication;
@@ -66,7 +66,6 @@ public abstract class MyController {
                 }
             }
         };
-
     }
     protected URI getCreatedResourceURI(long id){
         return ServletUriComponentsBuilder.fromCurrentRequest()

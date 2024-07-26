@@ -20,7 +20,7 @@ public abstract class AbstractEntity implements IEntity{
     @JoinColumn(name = "userId", nullable = false)
     @ToString.Exclude
     private User user;
-    @Column(name = "createdAt", nullable = false, updatable = false)
+    @Column(name = "createdAt", updatable = false)
     private LocalDateTime createdAt;
     protected  AbstractEntity(User user){
         this.user = user;

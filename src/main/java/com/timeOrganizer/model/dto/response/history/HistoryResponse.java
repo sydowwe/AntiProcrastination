@@ -7,11 +7,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
+import java.time.Instant;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 public class HistoryResponse extends IdResponse {
     private ActivityResponse activity;
-    private String startTimestamp;
+    private Instant startTimestamp;
     private MyIntTime length;
 }

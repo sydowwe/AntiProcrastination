@@ -1,9 +1,9 @@
 package com.timeOrganizer.controller;
 
 import com.timeOrganizer.helper.JsonRequestMapping;
+import com.timeOrganizer.model.dto.request.extendable.IdRequest;
 import com.timeOrganizer.model.dto.request.taskPlanner.PlannerFilterRequest;
 import com.timeOrganizer.model.dto.request.taskPlanner.PlannerTaskRequest;
-import com.timeOrganizer.model.dto.request.extendable.IdRequest;
 import com.timeOrganizer.model.dto.response.PlannerTaskResponse;
 import com.timeOrganizer.model.dto.response.extendable.IdResponse;
 import com.timeOrganizer.model.dto.response.general.SelectOptionResponse;
@@ -26,7 +26,7 @@ public class TaskPlannerController extends MyController{
 	}
 	@GetMapping("/{id}")
 	public ResponseEntity<SelectOptionResponse> get(@PathVariable("id") Long id) {
-		return ResponseEntity.ok(this.mapToSelectOptionResponse(plannerTaskService.getResponseById(id)));
+		return ResponseEntity.ok(this.mapToSelectOptionResponse(id, plannerTaskService.getResponseById(id).getActivity().getName()));
 	}
 	@PatchMapping("/change-done")
 	public ResponseEntity<SuccessResponse> changeDone(@RequestBody List<IdRequest> requestList) {

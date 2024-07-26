@@ -24,8 +24,10 @@ import java.util.Arrays;
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-    @Value("${cors.frontendUrl}")
-    private String corsFrontendUrl;
+    @Value("${cors.frontendURL}")
+    private String corsFrontendURL;
+    @Value("${cors.webExtensionURL}")
+    private String corsWebExtensionURL;
 //    private final MyOauth2SuccessHandler successHandler;
 //    private final MyOauth2FailureHandler failureHandler;
     @Bean
@@ -46,12 +48,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList(corsFrontendUrl,"https://localhost:3000/"));
+        config.setAllowedOrigins(Arrays.asList(corsFrontendURL, corsWebExtensionURL, "https://localhost:3000"));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", config);
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 }

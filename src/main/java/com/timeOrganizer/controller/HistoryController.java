@@ -3,6 +3,7 @@ package com.timeOrganizer.controller;
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.history.HistoryFilterRequest;
 import com.timeOrganizer.model.dto.request.history.HistoryRequest;
+import com.timeOrganizer.model.dto.response.history.HistoryListGroupedByDateResponse;
 import com.timeOrganizer.model.dto.response.history.HistoryResponse;
 import com.timeOrganizer.service.HistoryService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,8 @@ public class HistoryController extends MyController {
         return ResponseEntity.ok(historyService.getAllAsResponse(getLoggedUser().getId()));
     }
     @PostMapping("/filter")
-    public ResponseEntity<List<HistoryResponse>> filterHistory(@RequestBody HistoryFilterRequest filterData) {
-        return ResponseEntity.ok(historyService.filter(filterData));
+    public ResponseEntity<List<HistoryListGroupedByDateResponse>> filterHistory(@RequestBody HistoryFilterRequest filterData)
+    {
+        return ResponseEntity.ok(historyService.filter(this.getLoggedUser(), filterData));
     }
 }

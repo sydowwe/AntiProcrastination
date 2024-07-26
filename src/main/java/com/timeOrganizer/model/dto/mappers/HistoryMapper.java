@@ -21,7 +21,7 @@ public class HistoryMapper extends AbstractInOutMapper<History, HistoryRequest, 
         return HistoryResponse.builder()
                 .id(history.getId())
                 .activity(activityMapper.convertToFullResponse(history.getActivity()))
-                .startTimestamp(history.getStart().toString())
+            .startTimestamp(history.getStart())
                 .length(history.getLength())
                 .build();
     }

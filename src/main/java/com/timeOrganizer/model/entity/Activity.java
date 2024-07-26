@@ -1,14 +1,17 @@
 package com.timeOrganizer.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = {"historyList"})
+@ToString(exclude = {"historyList", "webExtensionDataList"})
 @Entity
 @Table(name = "activity", schema = "public", uniqueConstraints = @UniqueConstraint(name = "activity_unique_userId_name", columnNames = {"userId", "name"}))
 public class Activity extends NameTextEntity {
@@ -25,4 +28,6 @@ public class Activity extends NameTextEntity {
     private Category category;
     @OneToMany(mappedBy = "activity")
     private List<History> historyList;
+    @OneToMany(mappedBy = "activity")
+    private List<WebExtensionData> webExtensionDataList;
 }

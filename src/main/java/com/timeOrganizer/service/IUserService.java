@@ -2,6 +2,7 @@ package com.timeOrganizer.service;
 
 import com.timeOrganizer.exception.QrCode2FAGenerationException;
 import com.timeOrganizer.exception.UserNotFoundException;
+import com.timeOrganizer.helper.AvailableLocales;
 import com.timeOrganizer.model.dto.request.user.GoogleAuthLoginRequest;
 import com.timeOrganizer.model.dto.request.user.LoginRequest;
 import com.timeOrganizer.model.dto.request.user.RegistrationRequest;
@@ -20,6 +21,8 @@ public interface IUserService
 	LoginResponse loginUser(LoginRequest loginRequest) throws AuthenticationException, UserNotFoundException;
 	GoogleAuthResponse validate2FALogin(GoogleAuthLoginRequest request) throws UserNotFoundException;
 	void logout(String token);
+
+	void changeCurrentLocale(AvailableLocales locale, long userId);
 	void resetPassword(String email) throws UserNotFoundException;
 	boolean wereSensitiveChangesMade(LoggedUser loggedUser, UserRequest changedUser);
 	boolean verifyPasswordAndReturn2FAStatus(String token, String password) throws AuthenticationException;

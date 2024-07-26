@@ -1,8 +1,8 @@
 package com.timeOrganizer.controller;
 
 import com.timeOrganizer.exception.QrCode2FAGenerationException;
+import com.timeOrganizer.helper.EmailService;
 import com.timeOrganizer.helper.JsonRequestMapping;
-import com.timeOrganizer.helper.FailedLoginLockOutService;
 import com.timeOrganizer.model.dto.request.user.*;
 import com.timeOrganizer.model.dto.response.general.SuccessResponse;
 import com.timeOrganizer.model.dto.response.user.*;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController extends MyController {
     private final UserService userService;
     private final OAuth2Service oAuth2Service;
-
+    private final EmailService emailService;
     //    private final HttpSession session;
     @PostMapping("/auth/register")
     public ResponseEntity<RegistrationResponse> register(@RequestBody RegistrationRequest request) throws QrCode2FAGenerationException {
@@ -50,6 +50,7 @@ public class UserController extends MyController {
     }
     @PostMapping("/auth/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+        //emailService.sendSimpleEmail("jakubsobota123@gmail.com","TESTTESTTESTTEST","test123");
         return ResponseEntity.ok(userService.loginUser(request));
     }
     @PostMapping("/auth/validate2FA")
@@ -117,6 +118,13 @@ public class UserController extends MyController {
     @PutMapping("/edit-logged-user-data")
     public ResponseEntity<EditedUserResponse> editLoggedInUserData(@RequestHeader("Authorization") String token, @RequestBody UserRequest request) throws QrCode2FAGenerationException{
         return ResponseEntity.ok(userService.editLoggedUserData(token, request));
+    }
+
+    @PutMapping("/change-locale")
+    public ResponseEntity<String> changeLocale(@RequestBody() LocaleRequest localeRequest)
+    {
+        userService.changeCurrentLocale(localeRequest.getLocale(), this.getLoggedUser().getId());
+        return ResponseEntity.ok("Locale changed");
     }
     @PostMapping("/change-password")
     public ResponseEntity<SuccessResponse> changePassword(@RequestHeader("Authorization") String token, @RequestBody String password) {

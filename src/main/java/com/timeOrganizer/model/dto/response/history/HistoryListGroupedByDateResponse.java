@@ -1,5 +1,10 @@
 package com.timeOrganizer.model.dto.response.history;
 
-public class HistoryListGroupedByDateResponse {
+import com.timeOrganizer.model.dto.response.extendable.IResponse;
 
+import java.time.LocalDate;
+import java.util.List;
+
+public record HistoryListGroupedByDateResponse(LocalDate date, List<HistoryResponse> historyResponseList) implements IResponse
+{
 }

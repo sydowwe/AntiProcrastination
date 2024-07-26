@@ -9,9 +9,12 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 public class HistorySpecifications {
-    public static Specification<History> withFilter(Long activityId, Long roleId, Long categoryId, Boolean isFromToDoList, Boolean isUnavoidable, Instant dateFrom, Instant dateTo, Long hoursBack) {
+    public static Specification<History> withFilter(long userId, Long activityId, Long roleId, Long categoryId, Boolean isFromToDoList, Boolean isUnavoidable, Instant dateFrom, Instant dateTo, Long hoursBack)
+    {
         return (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
+            predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("user").get("id"), userId));
+
             if (activityId != null) {
                 predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("activity").get("id"), activityId));
             } else {
@@ -33,21 +36,20 @@ public class HistorySpecifications {
             }
 
             if (dateTo != null) {
-                Expression<Long> startInSeconds = criteriaBuilder.function("UNIX_TIMESTAMP", Long.class, root.get("start"));
+                Expression<Long> startInSeconds = criteriaBuilder.function("date_part", Long.class, criteriaBuilder.literal("EPOCH"), root.get("start"));
                 Expression<Long> lengthInSeconds = root.get("length").as(Long.class);
-
                 predicate = criteriaBuilder.and(
-                        predicate,
-                        criteriaBuilder.lessThanOrEqualTo(criteriaBuilder.sum(startInSeconds, lengthInSeconds), dateTo.getEpochSecond())
+                    predicate,
+                    criteriaBuilder.lessThanOrEqualTo(
+                        criteriaBuilder.sum(startInSeconds, lengthInSeconds), dateTo.getEpochSecond()
+                    )
                 );
                 if (hoursBack != null) {
                     Instant dateMinusHours = dateTo.minus(hoursBack, ChronoUnit.HOURS);
                     predicate = criteriaBuilder.and(predicate, criteriaBuilder.greaterThanOrEqualTo(root.get("start"), dateMinusHours));
                 }
             }
-
             return predicate;
         };
     }
-
 }
