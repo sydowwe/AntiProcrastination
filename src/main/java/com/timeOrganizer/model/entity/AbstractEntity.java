@@ -3,6 +3,7 @@ package com.timeOrganizer.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
@@ -21,12 +22,9 @@ public abstract class AbstractEntity implements IEntity{
     @ToString.Exclude
     private User user;
     @Column(name = "createdAt", updatable = false)
+    @ColumnDefault("localtimestamp()")
     private LocalDateTime createdAt;
     protected  AbstractEntity(User user){
         this.user = user;
-    }
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
     }
 }

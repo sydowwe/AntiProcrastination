@@ -1,0 +1,20 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="3" author="jakub">
+        <comment>Add EXCLUDE constraint to prevent overlapping intervals in history table</comment>
+        <sql>
+            CREATE
+            EXTENSION IF NOT EXISTS btree_gist;
+
+            ALTER TABLE history DROP CONSTRAINT IF EXISTS history_no_overlap;
+            ALTER TABLE history
+                ADD CONSTRAINT history_no_overlap EXCLUDE USING gist (
+              tstzrange (start, end_time) WITH &amp;&amp;, userid WITH =
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>

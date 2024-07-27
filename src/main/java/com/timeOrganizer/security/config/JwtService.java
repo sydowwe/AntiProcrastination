@@ -4,7 +4,6 @@ import com.timeOrganizer.exception.IdInTokenFormatException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -22,14 +21,12 @@ public class JwtService {
     private PrivateKey privateKey;
     private PublicKey publicKey;
     private List<String> blacklist;
-    //TODO FIX value to work from config
-    @Value("${token.blacklistCleanupPeriodInSec}")
-    private int BLACKLIST_CLEANUP_PERIOD_IN_SEC = 300;
+
 
     public JwtService(){
         this.blacklist = new ArrayList<>();
         try (ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2)) {
-            scheduler.scheduleAtFixedRate(this::blacklistCleanUp, 0, BLACKLIST_CLEANUP_PERIOD_IN_SEC, TimeUnit.SECONDS);
+	        scheduler.scheduleAtFixedRate(this::blacklistCleanUp, 0, Long.parseLong(System.getenv("TOKEN_BLACKLIST_CLEANUP_PERIOD_IN_SEC")), TimeUnit.SECONDS);
         }
         generateAndRefreshKeys();
     }

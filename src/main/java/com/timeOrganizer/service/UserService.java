@@ -56,10 +56,6 @@ public class UserService implements IUserService{
     private final FailedLoginLockOutService failedLoginLockOutService;
     private final GoogleService googleService;
 
-    @Value("${token.expirationLong}")
-    private int TOKEN_EXPIRATION_IN_HOURS_LONG;
-    @Value("${token.expirationShort}")
-    private int TOKEN_EXPIRATION_IN_HOURS_SHORT;
     @Value("${app.name}")
     private String APP_NAME;
     @Override
@@ -282,7 +278,7 @@ public class UserService implements IUserService{
     }
 
     private int getLengthOfTokenExpiration(boolean stayLoggedIn) {
-        return stayLoggedIn ? TOKEN_EXPIRATION_IN_HOURS_LONG : TOKEN_EXPIRATION_IN_HOURS_SHORT;
+	    return Integer.parseInt(stayLoggedIn ? System.getenv("TOKEN_EXPIRATION_LONG") : System.getenv("TOKEN_EXPIRATION_SHORT"));
     }
 
     private String generateTemporaryPassword() {

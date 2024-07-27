@@ -38,7 +38,6 @@ public class HistoryService extends MyService<History, IHistoryRepository, Histo
 	{
 		return Map.of("activity", activityService.getReference(request.getActivityId()));
 	}
-
 	@Override
 	public List<HistoryListGroupedByDateResponse> filter(LoggedUser user, HistoryFilterRequest filterRequest)
 	{
@@ -53,6 +52,7 @@ public class HistoryService extends MyService<History, IHistoryRepository, Histo
 			filterRequest.getDateTo(),
 			filterRequest.getHoursBack()
 		);
+
 		List<HistoryResponse> historyResponses = this.mapper.convertToFullResponseList(this.repository.findAll(spec));
 		return historyResponses.stream()
 			.collect(Collectors.groupingBy(hr -> hr.getStartTimestamp().atZone(user.getTimezone()).toLocalDate()))

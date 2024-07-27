@@ -1,7 +1,6 @@
 package com.timeOrganizer.security.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,10 +23,6 @@ import java.util.Arrays;
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-    @Value("${cors.frontendURL}")
-    private String corsFrontendURL;
-    @Value("${cors.webExtensionURL}")
-    private String corsWebExtensionURL;
 //    private final MyOauth2SuccessHandler successHandler;
 //    private final MyOauth2FailureHandler failureHandler;
     @Bean
@@ -48,7 +43,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList(corsFrontendURL, corsWebExtensionURL, "https://localhost:3000"));
+	    config.setAllowedOrigins(Arrays.asList(System.getenv("CORS_FRONTEND_URL"), System.getenv("CORS_WEB_EXTENSION_URL"), "https://localhost:3000"));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.setAllowCredentials(true);

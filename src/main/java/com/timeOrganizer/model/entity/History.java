@@ -26,7 +26,6 @@ public class History extends AbstractEntity{
     @Convert(converter = MyIntTimeDBConverter.class)
     @Column(nullable = false)
     private MyIntTime length;
-    public int getLengthInSeconds() {
-        return length.getHours() * 3600 + length.getMinutes() * 60 + length.getSeconds();
-    }
+    @Column(nullable = false, name = "end_time")
+    private Instant endTime = start.plusSeconds(length.getInSeconds());
 }

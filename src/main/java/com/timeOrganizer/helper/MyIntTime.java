@@ -19,4 +19,10 @@ public class MyIntTime {
         this.minutes = (seconds % 3600) / 60;
         this.seconds = seconds % 60;
     }
+
+    public int getInSeconds()
+    {
+        return this.hours * 3600 + this.minutes * 60 + this.seconds;
+    }
+
 }

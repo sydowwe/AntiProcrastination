@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -14,9 +15,9 @@ public class JpaConfig {
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://" + System.getenv("DB_HOST") + ":5432/" + System.getenv("DB_NAME"));
-        dataSource.setUsername(System.getenv("DB_USER"));
-        dataSource.setPassword(System.getenv("DB_PASSWORD"));
+        dataSource.setUrl("jdbc:postgresql://" + System.getenv("DB_HOST") + ":5432/" + System.getenv("POSTGRES_DB"));
+        dataSource.setUsername(System.getenv("POSTGRES_USER"));
+        dataSource.setPassword(System.getenv("POSTGRES_PASSWORD"));
         return dataSource;
     }
 

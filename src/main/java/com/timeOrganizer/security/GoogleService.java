@@ -1,6 +1,5 @@
 package com.timeOrganizer.security;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -12,8 +11,6 @@ import java.util.Map;
 @Service
 public class GoogleService
 {
-	@Value("${recaptcha.secret}")
-	private String recaptchaSecret;
 
 	private static final String GOOGLE_RECAPTCHA_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
 
@@ -21,7 +18,7 @@ public class GoogleService
 	{
 		RestTemplate restTemplate = new RestTemplate();
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.add("secret", recaptchaSecret);
+		params.add("secret", System.getenv("RECAPTCHA_SECRET"));
 		params.add("response", token);
 
 		ResponseEntity<Map> responseEntity = restTemplate.postForEntity(GOOGLE_RECAPTCHA_VERIFY_URL, params, Map.class);

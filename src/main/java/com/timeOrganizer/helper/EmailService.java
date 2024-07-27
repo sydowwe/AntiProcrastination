@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService implements IEmailService {
     private final JavaMailSender javaMailSender;
-    @Value("${page.url}")
-    private String PAGE_URL;
+	private final String PAGE_URL = System.getenv("PAGE_URL");
     @Value("${app.name}")
     private String APP_NAME;
 
