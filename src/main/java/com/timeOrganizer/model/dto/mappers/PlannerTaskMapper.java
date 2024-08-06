@@ -8,7 +8,6 @@ import com.timeOrganizer.model.entity.PlannerTask;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
 import java.util.Map;
 
 @Component
@@ -33,7 +32,7 @@ public class PlannerTaskMapper extends AbstractInOutMapper<PlannerTask, PlannerT
 
 	@Override
 	public PlannerTask updateEntityFromRequest(PlannerTask entity, PlannerTaskRequest request, Map<String, ? extends AbstractEntity> dependencies) {
-		entity.setStartTimestamp(Instant.parse(request.getStartTimestamp()));
+		entity.setStartTimestamp(request.getStartTimestamp());
 		entity.setMinuteLength(request.getMinuteLength());
 		entity.setDone(request.isDone());
 		entity.setActivity(

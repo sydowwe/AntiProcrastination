@@ -52,6 +52,7 @@ public class HistoryService extends MyService<History, IHistoryRepository, Histo
 			filterRequest.getDateTo(),
 			filterRequest.getHoursBack()
 		);
+		//TODO spravit gettere na vsetky moznosti categorii activity a tak dalej dostupnych podla vsetkych parametrov okrem casu a datumu aby sa mi selecty automaticky davali len podla moznosti a nie na vsetko
 
 		List<HistoryResponse> historyResponses = this.mapper.convertToFullResponseList(this.repository.findAll(spec));
 		return historyResponses.stream()

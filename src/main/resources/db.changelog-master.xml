@@ -13,7 +13,7 @@
             ALTER TABLE history DROP CONSTRAINT IF EXISTS history_no_overlap;
             ALTER TABLE history
                 ADD CONSTRAINT history_no_overlap EXCLUDE USING gist (
-              tstzrange (start, end_time) WITH &amp;&amp;, userid WITH =
+              tstzrange ([start_timestamp], [end_timestamp]) WITH &amp;&amp;, user_id WITH =
             );
         </sql>
     </changeSet>

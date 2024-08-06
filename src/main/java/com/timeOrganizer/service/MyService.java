@@ -1,6 +1,7 @@
 package com.timeOrganizer.service;
 
 import com.timeOrganizer.exception.BatchDeleteException;
+import com.timeOrganizer.exception.UserNotInSecurityContext;
 import com.timeOrganizer.model.dto.mappers.AbstractInOutMapper;
 import com.timeOrganizer.model.dto.request.extendable.IRequest;
 import com.timeOrganizer.model.dto.request.extendable.IdRequest;
@@ -8,6 +9,7 @@ import com.timeOrganizer.model.dto.response.extendable.IdResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.User;
 import com.timeOrganizer.repository.IMyRepository;
+import com.timeOrganizer.security.LoggedUser;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -34,7 +38,7 @@ public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extend
     }
 
     public List<RESPONSE> getAllAsResponse(long userId) {
-        var test = repository.findAllByUserId(userId, this.getSort());
+	    var test = repository.findAllByUserId(this.getLoggedUser().getId(), this.getSort());
         return mapper.convertToFullResponseList(test);
     }
     public List<ENTITY> getAll(long userId) {
@@ -86,4 +90,14 @@ public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extend
     protected Sort getSort(){
         return Sort.by(this.getSortDirection(), this.getSortByProperties());
     }
+
+
+	private LoggedUser getLoggedUser() throws UserNotInSecurityContext
+	{
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated() || !(authentication.getPrincipal() instanceof LoggedUser)) {
+			throw new EntityNotFoundException("User not in security context");
+		}
+		return (LoggedUser) authentication.getPrincipal();
+	}
 }

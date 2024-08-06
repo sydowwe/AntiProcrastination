@@ -15,8 +15,8 @@ import java.util.List;
 @Setter
 @Builder
 @Entity
-@Table(name = "user", schema = "public")
-@ToString(exclude = {"scratchCodes", "activityList", "categoryList", "historyList", "roleList", "toDoLists", "urgencyList"})
+@Table(schema = "public")
+@ToString(exclude = {"scratchCodes", "activityList", "categoryList", "historyList", "roleList", "toDoLists", "taskUrgencyList"})
 public class User implements IEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,7 +56,7 @@ public class User implements IEntity{
     @OneToMany(mappedBy = "user")
     private List<ToDoList> toDoLists;
     @OneToMany(mappedBy = "user")
-    private List<Urgency> urgencyList;
+    private List<TaskUrgency> taskUrgencyList;
     public boolean has2FA() {
         return this.secretKey2FA != null && !this.secretKey2FA.isBlank();
     }

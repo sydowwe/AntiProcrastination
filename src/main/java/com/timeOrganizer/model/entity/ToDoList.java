@@ -1,26 +1,29 @@
 package com.timeOrganizer.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
-@Table(name = "to_do_list", schema = "public",
+@ToString
+@Table(schema = "public",
         uniqueConstraints = {
-        @UniqueConstraint(name = "toDoList_unique_userId_name",columnNames = {"userId", "activityId"}),
-    }, indexes = @Index(name = "idx_userId_urgencyId",columnList = "userId,urgencyId")
+            @UniqueConstraint(name = "to_do_list_unique_user_id_activity_id", columnNames = {"user_id", "activity_id"}),
+        }, indexes = @Index(name = "idx_user_id_urgency_id", columnList = "user_id, urgency_id")
 )
 public class ToDoList extends AbstractEntity {
     @Column(nullable = false)
     private boolean isDone = false;
     @ManyToOne(optional = false)
-    @JoinColumn(name = "activityId",nullable = false)
+    @JoinColumn(name = "activity_id", nullable = false)
     private Activity activity;
     @ManyToOne
-    @JoinColumn(name = "urgencyId", nullable = false)
-    private Urgency urgency;
+    @JoinColumn(name = "task_urgency_id", nullable = false)
+    private TaskUrgency taskUrgency;
 }

@@ -2,16 +2,18 @@ package com.timeOrganizer.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = {"toDoListItems"})
 @Entity
-@Table(name = "routine_time_period", schema = "public", uniqueConstraints = @UniqueConstraint(name = "routineTimePeriod_unique_userId_name", columnNames = {"userId", "text"}))
+@SuperBuilder
+@ToString(exclude = {"toDoListItems"})
+@AllArgsConstructor
+@Table(schema = "public", uniqueConstraints = @UniqueConstraint(name = "routine_time_period_unique_user_id_text", columnNames = {"user_id", "text"}))
 public class RoutineTimePeriod extends AbstractEntity {
     @Column(nullable = false)
     private String text;
@@ -20,12 +22,4 @@ public class RoutineTimePeriod extends AbstractEntity {
     private boolean isHiddenInView;
     @OneToMany(mappedBy = "timePeriod")
     private List<RoutineToDoList> toDoListItems;
-
-    public RoutineTimePeriod(String text, String color, int lengthInDays, boolean isHiddenInView, User user) {
-        super(user);
-        this.text = text;
-        this.color = color;
-        this.lengthInDays = lengthInDays;
-        this.isHiddenInView = isHiddenInView;
-    }
 }

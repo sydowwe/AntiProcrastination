@@ -11,9 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = {"historyList", "webExtensionDataList"})
 @Entity
-@Table(name = "activity", schema = "public", uniqueConstraints = @UniqueConstraint(name = "activity_unique_userId_name", columnNames = {"userId", "name"}))
+@ToString(exclude = {"historyList", "webExtensionDataList"})
+@Table(schema = "public", uniqueConstraints = @UniqueConstraint(name = "activity_unique_user_id_name", columnNames = {"user_id", "name"}))
 public class Activity extends NameTextEntity {
     @Column(nullable = false)
     private boolean isOnToDoList;
@@ -21,10 +21,10 @@ public class Activity extends NameTextEntity {
     private boolean isUnavoidable;
     //TODO ADD cascade types
     @ManyToOne(optional = false)
-    @JoinColumn(name = "roleId", nullable = false)
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
     @ManyToOne()
-    @JoinColumn(name = "categoryId")
+    @JoinColumn(name = "category_id")
     private Category category;
     @OneToMany(mappedBy = "activity")
     private List<History> historyList;

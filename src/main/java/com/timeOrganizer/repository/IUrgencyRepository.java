@@ -1,8 +1,9 @@
 package com.timeOrganizer.repository;
 
-import com.timeOrganizer.model.entity.Urgency;
+import com.timeOrganizer.model.entity.TaskUrgency;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IUrgencyRepository extends IMyRepository<Urgency> {
+public interface IUrgencyRepository extends IMyRepository<TaskUrgency>
+{
 }

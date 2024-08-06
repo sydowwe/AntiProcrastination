@@ -6,8 +6,8 @@ import com.timeOrganizer.model.dto.request.toDoList.ToDoListRequest;
 import com.timeOrganizer.model.dto.response.toDoList.ToDoListResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.Activity;
+import com.timeOrganizer.model.entity.TaskUrgency;
 import com.timeOrganizer.model.entity.ToDoList;
-import com.timeOrganizer.model.entity.Urgency;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,13 +24,13 @@ public class ToDoListMapper extends AbstractInOutMapper<ToDoList,ToDoListRequest
                 .id(toDoListItem.getId())
                 .isDone(toDoListItem.isDone())
                 .activity(activityMapper.convertToFullResponse(toDoListItem.getActivity()))
-                .urgency(urgencyMapper.convertToFullResponse(toDoListItem.getUrgency()))
+            .urgency(urgencyMapper.convertToFullResponse(toDoListItem.getTaskUrgency()))
                 .build();
     }
     @Override
     public ToDoList updateEntityFromRequest(ToDoList entity, ToDoListRequest request, Map<String, ? extends AbstractEntity> dependencies) {
         entity.setActivity((Activity) dependencies.get("activity"));
-        entity.setUrgency((Urgency) dependencies.get("urgency"));
+        entity.setTaskUrgency((TaskUrgency) dependencies.get("urgency"));
         return entity;
     }
     @Override

@@ -10,22 +10,22 @@ import lombok.ToString;
 
 import java.time.Instant;
 
+@NoArgsConstructor
 @Getter
 @Setter
-@ToString
-@NoArgsConstructor
 @Entity
-@Table(name = "history", schema = "public")
+@ToString
+@Table(schema = "public")
 //TODO MAYBE ADD indexing
 public class History extends AbstractEntity{
     @ManyToOne
-    @JoinColumn(name = "activityId",nullable = false)
+    @JoinColumn(name = "activity_id", nullable = false)
     private Activity activity;
     @Column(nullable = false)
-    private Instant start;
+    private Instant startTimestamp;
     @Convert(converter = MyIntTimeDBConverter.class)
     @Column(nullable = false)
     private MyIntTime length;
-    @Column(nullable = false, name = "end_time")
-    private Instant endTime = start.plusSeconds(length.getInSeconds());
+	@Column(nullable = false)
+	private Instant endTimestamp;
 }

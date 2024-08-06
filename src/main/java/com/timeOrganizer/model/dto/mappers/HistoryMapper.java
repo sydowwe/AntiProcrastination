@@ -8,7 +8,6 @@ import com.timeOrganizer.model.entity.History;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
 import java.util.Map;
 
 
@@ -21,14 +20,16 @@ public class HistoryMapper extends AbstractInOutMapper<History, HistoryRequest, 
         return HistoryResponse.builder()
                 .id(history.getId())
                 .activity(activityMapper.convertToFullResponse(history.getActivity()))
-            .startTimestamp(history.getStart())
+	        .startTimestamp(history.getStartTimestamp())
+	        .endTimestamp(history.getEndTimestamp())
                 .length(history.getLength())
                 .build();
     }
     @Override
     public History updateEntityFromRequest(History entity, HistoryRequest request, Map<String, ? extends AbstractEntity> dependencies) {
-        entity.setStart(Instant.parse(request.getStartTimestamp()));
+	    entity.setStartTimestamp(request.getStartTimestamp());
         entity.setLength(request.getLength());
+	    entity.setEndTimestamp(request.getStartTimestamp().plusSeconds(request.getLength().getInSeconds()));
         entity.setActivity((Activity) dependencies.get("activity"));
         return entity;
     }

@@ -16,4 +16,5 @@ public class HistoryResponse extends IdResponse {
     private ActivityResponse activity;
     private Instant startTimestamp;
     private MyIntTime length;
+	private Instant endTimestamp;
 }

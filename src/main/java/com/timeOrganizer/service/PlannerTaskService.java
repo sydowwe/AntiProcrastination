@@ -14,41 +14,54 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
 @Service
 @Transactional
-public class PlannerTaskService extends MyService<PlannerTask, IPlannerTaskRepository, PlannerTaskRequest, PlannerTaskResponse, PlannerTaskMapper> {
+public class PlannerTaskService extends MyService<PlannerTask, IPlannerTaskRepository, PlannerTaskRequest, PlannerTaskResponse, PlannerTaskMapper>
+{
 	private final ActivityService activityService;
+
 	@Autowired
-	public PlannerTaskService(IPlannerTaskRepository repository, PlannerTaskMapper mapper, ActivityService activityService) {
+	public PlannerTaskService(IPlannerTaskRepository repository, PlannerTaskMapper mapper, ActivityService activityService)
+	{
 		super(repository, mapper);
 		this.activityService = activityService;
 	}
+
 	@Override
-	protected Map<String, ? extends AbstractEntity> getDependencies(PlannerTaskRequest request) {
-		return request.getActivityId() != null ? Map.of("activity",activityService.getReference(request.getActivityId())) : Map.of();
-	}
-	@Override
-	protected Sort.Direction getSortDirection(){
-		return Sort.Direction.ASC;
-	}
-	@Override
-	protected String getSortByProperties(){
-		return "startTimestamp";
+	protected Map<String, ? extends AbstractEntity> getDependencies(PlannerTaskRequest request)
+	{
+		return request.getActivityId() != null ? Map.of("activity", activityService.getReference(request.getActivityId())) : Map.of();
 	}
 
-	public List<PlannerTaskResponse> getAllByDateAndHourSpan(long userId,PlannerFilterRequest request){
-		Instant filterStartPoint = Instant.parse(request.getFilterDate());
-		Instant filterEndPoint = Instant.parse(request.getFilterDate()).plusSeconds(request.getHourSpan()*3600L);
-		return mapper.convertToFullResponseList(repository.getAllByDateAndHourSpan(userId,filterStartPoint,filterEndPoint));
+	@Override
+	protected Sort.Direction getSortDirection()
+	{
+		return Sort.Direction.ASC;
 	}
+
+	@Override
+	protected String getSortByProperties()
+	{
+		return "start_timestamp";
+	}
+
+	public List<PlannerTaskResponse> getAllByDateAndHourSpan(long userId, PlannerFilterRequest request)
+	{
+		return mapper.convertToFullResponseList(
+			repository.getAllByDateAndHourSpan(
+				userId,
+				request.getFilterDate(),
+				request.getFilterDate().plusSeconds(request.getHourSpan() * 3600L)
+			));
+	}
+
 	public void setIsDone(List<IdRequest> requestList) throws EntityNotFoundException
 	{
 		int affectedRows = this.repository.updateIsDoneByIds(requestList.stream().map(IdRequest::getId).toList());
-		if (affectedRows<=0){
+		if (affectedRows <= 0) {
 			//throw new UpdateFailedException();
 		}
 	}

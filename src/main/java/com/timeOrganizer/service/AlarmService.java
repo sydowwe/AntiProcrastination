@@ -44,13 +44,11 @@ public class AlarmService extends MyService<Alarm, IAlarmRepository, AlarmReques
 	@Override
 	protected String getSortByProperties()
 	{
-		return "startTimestamp";
+		return "start_timestamp";
 	}
 
 	//	public List<AlarmResponse> getAllByDateAndHourSpan(long userId,PlannerFilterRequest request){
-//		Instant filterStartPoint = Instant.parse(request.getFilterDate());
-//		Instant filterEndPoint = Instant.parse(request.getFilterDate()).plusSeconds(request.getHourSpan()*3600L);
-//		return mapper.convertToFullResponseList(repository.getAllByDateAndHourSpan(userId,filterStartPoint,filterEndPoint));
+//		return mapper.convertToFullResponseList(repository.getAllByDateAndHourSpan(userId,request.getFilterDate(),request.getFilterDate().plusSeconds(request.getHourSpan()*3600L));
 //	}
 	public void setIsDone(List<IdRequest> requestList) throws EntityNotFoundException
 	{

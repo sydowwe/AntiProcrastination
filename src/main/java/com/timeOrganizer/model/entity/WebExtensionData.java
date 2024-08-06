@@ -13,7 +13,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "webExtension", schema = "extension", uniqueConstraints = @UniqueConstraint(name = "role_unique_userId_name", columnNames = {"userId", "domain"}))
+@Table(schema = "extension", uniqueConstraints = @UniqueConstraint(name = "web_extension_data_unique_user_id_domain", columnNames = {"user_id", "domain"}))
 public class WebExtensionData extends AbstractEntity
 {
 	private String domain;
@@ -21,6 +21,6 @@ public class WebExtensionData extends AbstractEntity
 	private int duration;
 	private Instant startTimestamp;
 	@ManyToOne
-	@JoinColumn(name = "activityId")
+	@JoinColumn(name = "activity_id")
 	private Activity activity;
 }
