@@ -33,7 +33,7 @@ public class PlannerTaskService extends MyService<PlannerTask, IPlannerTaskRepos
 	@Override
 	protected Map<String, ? extends AbstractEntity> getDependencies(PlannerTaskRequest request)
 	{
-		return request.getActivityId() != null ? Map.of("activity", activityService.getReference(request.getActivityId())) : Map.of();
+		return this.getMapFromDependencies(activityService.getReference(request.getActivityId()));
 	}
 
 	@Override
@@ -48,11 +48,11 @@ public class PlannerTaskService extends MyService<PlannerTask, IPlannerTaskRepos
 		return "start_timestamp";
 	}
 
-	public List<PlannerTaskResponse> getAllByDateAndHourSpan(long userId, PlannerFilterRequest request)
+	public List<PlannerTaskResponse> getAllByDateAndHourSpan(PlannerFilterRequest request)
 	{
 		return mapper.convertToFullResponseList(
 			repository.getAllByDateAndHourSpan(
-				userId,
+				UserService.getLoggedUser().getId(),
 				request.getFilterDate(),
 				request.getFilterDate().plusSeconds(request.getHourSpan() * 3600L)
 			));

@@ -30,7 +30,7 @@ public class HistoryMapper extends AbstractInOutMapper<History, HistoryRequest, 
 	    entity.setStartTimestamp(request.getStartTimestamp());
         entity.setLength(request.getLength());
 	    entity.setEndTimestamp(request.getStartTimestamp().plusSeconds(request.getLength().getInSeconds()));
-        entity.setActivity((Activity) dependencies.get("activity"));
+	    entity.setActivity(this.getEntityFromDependencies(Activity.class, dependencies));
         return entity;
     }
 

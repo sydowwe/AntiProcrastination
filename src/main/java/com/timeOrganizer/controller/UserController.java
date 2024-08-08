@@ -77,7 +77,7 @@ public class UserController extends MyController {
     public ResponseEntity<?> wereSensitiveChangesMade(@RequestBody UserRequest request) {
         boolean needs2FA;
         try {
-            needs2FA = userService.wereSensitiveChangesMade(this.getLoggedUser(), request);
+            needs2FA = userService.wereSensitiveChangesMade(request);
         } catch (EntityNotFoundException notFoundException) {
             return new ResponseEntity<>(notFoundException.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
@@ -113,7 +113,7 @@ public class UserController extends MyController {
     }
     @PostMapping("/get-logged-user-data")
     public ResponseEntity<UserResponse> getLoggedInUserData() {
-        return ResponseEntity.ok(userService.getLoggedUserData(this.getLoggedUser()));
+        return ResponseEntity.ok(userService.getLoggedUserData());
     }
     @PutMapping("/edit-logged-user-data")
     public ResponseEntity<EditedUserResponse> editLoggedInUserData(@RequestHeader("Authorization") String token, @RequestBody UserRequest request) throws QrCode2FAGenerationException{
@@ -123,7 +123,7 @@ public class UserController extends MyController {
     @PutMapping("/change-locale")
     public ResponseEntity<String> changeLocale(@RequestBody() LocaleRequest localeRequest)
     {
-        userService.changeCurrentLocale(localeRequest.getLocale(), this.getLoggedUser().getId());
+        userService.changeCurrentLocale(localeRequest.getLocale());
         return ResponseEntity.ok("Locale changed");
     }
     @PostMapping("/change-password")

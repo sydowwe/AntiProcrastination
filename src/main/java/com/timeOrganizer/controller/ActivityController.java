@@ -26,7 +26,7 @@ public class ActivityController extends MyController
 	@PostMapping("/get-all-options")
 	public ResponseEntity<List<ActivityOptionResponse>> getAllActivities()
 	{
-		return ResponseEntity.ok(mapToActivityOptionResponseList(activityService.getAllAsResponse(this.getLoggedUser().getId())));
+		return ResponseEntity.ok(mapToActivityOptionResponseList(activityService.getAllAsResponse()));
 	}
 
 	@PostMapping("/get-options-by-role/{roleId}")
@@ -35,7 +35,7 @@ public class ActivityController extends MyController
 		if (roleId == null || roleId == 0) {
 			return ResponseEntity.badRequest().body("roleId must not be null or 0");
 		}
-		return ResponseEntity.ok(this.mapToActivityOptionResponseList(activityService.getActivitiesByRoleId(roleId, this.getLoggedUser().getId())));
+		return ResponseEntity.ok(this.mapToActivityOptionResponseList(activityService.getActivitiesByRoleId(roleId)));
 	}
 
 	@PostMapping("/get-options-by-category/{categoryId}")
@@ -44,7 +44,7 @@ public class ActivityController extends MyController
 		if (categoryId == null || categoryId == 0) {
 			return ResponseEntity.badRequest().body("categoryId must not be null or 0");
 		}
-		return ResponseEntity.ok(this.mapToActivityOptionResponseList(activityService.getActivitiesByCategoryId(categoryId, this.getLoggedUser().getId())));
+		return ResponseEntity.ok(this.mapToActivityOptionResponseList(activityService.getActivitiesByCategoryId(categoryId)));
 	}
 
 	//TODO
@@ -63,7 +63,7 @@ public class ActivityController extends MyController
 	@PostMapping("/create")
 	public ResponseEntity<?> createNewActivity(@RequestBody ActivityRequest formData)
 	{
-		ActivityResponse newActivity = activityService.insert(formData, this.getLoggedUser().getReference());
+		ActivityResponse newActivity = activityService.insert(formData);
 		URI uri = this.getCreatedResourceURI(newActivity.getId());
 		return ResponseEntity.created(uri).body(newActivity);
 	}

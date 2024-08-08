@@ -15,7 +15,7 @@ import lombok.ToString;
 @Table(schema = "public",
         uniqueConstraints = {
             @UniqueConstraint(name = "to_do_list_unique_user_id_activity_id", columnNames = {"user_id", "activity_id"}),
-        }, indexes = @Index(name = "idx_user_id_urgency_id", columnList = "user_id, urgency_id")
+        }, indexes = @Index(name = "idx_user_id_task_urgency_id", columnList = "user_id, task_urgency_id")
 )
 public class ToDoList extends AbstractEntity {
     @Column(nullable = false)

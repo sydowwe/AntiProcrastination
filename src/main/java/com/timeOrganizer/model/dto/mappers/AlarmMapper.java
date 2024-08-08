@@ -36,11 +36,7 @@ public class AlarmMapper extends AbstractInOutMapper<Alarm, AlarmRequest, AlarmR
 	{
 		entity.setStartTimestamp(request.getStartTimestamp());
 		entity.setActive(request.isActive());
-		entity.setActivity(
-			!dependencies.isEmpty() && dependencies.containsKey("activity")
-				? (Activity) dependencies.get("activity")
-				: null
-		);
+		entity.setActivity(this.getEntityFromDependencies(Activity.class, dependencies));
 		return entity;
 	}
 

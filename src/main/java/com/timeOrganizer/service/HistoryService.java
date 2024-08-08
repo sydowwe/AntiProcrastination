@@ -2,7 +2,9 @@ package com.timeOrganizer.service;
 
 import com.timeOrganizer.model.dto.mappers.HistoryMapper;
 import com.timeOrganizer.model.dto.request.history.HistoryFilterRequest;
+import com.timeOrganizer.model.dto.request.history.HistoryFilterSelectsRequest;
 import com.timeOrganizer.model.dto.request.history.HistoryRequest;
+import com.timeOrganizer.model.dto.response.history.HistoryFilterSelectsResponse;
 import com.timeOrganizer.model.dto.response.history.HistoryListGroupedByDateResponse;
 import com.timeOrganizer.model.dto.response.history.HistoryResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
@@ -36,13 +38,14 @@ public class HistoryService extends MyService<History, IHistoryRepository, Histo
 	@Override
 	protected Map<String, ? extends AbstractEntity> getDependencies(HistoryRequest request)
 	{
-		return Map.of("activity", activityService.getReference(request.getActivityId()));
+		return this.getMapFromDependencies(activityService.getReference(request.getActivityId()));
 	}
 	@Override
-	public List<HistoryListGroupedByDateResponse> filter(LoggedUser user, HistoryFilterRequest filterRequest)
+	public List<HistoryListGroupedByDateResponse> filter(HistoryFilterRequest filterRequest)
 	{
+		LoggedUser loggedUser = UserService.getLoggedUser();
 		Specification<History> spec = HistorySpecifications.withFilter(
-			user.getId(),
+			loggedUser.getId(),
 			filterRequest.getActivityId(),
 			filterRequest.getRoleId(),
 			filterRequest.getCategoryId(),
@@ -52,12 +55,23 @@ public class HistoryService extends MyService<History, IHistoryRepository, Histo
 			filterRequest.getDateTo(),
 			filterRequest.getHoursBack()
 		);
-		//TODO spravit gettere na vsetky moznosti categorii activity a tak dalej dostupnych podla vsetkych parametrov okrem casu a datumu aby sa mi selecty automaticky davali len podla moznosti a nie na vsetko
-
 		List<HistoryResponse> historyResponses = this.mapper.convertToFullResponseList(this.repository.findAll(spec));
 		return historyResponses.stream()
-			.collect(Collectors.groupingBy(hr -> hr.getStartTimestamp().atZone(user.getTimezone()).toLocalDate()))
+			.collect(Collectors.groupingBy(hr -> hr.getStartTimestamp().atZone(loggedUser.getTimezone()).toLocalDate()))
 			.entrySet().stream()
 			.map(entry -> new HistoryListGroupedByDateResponse(entry.getKey(), entry.getValue())).sorted(Comparator.comparing(HistoryListGroupedByDateResponse::date)).toList();
     }
+
+	public HistoryFilterSelectsResponse updateFilterSelects(HistoryFilterSelectsRequest request)
+	{
+		Specification<History> spec = HistorySpecifications.withFilter(
+			UserService.getLoggedUser().getId(),
+			request.getActivityId(),
+			request.getRoleId(),
+			request.getCategoryId());
+		var list = this.repository.findAll(spec);
+		return HistoryFilterSelectsResponse.builder().activityOptions(super.getDistinctOptionList(list, History::getActivity))
+			.categoryOptions(super.getDistinctOptionList(list, History -> History.getActivity().getCategory()))
+			.roleOptions(super.getDistinctOptionList(list, History -> History.getActivity().getRole())).build();
+	}
 }

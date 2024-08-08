@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -16,12 +15,17 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@SuperBuilder(toBuilder = true)
 @ToString(exclude = {"activities"})
 @Table(schema = "public", uniqueConstraints = @UniqueConstraint(name = "role_unique_user_id_name", columnNames = {"user_id", "name"}))
 public class Role extends NameTextColorEntity
 {
-    @OneToMany(mappedBy = "role")
-    private List<Activity> activities;
-    private String icon;
+	private String icon;
+	@OneToMany(mappedBy = "role")
+	private List<Activity> activities;
+
+	public Role(String name, String text, String color, String icon, User user)
+	{
+		super(name, text, color, user);
+		this.icon = icon;
+	}
 }

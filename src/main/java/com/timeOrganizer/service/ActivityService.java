@@ -37,27 +37,29 @@ public class ActivityService extends MyService<Activity, IActivityRepository, Ac
 	@Override
 	protected Map<String, ? extends AbstractEntity> getDependencies(ActivityRequest request)
 	{
-		return request.getCategoryId() != null ? Map.of("role", this.roleService.getReference(request.getRoleId()), "category", this.categoryService.getReference(request.getCategoryId()))
-			: Map.of("role", this.roleService.getReference(request.getRoleId()));
+		return request.getCategoryId() != null ? this.getMapFromDependencies(this.roleService.getReference(request.getRoleId()), this.categoryService.getReference(request.getCategoryId()))
+			: this.getMapFromDependencies(this.roleService.getReference(request.getRoleId()));
+	}
+
+
+	@Override
+	public List<ActivityResponse> getActivitiesByRoleId(long roleId)
+	{
+		return this.mapper.convertToFullResponseList(this.repository.findByRoleIdAndUserId(roleId, UserService.getLoggedUser().getId()));
 	}
 
 	@Override
-	public List<ActivityResponse> getActivitiesByRoleId(long roleId, long userId)
+	public List<ActivityResponse> getActivitiesByCategoryId(long categoryId)
 	{
-		return this.mapper.convertToFullResponseList(this.repository.findByRoleIdAndUserId(roleId, userId));
-	}
-
-	@Override
-	public List<ActivityResponse> getActivitiesByCategoryId(long categoryId, long userId)
-	{
-		return this.mapper.convertToFullResponseList(this.repository.findByCategoryIdAndUserId(categoryId, userId));
+		return this.mapper.convertToFullResponseList(this.repository.findByCategoryIdAndUserId(categoryId, UserService.getLoggedUser().getId()));
 	}
 
 	public boolean quickEdit(long id, NameTextRequest request)
 	{
 		Activity activity = this.getById(id);
-		activity.setName(request.getName());
-		activity.setText(request.getText());
+		//TODO DOKOncit quickedit
+//		activity.setName(request.getName());
+//		activity.setText(request.getText());
 		try {
 			iActivityRepository.save(activity);
 		} catch (Exception e) {

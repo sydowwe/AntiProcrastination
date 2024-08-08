@@ -37,7 +37,7 @@ public class RoutineToDoListService extends MyService<RoutineToDoList, IRoutineT
 	@Override
 	protected Map<String, ? extends AbstractEntity> getDependencies(RoutineToDoListRequest request)
 	{
-		return Map.of("activity",activityService.getReference(request.getActivityId()),"timePeriod", timePeriodService.getReference(request.getTimePeriodId()));
+		return this.getMapFromDependencies(activityService.getReference(request.getActivityId()), timePeriodService.getReference(request.getTimePeriodId()));
 	}
 
 	@Override
@@ -47,15 +47,15 @@ public class RoutineToDoListService extends MyService<RoutineToDoList, IRoutineT
 	}
 
 	@Override
-	public List<RoutineToDoListGroupedResponse> getAllByUserIdGroupedByTimePeriod(long userId)
+	public List<RoutineToDoListGroupedResponse> getAllByUserIdGroupedByTimePeriod()
 	{
-		var allPossibleTimePeriods = timePeriodService.getAll(userId);
+		var allPossibleTimePeriods = timePeriodService.getAll();
 		Map<RoutineTimePeriod, List<RoutineToDoList>> groupedByTimePeriod = allPossibleTimePeriods.stream()
 			.collect(Collectors.toMap(
 				timePeriod -> timePeriod,
 				timePeriod -> new ArrayList<>()
 			));
-		var allItems = this.repository.findAllByUserId(userId, this.getSort());
+		var allItems = this.repository.findAllByUserId(UserService.getLoggedUser().getId(), this.getSort());
 		groupedByTimePeriod.putAll(allItems.stream().collect(Collectors.groupingBy(RoutineToDoList::getTimePeriod)));
 		return this.mapper.convertToGroupedResponseAndSort(groupedByTimePeriod);
 	}

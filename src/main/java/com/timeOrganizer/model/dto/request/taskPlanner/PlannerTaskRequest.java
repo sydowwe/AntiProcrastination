@@ -11,6 +11,6 @@ public class PlannerTaskRequest implements IRequest
 {
 	private Instant startTimestamp;
     private int minuteLength;
-    private Long activityId;
+	private long activityId;
     private boolean isDone;
 }

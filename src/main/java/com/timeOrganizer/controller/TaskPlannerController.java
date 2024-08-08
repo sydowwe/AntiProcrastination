@@ -22,7 +22,7 @@ public class TaskPlannerController extends MyController{
 	private final PlannerTaskService plannerTaskService;
 	@PostMapping("/apply-filter")
 	public ResponseEntity<List<PlannerTaskResponse>> applyFilter(@RequestBody PlannerFilterRequest request) {
-		return ResponseEntity.ok(plannerTaskService.getAllByDateAndHourSpan(this.getLoggedUser().getId(),request));
+		return ResponseEntity.ok(plannerTaskService.getAllByDateAndHourSpan(request));
 	}
 	@GetMapping("/{id}")
 	public ResponseEntity<SelectOptionResponse> get(@PathVariable("id") Long id) {
@@ -36,7 +36,7 @@ public class TaskPlannerController extends MyController{
 	}
 	@PostMapping("/add")
 	public ResponseEntity<PlannerTaskResponse> addPlannerTask(@RequestBody PlannerTaskRequest request) {
-		PlannerTaskResponse newPlannerTask = plannerTaskService.insert(request, this.getLoggedUser().getReference());
+		PlannerTaskResponse newPlannerTask = plannerTaskService.insert(request);
 		return ResponseEntity
 			.created(this.getCreatedResourceURI(newPlannerTask.getId()))
 			.body(newPlannerTask);

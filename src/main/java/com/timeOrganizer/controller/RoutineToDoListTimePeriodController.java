@@ -18,7 +18,7 @@ public class RoutineToDoListTimePeriodController extends MyController {
     private final RoutineToDoListTimePeriodTimePeriodService timePeriodService;
     @PostMapping("/get-all")
     public ResponseEntity<List<TimePeriodResponse>> getAllUrgencyItems() {
-        var test = timePeriodService.getAllAsResponse(getLoggedUser().getId());
+        var test = timePeriodService.getAllAsResponse();
         return ResponseEntity.ok(test);
     }
     @GetMapping("/{id}")

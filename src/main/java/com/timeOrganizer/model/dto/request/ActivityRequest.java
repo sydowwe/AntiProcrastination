@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @SuppressWarnings("unused")
 public class ActivityRequest extends NameTextRequest {
-    private Boolean isOnToDoList;
+    private boolean isOnToDoList;
     private boolean isUnavoidable;
     private long roleId;
     private Long categoryId;

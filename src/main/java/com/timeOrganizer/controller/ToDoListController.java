@@ -3,8 +3,8 @@ package com.timeOrganizer.controller;
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.extendable.IdRequest;
 import com.timeOrganizer.model.dto.request.toDoList.ToDoListRequest;
-import com.timeOrganizer.model.dto.response.general.SelectOptionResponse;
 import com.timeOrganizer.model.dto.response.extendable.IdResponse;
+import com.timeOrganizer.model.dto.response.general.SelectOptionResponse;
 import com.timeOrganizer.model.dto.response.general.SuccessResponse;
 import com.timeOrganizer.model.dto.response.toDoList.ToDoListResponse;
 import com.timeOrganizer.service.ToDoListService;
@@ -21,7 +21,7 @@ public class ToDoListController extends MyController {
     private final ToDoListService toDoListService;
     @PostMapping("/get-all")
     public ResponseEntity<List<ToDoListResponse>> getAllToDoListItems() {
-        return ResponseEntity.ok(toDoListService.getAllAsResponse(this.getLoggedUser().getId()));
+        return ResponseEntity.ok(toDoListService.getAllAsResponse());
     }
     @GetMapping("/{id}")
     public ResponseEntity<SelectOptionResponse> get(@PathVariable("id") Long id) {
@@ -36,7 +36,7 @@ public class ToDoListController extends MyController {
     }
     @PostMapping("/add")
     public ResponseEntity<ToDoListResponse> addToDoListItem(@RequestBody ToDoListRequest toDoListRequest) {
-        ToDoListResponse newToDoListItem = toDoListService.insert(toDoListRequest, this.getLoggedUser().getReference());
+        ToDoListResponse newToDoListItem = toDoListService.insert(toDoListRequest);
         return ResponseEntity
                 .created(this.getCreatedResourceURI(newToDoListItem.getId()))
                 .body(newToDoListItem);

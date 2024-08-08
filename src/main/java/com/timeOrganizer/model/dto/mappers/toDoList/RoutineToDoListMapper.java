@@ -5,7 +5,10 @@ import com.timeOrganizer.model.dto.mappers.ActivityMapper;
 import com.timeOrganizer.model.dto.request.toDoList.RoutineToDoListRequest;
 import com.timeOrganizer.model.dto.response.toDoList.RoutineToDoListGroupedResponse;
 import com.timeOrganizer.model.dto.response.toDoList.RoutineToDoListResponse;
-import com.timeOrganizer.model.entity.*;
+import com.timeOrganizer.model.entity.AbstractEntity;
+import com.timeOrganizer.model.entity.Activity;
+import com.timeOrganizer.model.entity.RoutineTimePeriod;
+import com.timeOrganizer.model.entity.RoutineToDoList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -30,8 +33,8 @@ public class RoutineToDoListMapper extends AbstractInOutMapper<RoutineToDoList, 
     @Override
     public RoutineToDoList updateEntityFromRequest(RoutineToDoList entity, RoutineToDoListRequest request, Map<String, ? extends AbstractEntity> dependencies) {
         entity.setDone(request.isDone());
-        entity.setActivity((Activity) dependencies.get("activity"));
-        entity.setTimePeriod((RoutineTimePeriod) dependencies.get("timePeriod"));
+        entity.setActivity(this.getEntityFromDependencies(Activity.class, dependencies));
+        entity.setTimePeriod(this.getEntityFromDependencies(RoutineTimePeriod.class, dependencies));
         return entity;
     }
     @Override

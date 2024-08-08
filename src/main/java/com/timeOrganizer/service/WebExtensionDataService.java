@@ -28,6 +28,6 @@ public class WebExtensionDataService extends MyService<WebExtensionData, IWebExt
 	@Override
 	protected Map<String, ? extends AbstractEntity> getDependencies(WebExtensionDataRequest request)
 	{
-		return Map.of("activity", activityService.getReference(request.getActivityId()));
+		return this.getMapFromDependencies(activityService.getReference(request.getActivityId()));
 	}
 }

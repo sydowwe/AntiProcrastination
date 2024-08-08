@@ -29,8 +29,8 @@ public class ToDoListMapper extends AbstractInOutMapper<ToDoList,ToDoListRequest
     }
     @Override
     public ToDoList updateEntityFromRequest(ToDoList entity, ToDoListRequest request, Map<String, ? extends AbstractEntity> dependencies) {
-        entity.setActivity((Activity) dependencies.get("activity"));
-        entity.setTaskUrgency((TaskUrgency) dependencies.get("urgency"));
+        entity.setActivity(this.getEntityFromDependencies(Activity.class, dependencies));
+        entity.setTaskUrgency(this.getEntityFromDependencies(TaskUrgency.class, dependencies));
         return entity;
     }
     @Override

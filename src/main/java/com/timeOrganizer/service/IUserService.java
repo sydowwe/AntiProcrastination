@@ -8,7 +8,6 @@ import com.timeOrganizer.model.dto.request.user.LoginRequest;
 import com.timeOrganizer.model.dto.request.user.RegistrationRequest;
 import com.timeOrganizer.model.dto.request.user.UserRequest;
 import com.timeOrganizer.model.dto.response.user.*;
-import com.timeOrganizer.security.LoggedUser;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
 import org.springframework.security.core.AuthenticationException;
@@ -22,12 +21,14 @@ public interface IUserService
 	GoogleAuthResponse validate2FALogin(GoogleAuthLoginRequest request) throws UserNotFoundException;
 	void logout(String token);
 
-	void changeCurrentLocale(AvailableLocales locale, long userId);
+	void changeCurrentLocale(AvailableLocales locale);
 	void resetPassword(String email) throws UserNotFoundException;
-	boolean wereSensitiveChangesMade(LoggedUser loggedUser, UserRequest changedUser);
+
+	boolean wereSensitiveChangesMade(UserRequest changedUser);
 	boolean verifyPasswordAndReturn2FAStatus(String token, String password) throws AuthenticationException;
 	boolean validate2FA(String token, int code) throws EntityNotFoundException, NumberFormatException;
-	UserResponse getLoggedUserData(LoggedUser loggedUser);
+
+	UserResponse getLoggedUserData();
 	EditedUserResponse editLoggedUserData(String token, UserRequest request) throws EntityNotFoundException, NumberFormatException,
 		QrCode2FAGenerationException;
 	void changeLoggedUserPassword(String token, String newPassword) throws EntityNotFoundException ;

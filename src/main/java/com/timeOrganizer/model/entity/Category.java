@@ -19,8 +19,9 @@ import java.util.List;
 @Table(schema = "public",
 	uniqueConstraints = @UniqueConstraint(name = "category_unique_user_id_name", columnNames = {"user_id", "name"})
 )
-public class Category extends NameTextColorEntity{
-    @OneToMany(mappedBy = "category")
-    private List<Activity> activities;
-    private String icon;
+public class Category extends NameTextColorEntity
+{
+	@OneToMany(mappedBy = "category")
+	private List<Activity> activities;
+	private String icon;
 }

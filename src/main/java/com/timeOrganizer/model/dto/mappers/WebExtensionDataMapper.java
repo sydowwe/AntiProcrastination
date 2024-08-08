@@ -31,7 +31,7 @@ public class WebExtensionDataMapper extends AbstractInOutMapper<WebExtensionData
 		entity.setTitle(request.getTitle());
 		entity.setStartTimestamp(request.getStartTimestamp());
 		entity.setDuration(request.getDuration());
-		entity.setActivity((Activity) dependencies.get("activity"));
+		entity.setActivity(this.getEntityFromDependencies(Activity.class, dependencies));
 		return entity;
 	}
 

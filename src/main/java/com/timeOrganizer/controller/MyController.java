@@ -1,13 +1,8 @@
 package com.timeOrganizer.controller;
 
 import com.timeOrganizer.exception.RequiredParameterMissingException;
-import com.timeOrganizer.exception.UserNotInSecurityContext;
 import com.timeOrganizer.model.dto.response.extendable.NameTextResponse;
 import com.timeOrganizer.model.dto.response.general.SelectOptionResponse;
-import com.timeOrganizer.security.LoggedUser;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -73,11 +68,11 @@ public abstract class MyController {
                 .buildAndExpand(id)
                 .toUri();
     }
-    protected LoggedUser getLoggedUser() throws UserNotInSecurityContext {
+   /* protected LoggedUser getLoggedUser() throws UserNotInSecurityContext {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || !(authentication.getPrincipal() instanceof LoggedUser)) {
             throw new EntityNotFoundException("User not in security context");
         }
         return (LoggedUser) authentication.getPrincipal();
-    }
+    }*/
 }

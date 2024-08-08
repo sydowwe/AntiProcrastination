@@ -26,7 +26,8 @@ public class RoutineToDoListTimePeriodTimePeriodService extends MyService<Routin
         super(repository, mapper);
     }
     @Override
-    protected Map<String, ? extends AbstractEntity> getDependencies(TimePeriodRequest request) {
+    protected Map<String, ? extends AbstractEntity> getDependencies(TimePeriodRequest request)
+    {
         return null;
     }
     @Override
@@ -37,13 +38,14 @@ public class RoutineToDoListTimePeriodTimePeriodService extends MyService<Routin
     public void changeIsHiddenInView(long id){
         int affectedRows = this.repository.updateIsHiddenInView(id);
     }
+
     public void createDefaultItems(User user) throws EntityExistsException, RollbackException {
         this.repository.saveAll(
             List.of(
-	            RoutineTimePeriod.builder().text("Daily").color("#92F58C").lengthInDays(1).isHiddenInView(false).user(user).build(), // Green
-	            RoutineTimePeriod.builder().text("Weekly").color("#936AF1").lengthInDays(7).isHiddenInView(false).user(user).build(),// purple
-	            RoutineTimePeriod.builder().text("Monthly").color("#2C7EF4").lengthInDays(30).isHiddenInView(false).user(user).build(),  // blue
-	            RoutineTimePeriod.builder().text("Yearly").color("#A5CCF3").lengthInDays(365).isHiddenInView(false).user(user).build()// Grey
+                new RoutineTimePeriod("Daily", "#92F58C", 1, false, user),         // Green
+                new RoutineTimePeriod("Weekly", "#936AF1", 7, false, user),      // purple
+                new RoutineTimePeriod("Monthly", "#2C7EF4", 30, false, user),     // blue
+                new RoutineTimePeriod("Yearly", "#A5CCF3", 365, false, user)       // Grey
             )
         );
     }

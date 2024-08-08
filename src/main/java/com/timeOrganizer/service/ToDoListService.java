@@ -34,7 +34,7 @@ public class ToDoListService extends MyService<ToDoList, IToDoListRepository, To
 	@Override
 	protected Map<String, ? extends AbstractEntity> getDependencies(ToDoListRequest request)
 	{
-		return Map.of("activity",activityService.getReference(request.getActivityId()),"urgency", urgencyService.getReference(request.getUrgencyId()));
+		return this.getMapFromDependencies(activityService.getReference(request.getActivityId()), urgencyService.getReference(request.getUrgencyId()));
 	}
 
 	@Override

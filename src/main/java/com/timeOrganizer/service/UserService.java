@@ -31,7 +31,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -85,7 +87,7 @@ public class UserService implements IUserService{
         }
         try {
             userRepository.save(newUser);
-            this.setDefaultSettings(newUser);
+            // this.setDefaultSettings(newUser);
         } catch (Exception e) {
             throw new PersistenceException(e);
         }
@@ -163,9 +165,9 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public void changeCurrentLocale(AvailableLocales locale, long userId)
+    public void changeCurrentLocale(AvailableLocales locale)
     {
-        userRepository.updateCurrentLocaleById(userId, locale);
+        userRepository.updateCurrentLocaleById(UserService.getLoggedUser().getId(), locale);
     }
     @Override
     public void resetPassword(String email) throws UserNotFoundException {
@@ -180,7 +182,9 @@ public class UserService implements IUserService{
 
     //TODO Check if no changes made so no other requests needed
     @Override
-    public boolean wereSensitiveChangesMade(LoggedUser loggedUser, UserRequest changedUser) {
+    public boolean wereSensitiveChangesMade(UserRequest changedUser)
+    {
+        LoggedUser loggedUser = UserService.getLoggedUser();
         return !(loggedUser.getEmail().equals(changedUser.getEmail()) && loggedUser.isHas2FA() == changedUser.isHas2FA());
     }
     @Override
@@ -195,8 +199,9 @@ public class UserService implements IUserService{
         return gAuth.authorize(loggedUser.getSecretKey2FA(), code);
     }
     @Override
-    public UserResponse getLoggedUserData(LoggedUser loggedUser) {
-        return userMapper.convertToUserSettingsResponse(loggedUser);
+    public UserResponse getLoggedUserData()
+    {
+        return userMapper.convertToUserSettingsResponse(UserService.getLoggedUser());
     }
     @Override
     public EditedUserResponse editLoggedUserData(String token, UserRequest request) throws EntityNotFoundException, NumberFormatException,
@@ -291,5 +296,14 @@ public class UserService implements IUserService{
         urgencyService.createDefaultItems(user);
         routineToDoListTimePeriodService.createDefaultItems(user);
         roleService.createDefaultItems(user);
+    }
+
+    public static LoggedUser getLoggedUser()
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || !(authentication.getPrincipal() instanceof LoggedUser)) {
+            return null;
+        }
+        return (LoggedUser) authentication.getPrincipal();
     }
 }

@@ -31,7 +31,7 @@ public class AlarmController extends MyController
 	@PostMapping("/get-all")
 	public ResponseEntity<List<AlarmResponse>> getAll()
 	{
-		return ResponseEntity.ok(alarmService.getAllAsResponse(this.getLoggedUser().getId()));
+		return ResponseEntity.ok(alarmService.getAllAsResponse());
 	}
 
 	@PatchMapping("/change-active")
@@ -45,7 +45,7 @@ public class AlarmController extends MyController
 	@PostMapping("/add")
 	public ResponseEntity<AlarmResponse> addAlarm(@RequestBody AlarmRequest request)
 	{
-		AlarmResponse newAlarm = alarmService.insert(request, this.getLoggedUser().getReference());
+		AlarmResponse newAlarm = alarmService.insert(request);
 		return ResponseEntity
 			.created(this.getCreatedResourceURI(newAlarm.getId()))
 			.body(newAlarm);

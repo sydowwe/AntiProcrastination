@@ -21,15 +21,15 @@ public class CategoryController extends MyController{
     private final CategoryService categoryService;
     @PostMapping("/get-all-options")
     public ResponseEntity<List<SelectOptionResponse>> getAllOptions(){
-        return ResponseEntity.ok(mapToSelectOptionResponseList(categoryService.getAllAsResponse(getLoggedUser().getId())));
+	    return ResponseEntity.ok(mapToSelectOptionResponseList(categoryService.getAllAsResponse()));
     }
     @PostMapping("/get-options-by-role/{roleId}")
     public ResponseEntity<List<SelectOptionResponse>> getByRole(@PathVariable @NonNull long roleId) {
-        return ResponseEntity.ok(mapToSelectOptionResponseList(categoryService.getCategoriesByRoleId(roleId, getLoggedUser().getId())));
+	    return ResponseEntity.ok(mapToSelectOptionResponseList(categoryService.getCategoriesByRoleId(roleId)));
     }
     @PostMapping("/create")
     public ResponseEntity<?> createNewCategory(@RequestBody NameTextColorIconRequest newCategory){
-        SelectOptionResponse categoryOption = mapToSelectOptionResponse(categoryService.insert(newCategory,this.getLoggedUser().getReference()));
+	    SelectOptionResponse categoryOption = mapToSelectOptionResponse(categoryService.insert(newCategory));
 
         return ResponseEntity.created(this.getCreatedResourceURI(categoryOption.getId()))
                 .body(categoryOption);

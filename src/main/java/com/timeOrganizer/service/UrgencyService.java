@@ -26,7 +26,8 @@ public class UrgencyService extends MyService<TaskUrgency, IUrgencyRepository, U
         super(repository, mapper);
     }
     @Override
-    protected Map<String, ? extends AbstractEntity> getDependencies(UrgencyRequest request) {
+    protected Map<String, ? extends AbstractEntity> getDependencies(UrgencyRequest request)
+    {
         return null;
     }
     @Override
@@ -42,10 +43,10 @@ public class UrgencyService extends MyService<TaskUrgency, IUrgencyRepository, U
     public void createDefaultItems(User user) throws EntityExistsException, RollbackException {
         this.repository.saveAll(
             List.of(
-	            TaskUrgency.builder().text("Today").color("#FF5252").priority(1).user(user).build(), // Red
-	            TaskUrgency.builder().text("This week").color("#FFA726").priority(2).user(user).build(),// Orange
-	            TaskUrgency.builder().text("This month").color("#FFD600").priority(3).user(user).build(), // Yellow
-	            TaskUrgency.builder().text("This year").color("#4CAF50").priority(4).user(user).build() // Green
+                new TaskUrgency("Today", "#FF5252", 1, user),         // Red
+                new TaskUrgency("This week", "#FFA726", 2, user),      // Orange
+                new TaskUrgency("This month", "#FFD600", 3, user),     // Yellow
+                new TaskUrgency("This year", "#4CAF50", 4, user)       // Green
             )
         );
     }

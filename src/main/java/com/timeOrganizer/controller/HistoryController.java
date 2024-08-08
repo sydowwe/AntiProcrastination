@@ -2,7 +2,9 @@ package com.timeOrganizer.controller;
 
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.history.HistoryFilterRequest;
+import com.timeOrganizer.model.dto.request.history.HistoryFilterSelectsRequest;
 import com.timeOrganizer.model.dto.request.history.HistoryRequest;
+import com.timeOrganizer.model.dto.response.history.HistoryFilterSelectsResponse;
 import com.timeOrganizer.model.dto.response.history.HistoryListGroupedByDateResponse;
 import com.timeOrganizer.model.dto.response.history.HistoryResponse;
 import com.timeOrganizer.service.HistoryService;
@@ -22,16 +24,22 @@ public class HistoryController extends MyController {
     private final HistoryService historyService;
     @PostMapping("/add-new-record")
     public ResponseEntity<URI> addNewActivityToHistory(@RequestBody HistoryRequest newRecordRequest) {
-        var record = historyService.insert(newRecordRequest, getLoggedUser().getReference());
+        var record = historyService.insert(newRecordRequest);
         return ResponseEntity.created(this.getCreatedResourceURI(record.getId())).build();
     }
     @PostMapping("/get-all")
     public ResponseEntity<List<HistoryResponse>> getWholeHistory() {
-        return ResponseEntity.ok(historyService.getAllAsResponse(getLoggedUser().getId()));
+        return ResponseEntity.ok(historyService.getAllAsResponse());
     }
     @PostMapping("/filter")
     public ResponseEntity<List<HistoryListGroupedByDateResponse>> filterHistory(@RequestBody HistoryFilterRequest filterData)
     {
-        return ResponseEntity.ok(historyService.filter(this.getLoggedUser(), filterData));
+        return ResponseEntity.ok(historyService.filter(filterData));
+    }
+
+    @PostMapping("/update-filter-selects")
+    public ResponseEntity<HistoryFilterSelectsResponse> updateFilterSelects(@RequestBody HistoryFilterSelectsRequest filterData)
+    {
+        return ResponseEntity.ok(historyService.updateFilterSelects(filterData));
     }
 }

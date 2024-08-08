@@ -3,8 +3,8 @@ package com.timeOrganizer.controller;
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.extendable.IdRequest;
 import com.timeOrganizer.model.dto.request.toDoList.RoutineToDoListRequest;
-import com.timeOrganizer.model.dto.response.general.SelectOptionResponse;
 import com.timeOrganizer.model.dto.response.extendable.IdResponse;
+import com.timeOrganizer.model.dto.response.general.SelectOptionResponse;
 import com.timeOrganizer.model.dto.response.general.SuccessResponse;
 import com.timeOrganizer.model.dto.response.toDoList.RoutineToDoListGroupedResponse;
 import com.timeOrganizer.model.dto.response.toDoList.RoutineToDoListResponse;
@@ -22,7 +22,7 @@ public class RoutineToDoListController extends MyController{
     private final RoutineToDoListService routineToDoListService;
     @PostMapping("/get-all")
     public ResponseEntity<List<RoutineToDoListGroupedResponse>> getAllRoutineToDoListItems() {
-        return ResponseEntity.ok(routineToDoListService.getAllByUserIdGroupedByTimePeriod(this.getLoggedUser().getId()));
+        return ResponseEntity.ok(routineToDoListService.getAllByUserIdGroupedByTimePeriod());
     }
     @GetMapping("/{id}")
     public ResponseEntity<SelectOptionResponse> get(@PathVariable("id") Long id) {
@@ -37,7 +37,7 @@ public class RoutineToDoListController extends MyController{
     }
     @PostMapping("/add")
     public ResponseEntity<RoutineToDoListResponse> createRoutineToDoListItem(@RequestBody RoutineToDoListRequest routineToDoListRequest) {
-        RoutineToDoListResponse newRoutineToDoListItem = routineToDoListService.insert(routineToDoListRequest, this.getLoggedUser().getReference());
+        RoutineToDoListResponse newRoutineToDoListItem = routineToDoListService.insert(routineToDoListRequest);
         return ResponseEntity
                 .created(this.getCreatedResourceURI(newRoutineToDoListItem.getId()))
                 .body(newRoutineToDoListItem);

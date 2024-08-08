@@ -24,26 +24,29 @@ public class RoleService extends MyService<Role,IRoleRepository,NameTextColorIco
     public RoleService(IRoleRepository repository, RoleMapper mapper) {
         super(repository, mapper);
     }
-    public List<RoleResponse> getRolesByCategory(long categoryId, long userId) {
-        return this.mapper.convertToFullResponseList(this.repository.findByActivities_Category_IdAndUserId(categoryId,userId));
+
+    public List<RoleResponse> getRolesByCategory(long categoryId)
+    {
+        return this.mapper.convertToFullResponseList(this.repository.findByActivities_Category_IdAndUserId(categoryId, UserService.getLoggedUser().getId()));
     }
 
     @Override
-    protected Map<String, ? extends AbstractEntity> getDependencies(NameTextColorIconRequest request) {
+    protected Map<String, ? extends AbstractEntity> getDependencies(NameTextColorIconRequest request)
+    {
         return null;
     }
 
-    public RoleResponse getRoleByName(String name, long userId) throws EntityNotFoundException
+    public RoleResponse getRoleByName(String name) throws EntityNotFoundException
     {
-        return mapper.convertToFullResponse(repository.findByNameAndUserId(name,userId).orElseThrow(()->new EntityNotFoundException("Role with name "+ name +" not found")));
+        return mapper.convertToFullResponse(repository.findByNameAndUserId(name, UserService.getLoggedUser().getId()).orElseThrow(() -> new EntityNotFoundException("Role with name " + name + " not found")));
     }
     public void createDefaultItems(User user) throws EntityExistsException, RollbackException
     {
         this.repository.saveAll(
             List.of(
-                Role.builder().name("Planner task").text("Quickly created activities in task planner").user(user).color("").icon("calendar-days").build(),
-                Role.builder().name("To-do list task").text("Quickly created activities in to-do list").user(user).color("").icon("list-check").build(),
-                Role.builder().name("Routine task").text("Quickly created activities in routine to-do list").user(user).color("").icon("recycle").build()
+                new Role("Planner task", "Quickly created activities in task planner", "", "calendar-days", user),
+                new Role("To-do list task", "Quickly created activities in to-do list", "", "list-check", user),
+                new Role("Routine task", "Quickly created activities in routine to-do list", "", "recycle", user)
             )
         );
     }

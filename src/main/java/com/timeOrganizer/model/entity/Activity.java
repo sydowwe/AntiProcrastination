@@ -14,7 +14,8 @@ import java.util.List;
 @Entity
 @ToString(exclude = {"historyList", "webExtensionDataList"})
 @Table(schema = "public", uniqueConstraints = @UniqueConstraint(name = "activity_unique_user_id_name", columnNames = {"user_id", "name"}))
-public class Activity extends NameTextEntity {
+public class Activity extends NameTextEntity
+{
     @Column(nullable = false)
     private boolean isOnToDoList;
     @Column(nullable = false)

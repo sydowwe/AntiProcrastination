@@ -2,7 +2,10 @@ package com.timeOrganizer.model.dto.mappers;
 
 import com.timeOrganizer.model.dto.request.ActivityRequest;
 import com.timeOrganizer.model.dto.response.activity.ActivityResponse;
-import com.timeOrganizer.model.entity.*;
+import com.timeOrganizer.model.entity.AbstractEntity;
+import com.timeOrganizer.model.entity.Activity;
+import com.timeOrganizer.model.entity.Category;
+import com.timeOrganizer.model.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -34,10 +37,10 @@ public class ActivityMapper extends AbstractInOutMapper<Activity, ActivityReques
     public Activity updateEntityFromRequest(Activity entity, ActivityRequest request, Map<String, ? extends AbstractEntity> dependencies) {
         entity.setName(request.getName());
         entity.setText(request.getText());
-        entity.setOnToDoList(request.getIsOnToDoList());
-        entity.setOnToDoList(request.getIsOnToDoList());
-        entity.setRole((Role) dependencies.get("role"));
-        entity.setCategory((Category) dependencies.get("category"));
+        entity.setOnToDoList(request.isOnToDoList());
+        entity.setUnavoidable(request.isUnavoidable());
+        entity.setRole(this.getEntityFromDependencies(Role.class, dependencies));
+        entity.setCategory(this.getEntityFromDependencies(Category.class, dependencies));
         return entity;
     }
 

@@ -35,11 +35,7 @@ public class PlannerTaskMapper extends AbstractInOutMapper<PlannerTask, PlannerT
 		entity.setStartTimestamp(request.getStartTimestamp());
 		entity.setMinuteLength(request.getMinuteLength());
 		entity.setDone(request.isDone());
-		entity.setActivity(
-			!dependencies.isEmpty() && dependencies.containsKey("activity")
-			? (Activity) dependencies.get("activity")
-			: null
-		);
+		entity.setActivity(this.getEntityFromDependencies(Activity.class, dependencies));
 		return entity;
 	}
 

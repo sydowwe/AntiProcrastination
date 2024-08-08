@@ -32,7 +32,7 @@ public class AlarmService extends MyService<Alarm, IAlarmRepository, AlarmReques
 	@Override
 	protected Map<String, ? extends AbstractEntity> getDependencies(AlarmRequest request)
 	{
-		return request.getActivityId() != null ? Map.of("activity", activityService.getReference(request.getActivityId())) : Map.of();
+		return request.getActivityId() != null ? this.getMapFromDependencies(activityService.getReference(request.getActivityId())) : Map.of();
 	}
 
 	@Override

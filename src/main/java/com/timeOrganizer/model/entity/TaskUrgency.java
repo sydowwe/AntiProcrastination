@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -13,7 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@SuperBuilder
 @ToString
 @Table(schema = "public", uniqueConstraints = {
     @UniqueConstraint(name = "urgency_unique_user_id_text", columnNames = {"user_id", "text"}),
@@ -29,4 +27,12 @@ public class TaskUrgency extends AbstractEntity
     @OneToMany(mappedBy = "taskUrgency")
     @ToString.Exclude
     private List<ToDoList> toDoListItems;
+
+	public TaskUrgency(String text, String color, int priority, User user)
+	{
+		super(user);
+		this.text = text;
+		this.color = color;
+		this.priority = priority;
+	}
 }

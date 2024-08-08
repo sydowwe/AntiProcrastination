@@ -23,13 +23,13 @@ public class WebExtensionDataController extends MyController
 	@PostMapping("/get-all")
 	public ResponseEntity<List<WebExtensionDataResponse>> getAllOptions()
 	{
-		return ResponseEntity.ok(webExtensionDataService.getAllAsResponse(this.getLoggedUser().getId()));
+		return ResponseEntity.ok(webExtensionDataService.getAllAsResponse());
 	}
 
 	@PostMapping("/create")
 	public ResponseEntity<WebExtensionDataResponse> createNewRole(@RequestBody WebExtensionDataRequest newData)
 	{
-		var response = webExtensionDataService.insert(newData, getLoggedUser().getReference());
+		var response = webExtensionDataService.insert(newData);
 		URI uri = this.getCreatedResourceURI(response.getId());
 		return ResponseEntity.created(uri).body(response);
 	}

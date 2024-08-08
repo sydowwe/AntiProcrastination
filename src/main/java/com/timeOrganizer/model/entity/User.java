@@ -5,22 +5,34 @@ import com.timeOrganizer.helper.ZoneIdDBConverter;
 import com.timeOrganizer.security.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.Instant;
 import java.time.ZoneId;
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
 @Entity
+@Builder
 @Table(schema = "public")
 @ToString(exclude = {"scratchCodes", "activityList", "categoryList", "historyList", "roleList", "toDoLists", "taskUrgencyList"})
-public class User implements IEntity{
+public class User implements IEntity
+{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Setter(AccessLevel.NONE)
     private long id;
+    @CreatedDate
+    @Column(updatable = false, nullable = false)
+    private Instant createdTimestamp;
+    @LastModifiedDate
+    @Column(nullable = false)
+    private Instant modifiedTimestamp;
+
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -57,7 +69,9 @@ public class User implements IEntity{
     private List<ToDoList> toDoLists;
     @OneToMany(mappedBy = "user")
     private List<TaskUrgency> taskUrgencyList;
-    public boolean has2FA() {
+
+    public boolean has2FA()
+    {
         return this.secretKey2FA != null && !this.secretKey2FA.isBlank();
     }
 }

@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IRoutineTodoListService extends IToDoListService
 {
-	List<RoutineToDoListGroupedResponse> getAllByUserIdGroupedByTimePeriod(long userId);
+	List<RoutineToDoListGroupedResponse> getAllByUserIdGroupedByTimePeriod();
 }

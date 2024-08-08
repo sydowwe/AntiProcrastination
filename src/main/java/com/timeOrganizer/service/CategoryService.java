@@ -20,11 +20,14 @@ public class CategoryService extends MyService<Category,ICategoryRepository,Name
     public CategoryService(ICategoryRepository repository, CategoryMapper mapper) {
         super(repository, mapper);
     }
-    public List<CategoryResponse> getCategoriesByRoleId(long roleId, long userId) {
-        return this.mapper.convertToFullResponseList(this.repository.findAllByActivities_Role_IdAndUserId(roleId,userId));
+
+    public List<CategoryResponse> getCategoriesByRoleId(long roleId)
+    {
+        return this.mapper.convertToFullResponseList(this.repository.findAllByActivities_Role_IdAndUserId(roleId, UserService.getLoggedUser().getId()));
     }
     @Override
-    protected Map<String, ? extends AbstractEntity> getDependencies(NameTextColorIconRequest request) {
+    protected Map<String, ? extends AbstractEntity> getDependencies(NameTextColorIconRequest request)
+    {
         return null;
     }
 }
