@@ -11,7 +11,8 @@ import java.time.Instant;
 import java.util.List;
 
 @Repository
-public interface IPlannerTaskRepository extends IMyRepository<PlannerTask> {
+public interface IPlannerTaskRepository extends IEntityWithActivityRepository<PlannerTask>
+{
 	@Query("SELECT t FROM PlannerTask t WHERE t.user.id = :userId AND t.startTimestamp >= :startPoint AND t.startTimestamp <= :endPoint")
 	List<PlannerTask> getAllByDateAndHourSpan(@Param("userId") long userId,@Param("startPoint") Instant filterStartPoint,@Param("endPoint") Instant filterEndPoint);
 

@@ -65,7 +65,6 @@ public class UserService implements IUserService{
         if (!googleService.verifyRecaptcha(registration.getRecaptchaToken(), "register")) {
             throw new ReCaptchaException();
         }
-        ;
         RegistrationResponse response;
         User newUser = User.builder()
             .name(registration.getName())
@@ -87,7 +86,7 @@ public class UserService implements IUserService{
         }
         try {
             userRepository.save(newUser);
-            // this.setDefaultSettings(newUser);
+            this.setDefaultSettings(newUser);
         } catch (Exception e) {
             throw new PersistenceException(e);
         }
@@ -302,7 +301,7 @@ public class UserService implements IUserService{
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || !(authentication.getPrincipal() instanceof LoggedUser)) {
-            return null;
+            throw new UserNotInSecurityContext();
         }
         return (LoggedUser) authentication.getPrincipal();
     }

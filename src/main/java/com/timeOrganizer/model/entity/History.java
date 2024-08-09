@@ -2,7 +2,10 @@ package com.timeOrganizer.model.entity;
 
 import com.timeOrganizer.helper.MyIntTime;
 import com.timeOrganizer.helper.MyIntTimeDBConverter;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,10 +20,8 @@ import java.time.Instant;
 @ToString
 @Table(schema = "public")
 //TODO MAYBE ADD indexing
-public class History extends AbstractEntity{
-    @ManyToOne
-    @JoinColumn(name = "activity_id", nullable = false)
-    private Activity activity;
+public class History extends EntityWithActivity
+{
     @Column(nullable = false)
     private Instant startTimestamp;
     @Convert(converter = MyIntTimeDBConverter.class)

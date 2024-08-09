@@ -5,7 +5,6 @@ import com.timeOrganizer.model.dto.request.extendable.IdRequest;
 import com.timeOrganizer.model.dto.request.taskPlanner.PlannerFilterRequest;
 import com.timeOrganizer.model.dto.request.taskPlanner.PlannerTaskRequest;
 import com.timeOrganizer.model.dto.response.PlannerTaskResponse;
-import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.PlannerTask;
 import com.timeOrganizer.repository.IPlannerTaskRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,25 +14,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Transactional
-public class PlannerTaskService extends MyService<PlannerTask, IPlannerTaskRepository, PlannerTaskRequest, PlannerTaskResponse, PlannerTaskMapper>
+public class PlannerTaskService extends EntityWithActivityService<PlannerTask, IPlannerTaskRepository, PlannerTaskRequest, PlannerTaskResponse, PlannerTaskMapper>
 {
-	private final ActivityService activityService;
-
 	@Autowired
 	public PlannerTaskService(IPlannerTaskRepository repository, PlannerTaskMapper mapper, ActivityService activityService)
 	{
-		super(repository, mapper);
-		this.activityService = activityService;
-	}
-
-	@Override
-	protected Map<String, ? extends AbstractEntity> getDependencies(PlannerTaskRequest request)
-	{
-		return this.getMapFromDependencies(activityService.getReference(request.getActivityId()));
+		super(repository, mapper, activityService);
 	}
 
 	@Override

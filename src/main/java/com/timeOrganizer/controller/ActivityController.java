@@ -2,7 +2,9 @@ package com.timeOrganizer.controller;
 
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.ActivityRequest;
+import com.timeOrganizer.model.dto.request.ActivitySelectForm;
 import com.timeOrganizer.model.dto.request.extendable.NameTextRequest;
+import com.timeOrganizer.model.dto.response.activity.ActivityFormSelectsResponse;
 import com.timeOrganizer.model.dto.response.activity.ActivityOptionResponse;
 import com.timeOrganizer.model.dto.response.activity.ActivityResponse;
 import com.timeOrganizer.model.dto.response.general.SuccessResponse;
@@ -27,24 +29,6 @@ public class ActivityController extends MyController
 	public ResponseEntity<List<ActivityOptionResponse>> getAllActivities()
 	{
 		return ResponseEntity.ok(mapToActivityOptionResponseList(activityService.getAllAsResponse()));
-	}
-
-	@PostMapping("/get-options-by-role/{roleId}")
-	public ResponseEntity<?> getActivitiesByRoleId(@PathVariable Long roleId)
-	{
-		if (roleId == null || roleId == 0) {
-			return ResponseEntity.badRequest().body("roleId must not be null or 0");
-		}
-		return ResponseEntity.ok(this.mapToActivityOptionResponseList(activityService.getActivitiesByRoleId(roleId)));
-	}
-
-	@PostMapping("/get-options-by-category/{categoryId}")
-	public ResponseEntity<?> getActivitiesByCategoryId(@PathVariable Long categoryId)
-	{
-		if (categoryId == null || categoryId == 0) {
-			return ResponseEntity.badRequest().body("categoryId must not be null or 0");
-		}
-		return ResponseEntity.ok(this.mapToActivityOptionResponseList(activityService.getActivitiesByCategoryId(categoryId)));
 	}
 
 	//TODO
@@ -75,6 +59,17 @@ public class ActivityController extends MyController
 		return ResponseEntity.ok(new SuccessResponse("quick edited"));
 	}
 
+	@PostMapping("/update-filter-selects")
+	public ResponseEntity<ActivityFormSelectsResponse> updateFilterSelects(@RequestBody ActivitySelectForm filterData)
+	{
+		return ResponseEntity.ok(activityService.updateFilterSelects(filterData));
+	}
+
+	@PostMapping("/update-filter-selects-new")
+	public ResponseEntity<ActivityFormSelectsResponse> updateFilterSelectsForNew()
+	{
+		return ResponseEntity.ok(activityService.updateFilterSelectsForNew());
+	}
 	public List<ActivityOptionResponse> mapToActivityOptionResponseList(List<? extends ActivityResponse> list)
 	{
 		return list.stream()

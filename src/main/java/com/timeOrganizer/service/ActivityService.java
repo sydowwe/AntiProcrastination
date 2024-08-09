@@ -2,12 +2,16 @@ package com.timeOrganizer.service;
 
 import com.timeOrganizer.model.dto.mappers.ActivityMapper;
 import com.timeOrganizer.model.dto.request.ActivityRequest;
+import com.timeOrganizer.model.dto.request.ActivitySelectForm;
 import com.timeOrganizer.model.dto.request.extendable.NameTextRequest;
+import com.timeOrganizer.model.dto.response.activity.ActivityFormSelectsResponse;
 import com.timeOrganizer.model.dto.response.activity.ActivityResponse;
 import com.timeOrganizer.model.entity.AbstractEntity;
 import com.timeOrganizer.model.entity.Activity;
 import com.timeOrganizer.repository.IActivityRepository;
+import com.timeOrganizer.specifications.ActivitySpecifications;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,18 +46,36 @@ public class ActivityService extends MyService<Activity, IActivityRepository, Ac
 	}
 
 
-	@Override
-	public List<ActivityResponse> getActivitiesByRoleId(long roleId)
+	public ActivityFormSelectsResponse updateFilterSelects(ActivitySelectForm request)
 	{
-		return this.mapper.convertToFullResponseList(this.repository.findByRoleIdAndUserId(roleId, UserService.getLoggedUser().getId()));
+		Specification<Activity> spec = ActivitySpecifications.withFilter(
+			UserService.getLoggedUser().getId(),
+			request.getActivityId(),
+			request.getRoleId(),
+			request.getCategoryId(),
+			request.getIsFromToDoList(),
+			request.getIsUnavoidable()
+		);
+		return this.getActivityFormSelectsFromActivityList(this.repository.findAll(spec));
 	}
 
-	@Override
-	public List<ActivityResponse> getActivitiesByCategoryId(long categoryId)
+	public ActivityFormSelectsResponse getActivityFormSelectsFromActivityList(List<Activity> activityList)
 	{
-		return this.mapper.convertToFullResponseList(this.repository.findByCategoryIdAndUserId(categoryId, UserService.getLoggedUser().getId()));
+		return ActivityFormSelectsResponse.builder()
+			.activityOptions(this.getOptionResponseFromList(activityList))
+			.categoryOptions(super.getDistinctOptionList(activityList, Activity::getCategory))
+			.roleOptions(super.getDistinctOptionList(activityList, Activity::getRole))
+			.build();
 	}
 
+	public ActivityFormSelectsResponse updateFilterSelectsForNew()
+	{
+		return ActivityFormSelectsResponse.builder()
+			.activityOptions(null)
+			.categoryOptions(this.getOptionResponseFromList(categoryService.getAll()))
+			.roleOptions(this.getOptionResponseFromList(roleService.getAll()))
+			.build();
+	}
 	public boolean quickEdit(long id, NameTextRequest request)
 	{
 		Activity activity = this.getById(id);

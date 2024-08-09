@@ -1,11 +1,11 @@
-package com.timeOrganizer.model.dto.request.history;
+package com.timeOrganizer.model.dto.request;
 
 import com.timeOrganizer.model.dto.request.extendable.IRequest;
 import lombok.Getter;
 
 @Getter
 @SuppressWarnings("unused")
-public class HistoryFilterSelectsRequest implements IRequest
+public class ActivitySelectForm implements IRequest
 {
 	private Long activityId;
 	private Long roleId;

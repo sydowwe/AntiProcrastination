@@ -1,4 +1,4 @@
-package com.timeOrganizer.repository;
+package com.timeOrganizer.specifications;
 
 import com.timeOrganizer.model.entity.History;
 import jakarta.persistence.criteria.Predicate;

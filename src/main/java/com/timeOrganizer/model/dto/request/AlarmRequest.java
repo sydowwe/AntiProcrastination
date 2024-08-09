@@ -10,6 +10,6 @@ import java.time.Instant;
 public class AlarmRequest extends NameTextColorRequest
 {
 	private Instant startTimestamp;
-	private Long activityId;
+	private long activityId;
 	private boolean isActive;
 }

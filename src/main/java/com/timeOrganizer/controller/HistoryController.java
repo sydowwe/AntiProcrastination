@@ -1,10 +1,10 @@
 package com.timeOrganizer.controller;
 
 import com.timeOrganizer.helper.JsonRequestMapping;
+import com.timeOrganizer.model.dto.request.ActivitySelectForm;
 import com.timeOrganizer.model.dto.request.history.HistoryFilterRequest;
-import com.timeOrganizer.model.dto.request.history.HistoryFilterSelectsRequest;
 import com.timeOrganizer.model.dto.request.history.HistoryRequest;
-import com.timeOrganizer.model.dto.response.history.HistoryFilterSelectsResponse;
+import com.timeOrganizer.model.dto.response.activity.ActivityFormSelectsResponse;
 import com.timeOrganizer.model.dto.response.history.HistoryListGroupedByDateResponse;
 import com.timeOrganizer.model.dto.response.history.HistoryResponse;
 import com.timeOrganizer.service.HistoryService;
@@ -38,7 +38,7 @@ public class HistoryController extends MyController {
     }
 
     @PostMapping("/update-filter-selects")
-    public ResponseEntity<HistoryFilterSelectsResponse> updateFilterSelects(@RequestBody HistoryFilterSelectsRequest filterData)
+    public ResponseEntity<ActivityFormSelectsResponse> updateFilterSelects(@RequestBody ActivitySelectForm filterData)
     {
         return ResponseEntity.ok(historyService.updateFilterSelects(filterData));
     }

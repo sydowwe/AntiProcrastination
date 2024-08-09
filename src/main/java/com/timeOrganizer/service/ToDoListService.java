@@ -18,16 +18,14 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class ToDoListService extends MyService<ToDoList, IToDoListRepository, ToDoListRequest, ToDoListResponse, ToDoListMapper> implements IToDoListService
+public class ToDoListService extends EntityWithActivityService<ToDoList, IToDoListRepository, ToDoListRequest, ToDoListResponse, ToDoListMapper> implements IToDoListService
 {
 	private final UrgencyService urgencyService;
-	private final ActivityService activityService;
 
 	@Autowired
 	public ToDoListService(IToDoListRepository repository, ToDoListMapper mapper, ActivityService activityService,UrgencyService urgencyService)
 	{
-		super(repository, mapper);
-		this.activityService = activityService;
+		super(repository, mapper, activityService);
 		this.urgencyService = urgencyService;
 	}
 

@@ -21,16 +21,14 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class RoutineToDoListService extends MyService<RoutineToDoList, IRoutineToDoListRepository, RoutineToDoListRequest, RoutineToDoListResponse, RoutineToDoListMapper> implements IRoutineTodoListService
+public class RoutineToDoListService extends EntityWithActivityService<RoutineToDoList, IRoutineToDoListRepository, RoutineToDoListRequest, RoutineToDoListResponse, RoutineToDoListMapper> implements IRoutineTodoListService
 {
 	private final RoutineToDoListTimePeriodTimePeriodService timePeriodService;
-	private final ActivityService activityService;
 
 	@Autowired
 	public RoutineToDoListService(IRoutineToDoListRepository repository, RoutineToDoListMapper mapper, ActivityService activityService,RoutineToDoListTimePeriodTimePeriodService timePeriodService)
 	{
-		super(repository, mapper);
-		this.activityService = activityService;
+		super(repository, mapper, activityService);
 		this.timePeriodService = timePeriodService;
 	}
 
