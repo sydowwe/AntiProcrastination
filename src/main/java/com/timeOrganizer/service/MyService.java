@@ -102,7 +102,7 @@ public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extend
 	{
 		return Arrays.stream(dependencies)
 			.collect(Collectors.toMap(
-				entity -> entity.getClass().getName(),
+				entity -> entity.getClass().getSimpleName().split("\\$", 2)[0],
 				entity -> entity
 			));
 	}

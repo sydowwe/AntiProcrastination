@@ -62,7 +62,7 @@ public class ActivityService extends MyService<Activity, IActivityRepository, Ac
 	public ActivityFormSelectsResponse getActivityFormSelectsFromActivityList(List<Activity> activityList)
 	{
 		return ActivityFormSelectsResponse.builder()
-			.activityOptions(this.getOptionResponseFromList(activityList))
+			.activityOptions(mapper.convertToFullResponseList(activityList))
 			.categoryOptions(super.getDistinctOptionList(activityList, Activity::getCategory))
 			.roleOptions(super.getDistinctOptionList(activityList, Activity::getRole))
 			.build();

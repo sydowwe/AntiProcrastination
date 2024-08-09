@@ -10,7 +10,7 @@ import java.util.List;
 @SuperBuilder
 public class ActivityFormSelectsResponse
 {
-	private List<SelectOptionResponse> activityOptions;
+	private List<ActivityResponse> activityOptions;
 	private List<SelectOptionResponse> roleOptions;
 	private List<SelectOptionResponse> categoryOptions;
 }

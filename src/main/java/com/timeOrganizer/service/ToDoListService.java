@@ -44,7 +44,7 @@ public class ToDoListService extends EntityWithActivityService<ToDoList, IToDoLi
 	@Override
 	protected String getSortByProperties()
 	{
-		return "urgency.priority";
+		return "taskUrgency.priority";
 	}
 
 	@Override
