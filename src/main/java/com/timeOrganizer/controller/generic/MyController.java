@@ -1,4 +1,4 @@
-package com.timeOrganizer.controller;
+package com.timeOrganizer.controller.generic;
 
 import com.timeOrganizer.exception.RequiredParameterMissingException;
 import com.timeOrganizer.model.dto.response.extendable.NameTextResponse;
@@ -26,7 +26,8 @@ public abstract class MyController {
                 .collect(Collectors.toList());
     }
 
-    public SelectOptionResponse mapToSelectOptionResponse(NameTextResponse nameTextResponse) {
+
+	public SelectOptionResponse mapToSelectOptionResponse(NameTextResponse nameTextResponse) {
         return new SelectOptionResponse(nameTextResponse);
     }
     public SelectOptionResponse mapToSelectOptionResponse(long id, String name) {

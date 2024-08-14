@@ -1,7 +1,7 @@
 package com.timeOrganizer.service;
 
 import com.timeOrganizer.model.dto.mappers.HistoryMapper;
-import com.timeOrganizer.model.dto.request.ActivitySelectForm;
+import com.timeOrganizer.model.dto.request.activity.ActivitySelectForm;
 import com.timeOrganizer.model.dto.request.history.HistoryFilterRequest;
 import com.timeOrganizer.model.dto.request.history.HistoryRequest;
 import com.timeOrganizer.model.dto.response.activity.ActivityFormSelectsResponse;

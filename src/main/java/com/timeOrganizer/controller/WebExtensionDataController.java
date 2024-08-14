@@ -1,5 +1,6 @@
 package com.timeOrganizer.controller;
 
+import com.timeOrganizer.controller.generic.MyController;
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.WebExtensionDataRequest;
 import com.timeOrganizer.model.dto.response.WebExtensionDataResponse;

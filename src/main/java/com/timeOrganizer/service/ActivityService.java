@@ -2,7 +2,7 @@ package com.timeOrganizer.service;
 
 import com.timeOrganizer.model.dto.mappers.ActivityMapper;
 import com.timeOrganizer.model.dto.request.ActivityRequest;
-import com.timeOrganizer.model.dto.request.ActivitySelectForm;
+import com.timeOrganizer.model.dto.request.activity.ActivitySelectForm;
 import com.timeOrganizer.model.dto.request.extendable.NameTextRequest;
 import com.timeOrganizer.model.dto.response.activity.ActivityFormSelectsResponse;
 import com.timeOrganizer.model.dto.response.activity.ActivityResponse;

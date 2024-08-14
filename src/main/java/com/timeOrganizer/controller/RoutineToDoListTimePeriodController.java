@@ -1,5 +1,6 @@
 package com.timeOrganizer.controller;
 
+import com.timeOrganizer.controller.generic.MyController;
 import com.timeOrganizer.model.dto.request.toDoList.TimePeriodRequest;
 import com.timeOrganizer.model.dto.response.general.SuccessResponse;
 import com.timeOrganizer.model.dto.response.toDoList.TimePeriodResponse;
@@ -14,7 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/routine-to-do-list-time-period")
 @RequiredArgsConstructor
-public class RoutineToDoListTimePeriodController extends MyController {
+public class RoutineToDoListTimePeriodController extends MyController
+{
     private final RoutineToDoListTimePeriodTimePeriodService timePeriodService;
     @PostMapping("/get-all")
     public ResponseEntity<List<TimePeriodResponse>> getAllUrgencyItems() {

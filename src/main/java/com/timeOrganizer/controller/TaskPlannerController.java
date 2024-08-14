@@ -1,5 +1,6 @@
 package com.timeOrganizer.controller;
 
+import com.timeOrganizer.controller.generic.MyController;
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.extendable.IdRequest;
 import com.timeOrganizer.model.dto.request.taskPlanner.PlannerFilterRequest;
@@ -18,21 +19,13 @@ import java.util.List;
 @RestController
 @JsonRequestMapping("/task-planner")
 @RequiredArgsConstructor
-public class TaskPlannerController extends MyController{
+public class TaskPlannerController extends MyController
+{
 	private final PlannerTaskService plannerTaskService;
-	@PostMapping("/apply-filter")
-	public ResponseEntity<List<PlannerTaskResponse>> applyFilter(@RequestBody PlannerFilterRequest request) {
-		return ResponseEntity.ok(plannerTaskService.getAllByDateAndHourSpan(request));
-	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<SelectOptionResponse> get(@PathVariable("id") Long id) {
 		return ResponseEntity.ok(this.mapToSelectOptionResponse(id, plannerTaskService.getResponseById(id).getActivity().getName()));
-	}
-	@PatchMapping("/change-done")
-	public ResponseEntity<SuccessResponse> changeDone(@RequestBody List<IdRequest> requestList) {
-		plannerTaskService.setIsDone(requestList);
-		return ResponseEntity
-			.ok(new SuccessResponse("changed"));
 	}
 	@PostMapping("/add")
 	public ResponseEntity<PlannerTaskResponse> addPlannerTask(@RequestBody PlannerTaskRequest request) {
@@ -55,5 +48,19 @@ public class TaskPlannerController extends MyController{
 		plannerTaskService.batchDelete(request);
 		return ResponseEntity
 			.ok(new SuccessResponse("deleted"));
+	}
+
+	@PostMapping("/apply-filter")
+	public ResponseEntity<List<PlannerTaskResponse>> applyFilter(@RequestBody PlannerFilterRequest request)
+	{
+		return ResponseEntity.ok(plannerTaskService.getAllByDateAndHourSpan(request));
+	}
+
+	@PatchMapping("/change-done")
+	public ResponseEntity<SuccessResponse> changeDone(@RequestBody List<IdRequest> requestList)
+	{
+		plannerTaskService.setIsDone(requestList);
+		return ResponseEntity
+			.ok(new SuccessResponse("changed"));
 	}
 }

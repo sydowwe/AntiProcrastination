@@ -1,4 +1,4 @@
-package com.timeOrganizer.model.dto.request;
+package com.timeOrganizer.model.dto.request.activity;
 
 import com.timeOrganizer.model.dto.request.extendable.IRequest;
 import lombok.Getter;

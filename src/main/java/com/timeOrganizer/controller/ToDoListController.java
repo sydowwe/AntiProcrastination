@@ -1,5 +1,6 @@
 package com.timeOrganizer.controller;
 
+import com.timeOrganizer.controller.generic.MyController;
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.extendable.IdRequest;
 import com.timeOrganizer.model.dto.request.toDoList.ToDoListRequest;
@@ -17,7 +18,8 @@ import java.util.List;
 @RestController
 @JsonRequestMapping("/to-do-list")
 @RequiredArgsConstructor
-public class ToDoListController extends MyController {
+public class ToDoListController extends MyController
+{
     private final ToDoListService toDoListService;
     @PostMapping("/get-all")
     public ResponseEntity<List<ToDoListResponse>> getAllToDoListItems() {

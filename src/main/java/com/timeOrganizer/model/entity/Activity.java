@@ -24,7 +24,7 @@ public class Activity extends NameTextEntity
     @ManyToOne(optional = false)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
-    @ManyToOne()
+	@ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "category_id")
     private Category category;
     @OneToMany(mappedBy = "activity")

@@ -1,5 +1,6 @@
 package com.timeOrganizer.controller;
 
+import com.timeOrganizer.controller.generic.MyController;
 import com.timeOrganizer.model.dto.response.toDoList.UrgencyResponse;
 import com.timeOrganizer.service.UrgencyService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/urgency")
 @RequiredArgsConstructor
-public class UrgencyController extends MyController {
+public class UrgencyController extends MyController
+{
     private final UrgencyService urgencyService;
     @PostMapping("/get-all")
     public ResponseEntity<List<UrgencyResponse>> getAllUrgencyItems() {

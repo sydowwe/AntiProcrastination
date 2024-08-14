@@ -1,5 +1,6 @@
 package com.timeOrganizer.controller;
 
+import com.timeOrganizer.controller.generic.MyController;
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.extendable.NameTextColorIconRequest;
 import com.timeOrganizer.model.dto.response.RoleResponse;
@@ -18,7 +19,8 @@ import java.util.List;
 @RestController
 @JsonRequestMapping("/role")
 @RequiredArgsConstructor
-public class RoleController extends MyController {
+public class RoleController extends MyController
+{
     private final RoleService roleService;
     @PostMapping("/get-all-options")
     public ResponseEntity<List<SelectOptionResponse>> getAllOptions() {
@@ -38,5 +40,4 @@ public class RoleController extends MyController {
         URI uri = this.getCreatedResourceURI(roleOption.getId());
         return ResponseEntity.created(uri).body(roleOption);
     }
-
 }

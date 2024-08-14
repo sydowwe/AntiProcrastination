@@ -1,5 +1,6 @@
 package com.timeOrganizer.controller;
 
+import com.timeOrganizer.controller.generic.MyController;
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.extendable.NameTextColorIconRequest;
 import com.timeOrganizer.model.dto.response.general.SelectOptionResponse;
@@ -17,7 +18,8 @@ import java.util.List;
 @RestController
 @JsonRequestMapping("/category")
 @RequiredArgsConstructor
-public class CategoryController extends MyController{
+public class CategoryController extends MyController
+{
     private final CategoryService categoryService;
     @PostMapping("/get-all-options")
     public ResponseEntity<List<SelectOptionResponse>> getAllOptions(){

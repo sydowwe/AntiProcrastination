@@ -1,5 +1,6 @@
 package com.timeOrganizer.controller;
 
+import com.timeOrganizer.controller.generic.MyController;
 import com.timeOrganizer.exception.QrCode2FAGenerationException;
 import com.timeOrganizer.helper.EmailService;
 import com.timeOrganizer.helper.JsonRequestMapping;
@@ -21,7 +22,8 @@ import org.springframework.web.bind.annotation.*;
 @JsonRequestMapping("/user")
 @RestController
 @RequiredArgsConstructor
-public class UserController extends MyController {
+public class UserController extends MyController
+{
     private final UserService userService;
     private final OAuth2Service oAuth2Service;
     private final EmailService emailService;

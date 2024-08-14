@@ -1,4 +1,4 @@
-package com.timeOrganizer.controller;
+package com.timeOrganizer.controller.generic;
 
 import com.timeOrganizer.exception.*;
 import com.timeOrganizer.model.dto.response.general.ErrorResponse;

@@ -1,8 +1,9 @@
 package com.timeOrganizer.controller;
 
+import com.timeOrganizer.controller.generic.MyController;
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.ActivityRequest;
-import com.timeOrganizer.model.dto.request.ActivitySelectForm;
+import com.timeOrganizer.model.dto.request.activity.ActivitySelectForm;
 import com.timeOrganizer.model.dto.request.extendable.NameTextRequest;
 import com.timeOrganizer.model.dto.response.activity.ActivityFormSelectsResponse;
 import com.timeOrganizer.model.dto.response.activity.ActivityOptionResponse;

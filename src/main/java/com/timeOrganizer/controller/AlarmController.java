@@ -1,5 +1,6 @@
 package com.timeOrganizer.controller;
 
+import com.timeOrganizer.controller.generic.MyController;
 import com.timeOrganizer.helper.JsonRequestMapping;
 import com.timeOrganizer.model.dto.request.AlarmRequest;
 import com.timeOrganizer.model.dto.request.extendable.IdRequest;
@@ -20,14 +21,6 @@ public class AlarmController extends MyController
 {
 	private final AlarmService alarmService;
 
-	//	@PostMapping("/apply-filter")
-//	public ResponseEntity<List<AlarmResponse>> applyFilter(@RequestBody PlannerFilterRequest request) {
-//		return ResponseEntity.ok(alarmService.getAllByDateAndHourSpan(this.getLoggedUser().getId(),request));
-//	}
-//	@GetMapping("/{id}")
-//	public ResponseEntity<SelectOptionResponse> get(@PathVariable("id") Long id) {
-//		return ResponseEntity.ok(this.mapToSelectOptionResponse(alarmService.getResponseById(id)));
-//	}
 	@PostMapping("/get-all")
 	public ResponseEntity<List<AlarmResponse>> getAll()
 	{

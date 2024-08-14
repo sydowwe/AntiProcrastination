@@ -1,6 +1,6 @@
 package com.timeOrganizer.model.dto.request.history;
 
-import com.timeOrganizer.model.dto.request.ActivitySelectForm;
+import com.timeOrganizer.model.dto.request.activity.ActivitySelectForm;
 import lombok.Getter;
 
 import java.time.Instant;

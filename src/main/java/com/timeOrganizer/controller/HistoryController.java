@@ -1,7 +1,8 @@
 package com.timeOrganizer.controller;
 
+import com.timeOrganizer.controller.generic.MyController;
 import com.timeOrganizer.helper.JsonRequestMapping;
-import com.timeOrganizer.model.dto.request.ActivitySelectForm;
+import com.timeOrganizer.model.dto.request.activity.ActivitySelectForm;
 import com.timeOrganizer.model.dto.request.history.HistoryFilterRequest;
 import com.timeOrganizer.model.dto.request.history.HistoryRequest;
 import com.timeOrganizer.model.dto.response.activity.ActivityFormSelectsResponse;
@@ -20,7 +21,8 @@ import java.util.List;
 @RestController
 @JsonRequestMapping("/history")
 @RequiredArgsConstructor
-public class HistoryController extends MyController {
+public class HistoryController extends MyController
+{
     private final HistoryService historyService;
     @PostMapping("/add-new-record")
     public ResponseEntity<URI> addNewActivityToHistory(@RequestBody HistoryRequest newRecordRequest) {

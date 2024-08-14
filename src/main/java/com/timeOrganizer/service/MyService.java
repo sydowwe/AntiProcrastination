@@ -122,6 +122,7 @@ public abstract class MyService<ENTITY extends AbstractEntity, REPOSITORY extend
 		return Sort.by(this.getSortDirection(), this.getSortByProperties());
 	}
 
+
 	protected <R> List<R> getDistinctList(List<ENTITY> list, Function<ENTITY, R> extractor)
 	{
 		return list.stream()
